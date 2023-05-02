@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이디 찾기</title>
+    <style>
+        body {
+            background-color: white;
+        }
+
+        fieldset {
+            border: none;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        legend {
+            font-size: 24px;
+            color: blue;
+        }
+
+        form {
+            display: inline-block;
+            text-align: left;
+        }
+
+        input[type=text] {
+            width: 300px;
+            height: 30px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        button[type=submit] {
+            margin-top: 20px;
+            width: 200px;
+            height: 40px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<div style="background-color: blue; text-align: center;">
+    <h2 style="color: white; padding: 20px;">아이디 찾기</h2>
+</div>
+<fieldset>
+    <legend>아이디 찾기</legend>
+    <form method="post" action="/member/findId">
+        <label>회원가입 시 입력하셨던 닉네임</label>
+        <input type="text" name="nickname" required>
+        <br>
+        <label>회원가입 시 입력하셨던 전화번호</label>
+        <input type="text" name="phone" required>
+        <br>
+        <button type="submit">찾기</button>
+    </form>
+</fieldset>
+</body>
+</html>

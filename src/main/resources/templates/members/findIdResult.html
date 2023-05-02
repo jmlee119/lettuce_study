@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>아이디 찾기 결과</title>
+</head>
+<body>
+<h1>아이디 찾기 결과</h1>
+<hr>
+<div>
+  <p th:if="${message}" th:text="${message}"></p>
+  <p th:if="${errorMessage}" th:text="${errorMessage}"></p>
+</div>
+<hr>
+<a href="/" th:text="홈으로"></a>
+</body>
+</html>
