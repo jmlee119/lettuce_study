@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>인증번호 입력</title>
+</head>
+<body>
+<h1>회원가입 인증번호 입력</h1>
+<p>이메일 주소: <strong th:text="${email}"></strong></p>
+<form th:action="@{/members/auth}" method="post" th:object="${auth}">
+  <!-- email 파라미터를 숨겨진 필드(hidden field)로 추가 -->
+  <input type="hidden" name="email" th:value="${email}" />
+  <p>
+    <label for="authNum">인증번호:</label>
+    <input type="text" id="authNum" name="authNum" th:field="*{authNum}" />
+    <span th:if="${#fields.hasErrors('authNum')}" th:errors="*{authNum}"></span>
+  </p>
+  <p>
+    <button type="submit">인증하기</button>
+  </p>
+</form>
+</body>
+</html>

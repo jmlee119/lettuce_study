@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    input::-webkit-input-placeholder{text-align: center}
+    .container {
+      max-width: 100%;
+      padding-left: 500px;
+      padding-right: 500px;
+      padding-top: 100px;
+      min-width:500px;
+
+    }
+    .field-error {
+      border-color: #dc3545;
+      color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="py-5 text-center">
+    <h2 style="text-align: center">회원 가입</h2>
+  </div>
+  <h4 class="mb-3" style="text-align: center; color: hotpink">회원 정보 입력</h4>
+  <form action="" th:action th:object="${member}" method="post">
+    <div th:if="${#fields.hasGlobalErrors()}">
+      <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+    </div>
+    <div style="border: 1px solid black; padding: 10px">
+      <div style="padding: 5px">
+        <input style="border-right: 0px; border-top: 0px; border-left: 0px; width:100%; outline: none"
+               placeholder="이메일을 입력하세요."
+               type="email" id="email"
+               class="form-control"
+               th:field="*{email}"
+               th:errorclass="field-error"
+               required>
+        <div class="field-error" th:errors="*{email}"></div>
+      </div>
+      <div style="padding: 5px">
+        <input style="border-right: 0px; border-top: 0px; border-left: 0px; width:100%; outline: none"
+               placeholder="패스워드를 입력하세요."
+               type="password" id="password"
+               class="form-control"
+               th:field="*{password}"
+               th:errorclass="field-error"
+               required>
+        <div class="field-error" th:errors="*{password}"></div>
+      </div>
+      <div style="padding: 5px">
+        <input style="border-right: 0px; border-top: 0px; border-left: 0px; width:100%; outline: none"
+               placeholder="패스워드 확인"
+               type="password" id="passwordConfirm"
+               class="form-control"
+               th:field="*{passwordConfirm}"
+               th:errorclass="field-error"
+               required>
+        <div class="field-error" th:errors="*{passwordConfirm}"></div>
+      </div>
+      <div style="padding: 5px">
+        <input style="border-right: 0px; border-top: 0px; border-left: 0px; width:100%; outline: none"
+               placeholder="이름"
+               type="text" id="name"
+               class="form-control"
+               th:field="*{name}"
+               th:errorclass="field-error"
+               required>
+        <div class="field-error" th:errors="*{name}"></div>
+      </div>
+      <div style="padding: 5px">
+        <input style="border-right: 0px; border-top: 0px; border-left: 0px; width:100%; outline: none"
+               placeholder="닉네임을 입력하세요."
+               type="text" id="nickname"
+               class="form-control"
+               th:field="*{nickname}"
+               th:errorclass="field-error"
+               required>
+        <div class="field-error" th:errors="*{nickname}"></div>
+      </div>
+      <div style="padding: 5px">
+        <input style="border-right: 0px; border-top: 0px; border-left: 0px; width:100%; outline: none"
+               placeholder="휴대폰 번호를 입력하세요."
+               type="tel" id="phoneNumber"
+               class="form-control"
+               th:field="*{phone}"
+               th:errorclass="field-error"
+               required>
+        <div class="field-error" th:errors="*{phone}"></div>
+      </div>
+
+    </div>
+    <hr class="my-4">
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-primary btn-lg" type="submit">회원
+          가입</button>
+      </div>
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='items.html'"
+                th:onclick="|location.href='@{/}'|"
+                type="button">취소</button>
+      </div>
+    </div>
+  </form>
+</div> <!-- /container -->
+</body>
+</html>

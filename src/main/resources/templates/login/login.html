@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, height=device-height, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
+
+    <style>
+        .container{
+            max-width: 90%;
+            padding-top: 100px;
+            text-align: center;
+            padding-left: 500px;
+            padding-right: 500px;
+            min-width: 600px;
+        }
+        h2{
+            display:flex;
+            justify-content: center;
+        }
+        form{
+            padding:10px;
+        }
+        .input-box{
+            position:relative;
+            margin:10px 0;
+        }
+        .input-box > input{
+            background:transparent;
+            border:none;
+            border-bottom: solid 1px #ccc;
+            padding:20px 0px 5px 0px;
+            font-size:14pt;
+            width:100%;
+        }
+        input::placeholder{
+            color:transparent;
+        }
+        input:placeholder-shown + label{
+            color:#aaa;
+            font-size:14pt;
+            top:15px;
+
+        }
+        input:focus + label, label{
+            color:#8aa1a1;
+            font-size:10pt;
+            pointer-events: none;
+            position: absolute;
+            left:0px;
+            top:0px;
+            transition: all 0.2s ease ;
+            -webkit-transition: all 0.2s ease;
+            -moz-transition: all 0.2s ease;
+            -o-transition: all 0.2s ease;
+        }
+
+        input:focus, input:not(:placeholder-shown){
+            border-bottom: solid 1px #8aa1a1;
+            outline:none;
+        }
+        input[type=submit]{
+            background-color: #8aa1a1;
+            border:none;
+            color:white;
+            border-radius: 5px;
+            width:100%;
+            height:35px;
+            font-size: 14pt;
+            margin-top:100px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <header> <h2>로그인</h2> </header>
+
+    <form th:action="@{/member/login}" th:object="${login}" method="post">
+<!--        <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--            <p class="field-error" th:each="err : ${#fields.globalErrors()}"-->
+<!--               th:text="${err}">전체 오류 메시지</p>-->
+<!--        </div>-->
+        <div th:if="${param.error}">
+            <div class="alert alert-danger">
+                사용자ID 또는 비밀번호를 확인해 주세요.
+            </div>
+        </div>
+        <div class="input-box">
+            <input id="loginId" type="text" name="email" placeholder="이메일">
+            <label for="loginId">이메일</label>
+            <div class="field-error"></div>
+        </div>
+        <div class="input-box">
+            <input type="password" id="password" name="password" placeholder="비밀번호">
+            <label for="password">비밀번호</label>
+            <div class="field-error"></div>
+        </div>
+        <input type="submit" value="로그인">
+    </form>
+</div>
+</body>
+</html>
