@@ -74,4 +74,32 @@ public class MailService {
 //        javaMailSender.send(message);
         System.out.println(authNum);
     }
+    public void findPasswordForm(String email, String name, String newPassword) throws MessagingException {
+
+        String setFrom = "cslettucestudy@gmail.com";
+        String setName = "양상추 Study";
+        String subject = "양상추 Study 임시 비밀번호";
+
+        MustacheFactory mf = new DefaultMustacheFactory();
+        Mustache mustache = mf.compile("templates/templatepassword.html");
+        Map<String, String> variables = new HashMap<>();
+        variables.put("name", name);
+        variables.put("newPassword", newPassword);
+        StringWriter writer = new StringWriter();
+        mustache.execute(writer, variables);
+        String html = writer.toString();
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        try {
+            helper.setFrom(new InternetAddress(setFrom, setName, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        helper.setTo(email);
+        helper.setSubject(subject);
+        helper.setText(html, true);
+//        javaMailSender.send(message);
+        System.out.println(newPassword);
+    }
 }
