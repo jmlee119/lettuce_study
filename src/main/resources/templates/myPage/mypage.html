@@ -7,10 +7,10 @@
 </head>
 <body>
 <h1>Welcome to My Page</h1>
-<p th:text="'Hello, ' + ${email} + '!'"></p>
-<p th:text="'Name: ' + ${name}"></p>
-<p th:text="'Nickname: ' + ${nickname}"></p>
-<p th:text="'Phone: ' + ${phone}"></p>
+<p th:text="'Hello, ' + ${member.get().email} + '!'"></p>
+<p th:text="'Name: ' + ${member.get().name}"></p>
+<p th:text="'Nickname: ' + ${member.get().nickname}"></p>
+<p th:text="'Phone: ' + ${member.get().phone}"></p>
 
 <form th:action="@{/mypage/mylist}" method="get">
   <button type="submit">View My Posts</button>

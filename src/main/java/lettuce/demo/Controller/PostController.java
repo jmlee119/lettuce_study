@@ -5,6 +5,7 @@ import lettuce.demo.Member.Member;
 import lettuce.demo.Post.Post;
 import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Repository.PostRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/posts")
@@ -47,6 +49,16 @@ public class PostController {
         return "redirect:/posts/lists";
 
     }
-
+    @GetMapping("/detail/{postId}")
+    @PreAuthorize("isAuthenticated()")
+    public String myPostDetail(@PathVariable Long postId, Model model) {
+        Optional<Post> findPost = postRepository.findById(postId);
+        if (findPost.isPresent()) {
+            model.addAttribute("post", findPost.get());
+            return "Post/detail";
+        } else {
+            return "redirect:/mypage/mylist";
+        }
+    }
 
 }

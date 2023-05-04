@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Post Detail</title>
+</head>
+<body>
+<h1 th:text="${post.title}"></h1>
+<p th:text="${post.content}"></p>
+<p>작성일: <span th:text="${post.createDate}"></span></p>
+<p>작성자: <a th:href="@{/mypage/{nickname}(nickname=${post.member.nickname})}" th:text="${post.member.nickname}"></a></p>
+</body>
+</html>
