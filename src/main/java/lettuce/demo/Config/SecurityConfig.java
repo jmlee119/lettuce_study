@@ -30,7 +30,8 @@ public class SecurityConfig{
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.authorizeHttpRequests().anyRequest().permitAll();
+        http.authorizeRequests().requestMatchers("/mypage/myinfo").authenticated();
+        http.authorizeRequests().anyRequest().permitAll();
         http.formLogin().loginPage("/member/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
