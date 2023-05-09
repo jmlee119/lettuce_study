@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Welcome to Edit Page</h1>
+
+<form th:action="@{/profile/edit}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="Id" th:value="${member.get().getId()}" />
+    <label for="nickname">Nickname:</label>
+    <input type="text" id="nickname" name="nickname" th:value="${member.get().getNickname()}" />
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:value="${member.get().getName()}" /><br />
+    <label for="phone">Phone:</label>
+    <input type="text" id="phone" name="phone" th:value="${member.get().getPhone()}" /><br />
+    <label for="image">Image:</label>
+    <input type="file" id="image" name="image" /><br />
+    <button type="submit">Update</button>
+    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
+</form>
+</body>
+</html>

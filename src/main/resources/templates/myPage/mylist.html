@@ -19,12 +19,14 @@
   <tr th:each="post, postNumber : ${myPosts}">
     <td th:text="${postNumber.index + 1}"></td>
     <td th:text="${nickname}"></td>
-<!--    <td><a th:href="@{/mypage/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>-->
     <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
     <td th:text="${post.createDate}"></td>
   </tr>
   </tr>
   </tbody>
 </table>
+<button th:onclick="|location.href='@{/}'|">
+  Home
+</button>
 </body>
 </html>

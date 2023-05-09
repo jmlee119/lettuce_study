@@ -6,6 +6,8 @@ import lettuce.demo.Post.Post;
 import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Repository.PostRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -27,14 +29,18 @@ public class PostController {
     }
 
     @GetMapping("/lists")
+    @PreAuthorize("isAuthenticated()")
     public String list(Model model){
-        List<Post> postList = postRepository.findAll();
+        List<Post> postList = postRepository.findAllByOrderByCreateDateDesc();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
         model.addAttribute("postList" , postList);
+        model.addAttribute("member",findmember);
         return "Post/postList";
     }
 
-    @GetMapping("/create")
-    public String postCreate() {
+    @GetMapping("/create/{memberId}")
+    public String postCreate(@PathVariable Long memberId) {
         return "Post/createPost";
     }
 
@@ -43,10 +49,16 @@ public class PostController {
 //        model.addAttribute("title", post.getTitle());
 //        model.addAttribute("content", post.getContent());
         String username = principal.getName();
-        Member member = (Member) memberRepository.findByName(username);
-        post.setMember(member);
-        postRepository.save(post);
-        return "redirect:/posts/lists";
+        Optional<Member> optionalMember = memberRepository.findByEmail(username);
+//        Member member = (Member) memberRepository.findByName(username);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            post.setMember(member);
+            postRepository.save(post);
+            return "redirect:/posts/lists";
+        } else {
+            return "error-page";
+        }
 
     }
     @GetMapping("/detail/{postId}")
@@ -55,6 +67,7 @@ public class PostController {
         Optional<Post> findPost = postRepository.findById(postId);
         if (findPost.isPresent()) {
             model.addAttribute("post", findPost.get());
+            model.addAttribute("nickname",findPost.get().getMember().getNickname());
             return "Post/detail";
         } else {
             return "redirect:/mypage/mylist";
