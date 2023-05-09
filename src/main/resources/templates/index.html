@@ -46,7 +46,12 @@
         </div>
     </div>
 </th:block>
+<<<<<<< HEAD
 <th:block th:fragment="menu" sec:authorize = "isAuthenticated()">
+=======
+<th:block sec:authorize = "isAuthenticated()">
+<!--    <nav th:replace="fragments/common :: menu"></nav>-->
+>>>>>>> f81ed9f (비밀번호 인증)
     <div class="container_else">
         <h2>양상추 스터디에 오신걸 환영합니다</h2>
         <p th:text="${nickname} + '님 환영합니다!'"></p>

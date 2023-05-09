@@ -14,5 +14,9 @@ public interface MemberRepository extends CrudRepository<Member,Long> {
     public Optional<Member> findByEmail(String email);
     public Optional<Member> findByNickname(String nickname);
 
+<<<<<<< HEAD
+=======
+    public Optional<Member> findByPhone(String phone);
+>>>>>>> f81ed9f (비밀번호 인증)
 
 }

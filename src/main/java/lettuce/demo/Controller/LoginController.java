@@ -58,6 +58,7 @@ public class LoginController {
     public String findPassword(){return "members/findPassword";}
 
     @PostMapping("/findPassword")
+<<<<<<< HEAD
     public String findPassword(@RequestParam("email") String email, Model model){
         Optional<Member> findemail = memberRepository.findByEmail(email);
         if(findemail.isPresent()){
@@ -70,6 +71,32 @@ public class LoginController {
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
+=======
+    public String findPassword(@RequestParam("email") String email,@RequestParam("phone") String phone, Model model, HttpSession httpSession){
+        Optional<Member> findemail = memberRepository.findByEmail(email);
+        // Optional<Member> findPhone = memberRepository.findByPhone(phone);
+        if(findemail.isPresent() && findemail.get().getPhone().equals(phone)){
+            if(findemail.get().getVerified() == true){
+                Member member = findemail.get();
+                String yourname = member.getName();
+                String authNum = UUID.randomUUID().toString().substring(0,10);
+                MailService mailService = new MailService(javaMailSender);
+                try {
+                    mailService.createEmailForm(email, yourname, authNum);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+                httpSession.setAttribute("authNum",authNum);
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        httpSession.removeAttribute("authNum");
+                        System.out.println("authNum = " + httpSession.getAttribute("authNum"));
+                    }
+                };
+                Timer timer = new Timer();
+                timer.schedule(task, 5 * 60 * 1000);
+>>>>>>> f81ed9f (비밀번호 인증)
 
             member.setPassword(passwordEncoder.encode(newPassword));
             memberRepository.save(member);
@@ -79,10 +106,16 @@ public class LoginController {
 //            model.addAttribute("message","새로운 비밀 번호는" + newPassword + "입니다.");
             System.out.println(newPassword);
         }
+<<<<<<< HEAD
         else model.addAttribute("errorMessage","해당 이메일을 사용하시는 회원이 없습니다.");
 
 
         return "members/findPasswordResult";
+=======
+        else model.addAttribute("errorMessage","해당 이메일과 전화번호가 일치하는 회원이 없습니다. 다시 확인해주세요");
+//        return "members/findPasswordResult";
+        return "errorPage";
+>>>>>>> f81ed9f (비밀번호 인증)
     }
 
     @PostMapping("/findPasswordResult")
