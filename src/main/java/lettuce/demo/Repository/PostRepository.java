@@ -9,4 +9,5 @@ import java.util.List;
 public interface PostRepository extends CrudRepository <Post,Long> {
 //    Member findByEmail(String email);
     List<Post> findByMemberEmail(String email);
+    List<Post> findAll();
 }

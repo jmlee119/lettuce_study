@@ -46,7 +46,7 @@
         </div>
     </div>
 </th:block>
-<th:block sec:authorize = "isAuthenticated()">
+<th:block th:fragment="menu" sec:authorize = "isAuthenticated()">
     <div class="container_else">
         <h2>양상추 스터디에 오신걸 환영합니다</h2>
         <p th:text="${nickname} + '님 환영합니다!'"></p>
@@ -62,10 +62,8 @@
 <!--        </button>-->
 <!--    </div>-->
     <div>
-        <form action="/posts/create" method="post">
             <input type="hidden" name="memberId" th:value="${memberId}">
             <button class="w-100 btn btn-dark btn-lg" type="submit">글 생성</button>
-        </form>
     </div>
 </th:block>
 </div> <!-- /container -->
