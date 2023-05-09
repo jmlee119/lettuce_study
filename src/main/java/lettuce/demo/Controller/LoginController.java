@@ -41,18 +41,23 @@ public class LoginController {
         return "members/findIdForm";
     }
 
+
     @PostMapping("/findId")
     public String findId(@RequestParam("nickname") String nickname,@RequestParam("phone") String phone, Model model) throws MessagingException{
         Optional<Member> findnick = memberRepository.findByNickname(nickname);
-        System.out.println("findnick.get().getPhone() = " + findnick.get().getPhone());
-        System.out.println("findnick.get().getPhone() = " + findnick.get().getNickname());
-        if(findnick.isPresent() && findnick.get().getPhone().equals(phone)){
-            Member member = findnick.get();
-            String youremail = member.getEmail();
-            String yourname = member.getName();
-            model.addAttribute("message",yourname+"의 이메일은 "+ youremail + "입니다.");
+
+        if(findnick.isPresent()){
+            if(findnick.get().getPhone().equals(phone)){
+                Member member = findnick.get();
+                String youremail = member.getEmail();
+                String yourname = member.getName();
+                model.addAttribute("message",yourname+"의 이메일은 "+ youremail + "입니다.");
+            } else {
+                model.addAttribute("errorMessage","해당 전화번호를 사용하시는 회원이 없습니다.");
+            }
+        } else {
+            model.addAttribute("errorMessage","해당 닉네임을 사용하시는 회원이 없습니다.");
         }
-        else model.addAttribute("errorMessage","해당 이메일을 사용하시는 회원이 없습니다.");
 
         return "members/findIdResult";
     }
