@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lettuce.demo.Post.Post;
 import lombok.Builder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -41,6 +42,7 @@ public class Member {
     // 이메일 인증 여부를 저장하는 필드
 
     private String authNum;
+
 
     public Boolean getVerified() {
         return Verified;

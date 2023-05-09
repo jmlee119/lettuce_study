@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+  <title th:text="${title}">Hello, Spring Boot!</title>
+</head>
+<body>
+  <nav th:fragment="menu">
+    <a>Spring Boot Tutorial</a>
+
+    <div>
+      <ul>
+        <li>
+          <a>
+            홈
+          </a>
+        </li>
+        <li>
+          <a>
+            myprofile
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </nav>
+</body>
+</html>
