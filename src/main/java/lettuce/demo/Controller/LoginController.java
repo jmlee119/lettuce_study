@@ -67,38 +67,44 @@ public class LoginController {
 
 
     @PostMapping("/findPassword")
-    public String findPassword(@RequestParam("email") String email, Model model, HttpSession httpSession){
+    public String findPassword(@RequestParam("email") String email,@RequestParam("phone") String phone, Model model, HttpSession httpSession){
         Optional<Member> findemail = memberRepository.findByEmail(email);
         if(findemail.isPresent()){
-            if(findemail.get().getVerified() == true){
-                Member member = findemail.get();
-                String yourname = member.getName();
-                String authNum = UUID.randomUUID().toString().substring(0,10);
-                MailService mailService = new MailService(javaMailSender);
-                try {
-                    mailService.createEmailForm(email, yourname, authNum);
-                } catch (MessagingException e) {
-                    e.printStackTrace();
-                }
-                httpSession.setAttribute("authNum",authNum);
-                TimerTask task = new TimerTask() {
-                    @Override
-                    public void run() {
-                        httpSession.removeAttribute("authNum");
-                        System.out.println("authNum = " + httpSession.getAttribute("authNum"));
+            if(findemail.get().getPhone().equals(phone)){
+                if(findemail.get().getVerified() == true){
+                    Member member = findemail.get();
+                    String yourname = member.getName();
+                    String authNum = UUID.randomUUID().toString().substring(0,10);
+                    MailService mailService = new MailService(javaMailSender);
+                    try {
+                        mailService.createEmailForm(email, yourname, authNum);
+                    } catch (MessagingException e) {
+                        e.printStackTrace();
                     }
-                };
-                Timer timer = new Timer();
-                timer.schedule(task, 5 * 60 * 1000);
+                    httpSession.setAttribute("authNum",authNum);
+                    TimerTask task = new TimerTask() {
+                        @Override
+                        public void run() {
+                            httpSession.removeAttribute("authNum");
+                            System.out.println("authNum = " + httpSession.getAttribute("authNum"));
+                        }
+                    };
+                    Timer timer = new Timer();
+                    timer.schedule(task, 5 * 60 * 1000);
 
-                model.addAttribute("email", email);
-                model.addAttribute("authNum",authNum);
-                //            model.addAttribute("message","새로운 비밀 번호는" + newPassword + "입니다.");
-                System.out.println(authNum);
-                return "members/findPasswordResult";
+                    model.addAttribute("email", email);
+                    model.addAttribute("authNum",authNum);
+                    //            model.addAttribute("message","새로운 비밀 번호는" + newPassword + "입니다.");
+                    System.out.println(authNum);
+                    return "members/findPasswordResult";
+                }
+                else{
+                    model.addAttribute("errorMessage","회원가입은 하였으나 email인증을 하지 않았습니다. 다시 회원가입을 진행해 주세요");
+                    return "errorPage";
+                }
             }
             else{
-                model.addAttribute("errorMessage","회원가입은 하였으나 email인증을 하지 않았습니다. 다시 회원가입을 진행해 주세요");
+                model.addAttribute("errorMessage","해당 전화번호를 사용하시는 회원이 없습니다.");
                 return "errorPage";
             }
         }
@@ -112,6 +118,7 @@ public class LoginController {
                                      @RequestParam("newPassword") String newPassword,
                                      @RequestParam("newPasswordCheck") String newPasswordCheck,
                                      @RequestParam("authNumber") String authNum,
+                                     @RequestParam("phone") String phone,
                                      HttpSession httpSession,
                                      Model model) {
         String sessionAuthNum = (String) httpSession.getAttribute("authNum");
