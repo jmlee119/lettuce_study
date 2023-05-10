@@ -28,6 +28,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.5.2'
 	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
 
 	implementation 'mysql:mysql-connector-java:8.0.32'
@@ -36,6 +37,7 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'com.github.spullara.mustache.java:compiler:0.9.5'
+
 //	runtimeOnly 'com.h2database:h2'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

@@ -11,6 +11,13 @@ public interface PostRepository extends CrudRepository <Post,Long> {
 //    Member findByEmail(String email);
     List<Post> findByMemberEmail(String email);
     List<Post> findAll();
+<<<<<<< HEAD
 
     List<Post> findAllByOrderByCreateDateDesc();
+
+    List<Post> findByMemberOrderByCreateDateDesc(Member member);
+
+    Optional<Post> findById(Long Id);
+=======
+>>>>>>> 7b5314d4c7456ac76a40a898c677ca631f2da3e3
 }
