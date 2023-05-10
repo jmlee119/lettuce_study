@@ -102,7 +102,6 @@ public class LoginController {
                 return "errorPage";
             }
         }
-<<<<<<< HEAD
         else model.addAttribute("errorMessage","해당 이메일을 사용하시는 회원이 없습니다.");
 //        return "members/findPasswordResult";
         return "errorPage";
