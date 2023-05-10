@@ -16,4 +16,6 @@ public interface MemberRepository extends CrudRepository<Member,Long> {
     public boolean existsByNickname(String nickname);
     public Optional<Member> findByNickname(String nickname);
 
+
+
 }
