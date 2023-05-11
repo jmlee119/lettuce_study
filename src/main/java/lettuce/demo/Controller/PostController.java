@@ -34,13 +34,18 @@ public class PostController {
         List<Post> postList = postRepository.findAllByOrderByCreateDateDesc();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
+        model.addAttribute("nickname",findmember.get().getNickname());
+        model.addAttribute("memberId",findmember.get().getId());
         model.addAttribute("postList" , postList);
         model.addAttribute("member",findmember);
         return "Post/postList";
     }
 
     @GetMapping("/create/{memberId}")
-    public String postCreate(@PathVariable Long memberId) {
+    public String postCreate(@PathVariable Long memberId,Model model) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        model.addAttribute("memberId",memberId);
+        model.addAttribute("nickname",member.get().getNickname());
         return "Post/createPost";
     }
 

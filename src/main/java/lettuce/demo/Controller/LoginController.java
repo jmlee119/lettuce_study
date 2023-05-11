@@ -22,10 +22,12 @@ import java.util.UUID;
 @RequestMapping("/member")
 public class LoginController {
     private final PasswordEncoder passwordEncoder;
+    private MailService mailService;
     private JavaMailSender javaMailSender;
-    public LoginController(PasswordEncoder passwordEncoder, JavaMailSender javaMailSender){
+    public LoginController(PasswordEncoder passwordEncoder, JavaMailSender javaMailSender,MailService mailService){
         this.passwordEncoder = passwordEncoder;
         this.javaMailSender = javaMailSender;
+        this.mailService = mailService;
     }
     @Autowired
     private MemberRepository memberRepository;
@@ -74,7 +76,7 @@ public class LoginController {
                 if(findemail.get().getVerified() == true){
                     Member member = findemail.get();
                     String yourname = member.getName();
-                    String authNum = UUID.randomUUID().toString().substring(0,10);
+                    String authNum = mailService.createEmailCode();
                     MailService mailService = new MailService(javaMailSender);
                     try {
                         mailService.createEmailForm(email, yourname, authNum);
@@ -93,6 +95,7 @@ public class LoginController {
                     timer.schedule(task, 5 * 60 * 1000);
 
                     model.addAttribute("email", email);
+                    model.addAttribute("phone",phone);
                     model.addAttribute("authNum",authNum);
                     //            model.addAttribute("message","새로운 비밀 번호는" + newPassword + "입니다.");
                     System.out.println(authNum);

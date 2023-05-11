@@ -43,6 +43,25 @@ public class Member {
 
     private String authNum;
 
+    private String github;
+
+    private String instargram;
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
+    }
+
+    public String getInstargram() {
+        return instargram;
+    }
+
+    public void setInstargram(String instargram) {
+        this.instargram = instargram;
+    }
 
     public Boolean getVerified() {
         return Verified;

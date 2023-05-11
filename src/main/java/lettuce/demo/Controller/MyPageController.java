@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -91,6 +93,8 @@ public class MyPageController {
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         if (nickname.equals(findMember.get().getNickname())){
             model.addAttribute("member", findMember);
+            model.addAttribute("nickname",findMember.get().getNickname());
+            model.addAttribute("memberId",findMember.get().getId());
             return "myPage/edit";
         }
         else{
@@ -102,18 +106,21 @@ public class MyPageController {
     @PostMapping("/edit")
     @PreAuthorize("isAuthenticated()")
     public String updateProfile(@RequestParam("Id") Long Id,
-                                @RequestParam("nickname") String nickname,
+//                                @RequestParam("nickname") String nickname,
+                                @RequestParam(value = "nickname", defaultValue = "", required = true) String nickname,
                                 @RequestParam("name") String name,
                                 @RequestParam("phone") String phone,
                                 Model model) {
         Optional<Member> findmember = memberRepository.findById(Id);
         if (findmember.isPresent()) { // 값이 있는지 먼저 확인
             Member member = findmember.get();
-            if (!member.getNickname().equals(nickname) && memberRepository.existsByNickname(nickname)) {
+            if (!member.getNickname().equals(nickname) && memberRepository.findByNickname(nickname).isPresent()) {
                 model.addAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
                 model.addAttribute("member", member);
-                model.addAttribute("nickname", nickname);
-                return "redirect:/profile/edit/{nickname}";
+                model.addAttribute("nickname",nickname);
+                model.addAttribute("nickname_profile", nickname);
+//                return "redirect:/profile/edit/" + nickname;
+                return "errorPage";
             }
             member.setNickname(nickname);
             member.setName(name);
@@ -121,7 +128,9 @@ public class MyPageController {
             memberRepository.save(member);
             model.addAttribute("member", member);
             model.addAttribute("nickname", nickname);
-            return "myPage/mypage";
+            model.addAttribute("nickname_profile", member.getNickname());
+//            return "myPage/mypage";
+            return "redirect:/profile/myinfo/" + nickname;
         } else {
             model.addAttribute("errorMessage", "해당 회원을 찾을 수 없습니다.");
             return "errorPage";

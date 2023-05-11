@@ -3,8 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title>Create Post</title>
+  <style>
+    .container_else {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #eee;
+    }
+
+    .container h2 {
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
+<nav th:replace="fragments/common :: menu"></nav>
 <h1>Create Post</h1>
 <form method="post" action="/posts/create">
   <input type="hidden" name="postId" value="${postId}">
