@@ -70,7 +70,7 @@
     <td th:text="${postNumber.index + 1}"></td>
     <td th:text="${nickname}"></td>
     <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
-    <td th:text="${post.createDate}"></td>
+    <td th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
   </tr>
   </tr>
   </tbody>

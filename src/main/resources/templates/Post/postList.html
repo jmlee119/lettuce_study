@@ -79,7 +79,7 @@
     <td th:text="${post.member != null ? post.member.nickname : 'unknown'}"></td>
 <!--    <td th:text="${post.getMember().getNickname()}"></td>-->
     <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
-    <td th:text="${post.createDate}"></td>
+    <td th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
   </tr>
   </tr>
   </tbody>
