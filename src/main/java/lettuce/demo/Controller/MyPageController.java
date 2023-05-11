@@ -39,13 +39,15 @@ public class MyPageController {
         Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
         if (nickname.equals(findmember.get().getNickname())) {
             model.addAttribute("member", findmember.get());
-            model.addAttribute("nickname", findmember.get().getNickname());
+            model.addAttribute("nickname",findmember.get().getNickname());
+            model.addAttribute("nickname_profile", findmember.get().getNickname());
             return "myPage/mypage";
         } else {
             Optional<Member> anothermember = memberRepository.findByNickname(nickname);
             if (anothermember.isPresent()) { // 값이 있는지 먼저 확인
                 model.addAttribute("member", anothermember.get());
-                model.addAttribute("nickname", anothermember.get().getNickname());
+                model.addAttribute("nickname",findmember.get().getNickname());
+                model.addAttribute("nickname_profile", anothermember.get().getNickname());
                 return "myPage/mypage";
             } else { // 값이 없을 경우 예외 처리 또는 적절한 대응
                 model.addAttribute("errorMsg", "해당 회원을 찾을 수 없습니다.");
@@ -64,6 +66,7 @@ public class MyPageController {
             if (findMember.isPresent()) {
                 List<Post> myPosts = postRepository.findByMemberOrderByCreateDateDesc(findMember.get());
                 model.addAttribute("myPosts", myPosts);
+                model.addAttribute("memberId",findMember.get().getId());
                 model.addAttribute("nickname",findMember.get().getNickname());
                 return "myPage/mylist";
             } else {

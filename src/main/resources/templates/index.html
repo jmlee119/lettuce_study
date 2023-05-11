@@ -25,12 +25,6 @@
             <h2>홈 화면</h2>
         </div>
         <div class="row">
-    <!--        <div>-->
-    <!--            <a class="w-100 btn btn-dark btn-lg" sec:authorize="isAuthenticated()"-->
-    <!--               th:href="@{/member/logout}" type="button">-->
-    <!--                로그아웃-->
-    <!--            </a>-->
-    <!--        </div>-->
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg" type="button" sec:authorize="isAnonymous()"
                         th:onclick="|location.href='@{/members/add}'|">
@@ -48,25 +42,8 @@
 </th:block>
 <th:block sec:authorize = "isAuthenticated()">
     <nav th:replace="fragments/common :: menu"></nav>
-    <div class="container_else">
-        <h2>양상추 스터디에 오신걸 환영합니다</h2>
-        <p th:text="${nickname} + '님 환영합니다!'"></p>
-        <button th:onclick="|location.href='@{/profile/myinfo/{nickname}(nickname=${nickname})}'|">
-            마이페이지
-        </button>
-        <button th:onclick="|location.href='@{/}'|">
-            Home
-        </button>
-        <button th:onclick ="|location.href = '@{/member/logout}'|" type="button">
-            로그아웃
-        </button>
-    </div>
     <hr>
     <div>
-<!--        <form action="/posts/create" method="get">-->
-<!--            <input type="hidden" name="memberId" th:value="${memberId}">-->
-<!--            <button class="w-100 btn btn-dark btn-lg" type= "submit">글 생성</button>-->
-<!--        </form>-->
         <button th:onclick="|location.href='@{/posts/create/{memberId}(memberId=${memberId})}'|">
             글 생성
         </button>
