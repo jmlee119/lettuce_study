@@ -1,10 +1,24 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <style>
+    .container_else {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #eee;
+    }
+
+    .container h2 {
+      margin: 0;
+    }
+  </style>
   <meta charset="utf-8">
   <title>Post Detail</title>
 </head>
 <body>
+<nav th:replace="fragments/common :: menu"></nav>
 <h1 th:text="${post.title}"></h1>
 <p th:text="${post.content}"></p>
 <p>작성일: <span th:text="${post.createDate}"></span></p>

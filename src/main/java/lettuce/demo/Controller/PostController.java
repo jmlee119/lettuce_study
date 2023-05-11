@@ -67,6 +67,7 @@ public class PostController {
         Optional<Post> findPost = postRepository.findById(postId);
         if (findPost.isPresent()) {
             model.addAttribute("post", findPost.get());
+            model.addAttribute("memberId",findPost.get().getMember().getId());
             model.addAttribute("nickname",findPost.get().getMember().getNickname());
             return "Post/detail";
         } else {

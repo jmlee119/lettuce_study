@@ -3,6 +3,19 @@
 <html>
 <head>
   <title>My Profile</title>
+  <style>
+    .container_else {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      background-color: #eee;
+    }
+
+    .container h2 {
+      margin: 0;
+    }
+  </style>
 </head>
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
@@ -15,11 +28,11 @@
 <!--<img th:if="${member.image == null}" src="/images/default-profile-image.png" alt="Default Profile Image">-->
 
 
-<form th:action="@{/profile/mylist/{nickname}(nickname=${nickname})}" method="get">
+<form th:action="@{/profile/mylist/{nickname}(nickname=${nickname_profile})}" method="get">
   <button type="submit">View My Posts</button>
 </form>
 
-<form th:action="@{/profile/edit/{nickname}(nickname=${nickname})}" method="get">
+<form th:action="@{/profile/edit/{nickname}(nickname=${nickname_profile})}" method="get">
   <button type="submit">Edit My profile</button>
 </form>
 
