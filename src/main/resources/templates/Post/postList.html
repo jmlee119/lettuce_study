@@ -11,26 +11,43 @@
       padding: 10px;
       background-color: #c4ff9e;
     }
-
+    .all {
+      width: 100%;
+      padding: 1%;
+    }
     .container h2 {
       margin: 0;
     }
+    td{
+       text-align: center;
+       padding-top: 1%;
+     }
+    th{
+      background: #c4ff9e;
+    }
+    .create {
+      text-align: right;
+      margin-top: 1%;
+    }
+
   </style>
 </head>
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
-<h1>전체 글 목록</h1>
+<div class="create ">
+  <a th:href="@{/posts/create/{memberId}(memberId=${member.get().id})}"> 글 작성하기</a>
+</div>
 <table class="all">
   <thead>
-  <tr class="container">
+  <tr>
     <th>글 번호</th>
     <th>닉네임</th>
     <th>글 제목</th>
     <th>생성날짜</th>
   </tr>
   </thead>
-  <tbody>
-  <tr class="container" th:each="post, postNumber : ${postList}">
+  <tbody class="all">
+  <tr th:each="post, postNumber : ${postList}">
     <td th:text="${postNumber.index + 1}"></td>
     <td th:text="${post.member != null ? post.member.nickname : 'unknown'}"></td>
 <!--    <td th:text="${post.getMember().getNickname()}"></td>-->
@@ -40,6 +57,6 @@
   </tr>
   </tbody>
 </table>
-<div> <a th:href="@{/posts/create/{memberId}(memberId=${member.get().id})}"> 글 작성하기</a> </div>
+
 </body>
 </html>
