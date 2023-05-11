@@ -2,16 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <style>
+    body {
+      padding-left: 10%;
+      padding-right: 10%;
+      padding-top: 2%;
+    }
     .container_else {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px;
+      padding: 20px;
       background-color: #c4ff9e;
+      /*background-color: rgba(196, 255, 158, 0.4);
+      투명한건 어떤가 싶어서 주석 처리
+      */
     }
 
     .container h2 {
       margin: 0;
+    }
+    .container_else button {
+      background-color: transparent;
+      color: black;
+      border: 0px;
+      outline: none;
+    }
+    .container_else .left_button {
+      display: flex;
+      align-items: center;
+    }
+    .container_else .left_button button{
+      margin-right: 30px;
+    }
+    container_else .right_button {
+      display: flex;
+      align-items: center;
     }
     .container {
       padding-left: 15%;

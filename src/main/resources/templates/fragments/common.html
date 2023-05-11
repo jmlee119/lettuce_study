@@ -3,39 +3,65 @@
 <head th:fragment="head(title)">
   <title th:text="${title}">Hello, Spring Boot!</title>
   <style>
+    body {
+      padding-left: 10%;
+      padding-right: 10%;
+      padding-top: 2%;
+    }
     .container_else {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px;
+      padding: 20px;
       background-color: #c4ff9e;
+      /*background-color: rgba(196, 255, 158, 0.4);
+      투명한건 어떤가 싶어서 주석 처리
+      */
     }
 
     .container h2 {
       margin: 0;
+    }
+    .container_else button {
+      background-color: transparent;
+      color: black;
+      border: 0px;
+      outline: none;
+    }
+    .container_else .left_button {
+      display: flex;
+      align-items: center;
+    }
+    .container_else .left_button button{
+      margin-right: 30px;
+    }
+    container_else .right_button {
+      display: flex;
+      align-items: center;
     }
   </style>
 </head>
 <body>
   <nav th:fragment="menu">
     <div class="container_else">
-      <h2>양상추 스터디에 오신걸 환영합니다</h2>
-      <button th:onclick="|location.href='@{/}'|">
-        Home
-      </button>
-      <button th:onclick="|location.href='@{/profile/myinfo/{nickname}(nickname=${nickname})}'|">
-        마이페이지
-      </button>
-      <button th:onclick="|location.href='@{/posts/create/{memberId}(memberId=${memberId})}'|">
-        글 생성
-      </button>
-      <button th:onclick="|location.href='@{/posts/lists}'|">
-        전체 글 보기
-      </button>
-      <button th:onclick ="|location.href = '@{/member/logout}'|" type="button">
-        로그아웃
-      </button>
-      <p th:text="${nickname} + '님 환영합니다!'"></p>
+      <div class="left_button">
+        <button th:onclick="|location.href='@{/}'|">양상추 스터디</button>
+        <button th:onclick="|location.href='@{/posts/create/{memberId}(memberId=${memberId})}'|">
+          글 생성
+        </button>
+        <button th:onclick="|location.href='@{/posts/lists}'|">
+          글 구경
+        </button>
+      </div>
+
+      <div class="right_button">
+        <button  th:text="${nickname}" th:onclick="|location.href='@{/profile/myinfo/{nickname}(nickname=${nickname})}'|">님
+        </button>
+        <button th:onclick ="|location.href = '@{/member/logout}'|" type="button">
+          로그아웃
+        </button>
+      </div>
+
     </div>
     <hr>
   </nav>
