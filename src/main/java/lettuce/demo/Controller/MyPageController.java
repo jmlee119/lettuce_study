@@ -39,6 +39,7 @@ public class MyPageController {
         Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
         if (nickname.equals(findmember.get().getNickname())) {
             model.addAttribute("member", findmember.get());
+            model.addAttribute("memberId",findmember.get().getId());
             model.addAttribute("nickname",findmember.get().getNickname());
             model.addAttribute("nickname_profile", findmember.get().getNickname());
             return "myPage/mypage";
@@ -46,6 +47,7 @@ public class MyPageController {
             Optional<Member> anothermember = memberRepository.findByNickname(nickname);
             if (anothermember.isPresent()) { // 값이 있는지 먼저 확인
                 model.addAttribute("member", anothermember.get());
+                model.addAttribute("memberId",findmember.get().getId());
                 model.addAttribute("nickname",findmember.get().getNickname());
                 model.addAttribute("nickname_profile", anothermember.get().getNickname());
                 return "myPage/mypage";
