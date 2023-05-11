@@ -20,9 +20,9 @@
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
 <h1>전체 글 목록</h1>
-<table>
+<table class="all">
   <thead>
-  <tr>
+  <tr class="container">
     <th>글 번호</th>
     <th>닉네임</th>
     <th>글 제목</th>
@@ -30,7 +30,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="post, postNumber : ${postList}">
+  <tr class="container" th:each="post, postNumber : ${postList}">
     <td th:text="${postNumber.index + 1}"></td>
     <td th:text="${post.member != null ? post.member.nickname : 'unknown'}"></td>
 <!--    <td th:text="${post.getMember().getNickname()}"></td>-->

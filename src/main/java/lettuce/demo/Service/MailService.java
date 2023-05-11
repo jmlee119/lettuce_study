@@ -29,7 +29,7 @@ public class MailService {
     public String createEmailCode() {
         Random random = new Random();
         authNum = "";
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6;  i++) {
             String nkey = Integer.toString(random.nextInt(10));
             authNum += nkey;
         }

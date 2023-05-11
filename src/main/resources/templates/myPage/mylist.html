@@ -15,12 +15,23 @@
     .container h2 {
       margin: 0;
     }
+    .all {
+      width: 100%;
+      padding: 1%;
+    }
+    td{
+      text-align: center;
+      padding-top: 1%;
+    }
+    th{
+      background: #0dcaf0;
+    }
   </style>
 </head>
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
 <h1>My Post_List</h1>
-<table>
+<table class="all">
   <thead>
   <tr>
     <th>글 번호</th>
@@ -29,7 +40,7 @@
     <th>생성날짜</th>
   </tr>
   </thead>
-  <tbody>
+  <tbody class="all">
   <tr th:each="post, postNumber : ${myPosts}">
     <td th:text="${postNumber.index + 1}"></td>
     <td th:text="${nickname}"></td>
@@ -39,8 +50,5 @@
   </tr>
   </tbody>
 </table>
-<button th:onclick="|location.href='@{/}'|">
-  Home
-</button>
 </body>
 </html>
