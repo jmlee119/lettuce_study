@@ -29,6 +29,10 @@
     <input type="text" id="name" name="name" th:value="${member.get().getName()}" /><br />
     <label for="phone">Phone:</label>
     <input type="text" id="phone" name="phone" th:value="${member.get().getPhone()}" /><br />
+    <label for="github">Github:</label>
+    <input type="text" id="github" name="github" th:value="${member.get().getGithub()}" /><br />
+    <label for="instargram">Instargram:</label>
+    <input type="text" id="instargram" name="instargram" th:value="${member.get().getInstargram()}" /><br />
     <label for="image">Image:</label>
     <input type="file" id="image" name="image" /><br />
     <button type="submit">Update</button>

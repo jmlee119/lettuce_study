@@ -106,10 +106,11 @@ public class MyPageController {
     @PostMapping("/edit")
     @PreAuthorize("isAuthenticated()")
     public String updateProfile(@RequestParam("Id") Long Id,
-//                                @RequestParam("nickname") String nickname,
                                 @RequestParam(value = "nickname", defaultValue = "", required = true) String nickname,
                                 @RequestParam("name") String name,
                                 @RequestParam("phone") String phone,
+                                @RequestParam("github") String github,
+                                @RequestParam("instargram") String instargram,
                                 Model model) {
         Optional<Member> findmember = memberRepository.findById(Id);
         if (findmember.isPresent()) { // 값이 있는지 먼저 확인
@@ -125,6 +126,8 @@ public class MyPageController {
             member.setNickname(nickname);
             member.setName(name);
             member.setPhone(phone);
+            member.setGithub(github);
+            member.setInstargram(instargram);
             memberRepository.save(member);
             model.addAttribute("member", member);
             model.addAttribute("nickname", nickname);
@@ -136,49 +139,4 @@ public class MyPageController {
             return "errorPage";
         }
     }
-//    @PostMapping("/edit")
-//    @PreAuthorize("isAuthenticated()")
-//    public String updateProfile(@RequestParam("Id") Long Id,
-//                                @RequestParam("nickname") String nickname,
-//                                @RequestParam("name") String name,
-//                                @RequestParam("phone") String phone,
-//                                @RequestParam("image") MultipartFile image,
-//                                Model model) throws IOException {
-//        Optional<Member> findmember = memberRepository.findById(Id);
-//        if (findmember.isPresent()) { // 값이 있는지 먼저 확인
-//            Member member = findmember.get();
-//            if (!member.getNickname().equals(nickname) && memberRepository.existsByNickname(nickname)) {
-//                model.addAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
-//                model.addAttribute("member", member);
-//                model.addAttribute("nickname", nickname);
-//                return "redirect:/profile/edit/{nickname}";
-//            }
-//            member.setNickname(nickname);
-//            member.setName(name);
-//            member.setPhone(phone);
-//            if (!image.isEmpty()) {
-//                byte[] bytes = image.getBytes();
-//                member.setImage(bytes);
-//            }
-//            memberRepository.save(member);
-//            model.addAttribute("member", member);
-//            model.addAttribute("nickname", nickname);
-//            return "myPage/mypage";
-//        } else {
-//            model.addAttribute("errorMessage", "해당 회원을 찾을 수 없습니다.");
-//            return "errorPage";
-//        }
-//    }
-//
-//    @GetMapping("/image/{id}")
-//    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
-//        Optional<Member> member = memberRepository.findById(id);
-//        if (member.isPresent() && member.get().getImage() != null) {
-//            byte[] image = member.get().getImage();
-//            return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-
 }
