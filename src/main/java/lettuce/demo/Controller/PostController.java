@@ -64,11 +64,13 @@ public class PostController {
     @GetMapping("/detail/{postId}")
     @PreAuthorize("isAuthenticated()")
     public String myPostDetail(@PathVariable Long postId, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
         Optional<Post> findPost = postRepository.findById(postId);
         if (findPost.isPresent()) {
             model.addAttribute("post", findPost.get());
-            model.addAttribute("memberId",findPost.get().getMember().getId());
-            model.addAttribute("nickname",findPost.get().getMember().getNickname());
+            model.addAttribute("memberId",findmember.get().getId());
+            model.addAttribute("nickname",findmember.get().getNickname());
             return "Post/detail";
         } else {
             return "redirect:/mypage/mylist";
