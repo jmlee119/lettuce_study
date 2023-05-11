@@ -23,7 +23,7 @@
 <p th:text="'Hello, ' + ${member.email} + '!'"></p>
 <p th:text="'Name: ' + ${member.name}"></p>
 <p th:text="'Nickname: ' + ${member.nickname}"></p>
-<p th:text="'Phone: ' + ${member.phone}"></p>
+<p th:if="${member.nickname == nickname}">Phone: <span th:text="${member.phone}"></span></p>
 <p th:if="${member.github}"><a th:href="${member.github}" th:text="${member.github}" target="_blank"></a></p>
 <p th:if="${member.instargram}"><a th:href="${member.instargram}" th:text="${member.instargram}" target="_blank"></a></p>
 <!--<img th:if="${member.image != null}" th:src="@{'/image/' + ${member.id}}" alt="Profile Image">-->
