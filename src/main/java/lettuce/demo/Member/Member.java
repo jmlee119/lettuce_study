@@ -47,6 +47,27 @@ public class Member {
 
     private String instargram;
 
+    @Lob
+    private byte[] image;
+
+    private String imageType;
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     public String getGithub() {
         return github;
     }

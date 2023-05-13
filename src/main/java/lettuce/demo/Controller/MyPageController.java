@@ -4,7 +4,11 @@ import lettuce.demo.Member.Member;
 import lettuce.demo.Post.Post;
 import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Repository.PostRepository;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,10 +16,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -111,10 +119,23 @@ public class MyPageController {
                                 @RequestParam("phone") String phone,
                                 @RequestParam("github") String github,
                                 @RequestParam("instargram") String instargram,
+                                @RequestParam(value = "image", required = false) MultipartFile imageFile,
                                 Model model) {
         Optional<Member> findmember = memberRepository.findById(Id);
         if (findmember.isPresent()) { // 값이 있는지 먼저 확인
             Member member = findmember.get();
+            if (imageFile != null && !imageFile.isEmpty()) {
+                try {
+                    byte[] imageData = imageFile.getBytes();
+                    member.setImage(imageData);
+                    member.setImageType(imageFile.getContentType());
+                } catch (IOException e) {
+                    model.addAttribute("errorMessage", "이미지 업로드 중 오류가 발생했습니다.");
+                    return "errorPage";
+                }
+            } else {
+                member.setImage(null);
+            }
             if (!member.getNickname().equals(nickname) && memberRepository.findByNickname(nickname).isPresent()) {
                 model.addAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
                 model.addAttribute("member", member);
@@ -137,6 +158,25 @@ public class MyPageController {
         } else {
             model.addAttribute("errorMessage", "해당 회원을 찾을 수 없습니다.");
             return "errorPage";
+        }
+    }
+
+    @GetMapping(value = "/get-image/{memberId}", produces = { MediaType.IMAGE_JPEG_VALUE, "image/webp" })
+    public ResponseEntity<byte[]> getImage(@PathVariable Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        if (member.isPresent() && member.get().getImage() != null) {
+            byte[] imageBytes = member.get().getImage();
+            HttpHeaders headers = new HttpHeaders();
+            if (MediaType.IMAGE_JPEG_VALUE.equals(member.get().getImageType())) {
+                headers.setContentType(MediaType.IMAGE_JPEG);
+            } else if ("image/webp".equals(member.get().getImageType())) {
+                headers.setContentType(MediaType.parseMediaType("image/webp"));
+            }
+            headers.setContentLength(imageBytes.length);
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

@@ -51,9 +51,9 @@
 <p th:if="${member.nickname == nickname}">Phone: <span th:text="${member.phone}"></span></p>
 <p th:if="${member.github}"><a th:href="${member.github}" th:text="${member.github}" target="_blank"></a></p>
 <p th:if="${member.instargram}"><a th:href="${member.instargram}" th:text="${member.instargram}" target="_blank"></a></p>
-<!--<img th:if="${member.image != null}" th:src="@{'/image/' + ${member.id}}" alt="Profile Image">-->
-<!--<img th:if="${member.image == null}" src="/images/default-profile-image.png" alt="Default Profile Image">-->
-
+<img th:if="${member.image != null}" th:src="@{'/profile/get-image/' + ${member.id}}" th:alt="'Profile Image'">
+<!--<img th:if="${member.image != null}" th:src="@{'/profile/get-image/2'}" th:alt="'Profile Image'">-->
+<img th:if="${member.image == null}" src="/images/noimage.webp" alt="Default Profile Image">
 
 <form th:action="@{/profile/mylist/{nickname}(nickname=${nickname_profile})}" method="get">
   <button type="submit">View My Posts</button>

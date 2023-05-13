@@ -3,15 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <title>아이디 찾기 결과</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 75%; /* 화면의 3/4를 차지하도록 설정 */
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f7f7f7;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    hr {
+      margin: 20px 0;
+      width: 100%;
+      border: none;
+      border-top: 1px solid #ccc;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-<h1>아이디 찾기 결과</h1>
-<hr>
-<div>
+<div class="container">
+  <h1>아이디 찾기 결과</h1>
+  <hr>
   <p th:if="${message}" th:text="${message}"></p>
   <p th:if="${errorMessage}" th:text="${errorMessage}"></p>
+  <hr>
+  <a href="/" th:text="홈으로"></a>
 </div>
-<hr>
-<a href="/" th:text="홈으로"></a>
 </body>
 </html>

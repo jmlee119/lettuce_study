@@ -129,21 +129,21 @@ public class LoginController {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if (optionalMember.isPresent()) {
             if (authNum.equals(sessionAuthNum)) {
-                if (!passwordEncoder.matches(newPassword,optionalMember.get().getPassword())){
-                    if (newPassword.equals(newPasswordCheck)) {
+                if (newPassword.equals(newPasswordCheck)) {
+                    if (!passwordEncoder.matches(newPassword,optionalMember.get().getPassword())){
                         System.out.println("optionalMember.get().getPassword() = " + optionalMember.get().getPassword());
                         Member member = optionalMember.get();
                         member.setPassword(passwordEncoder.encode(newPassword));
                         memberRepository.save(member);
                         httpSession.removeAttribute("authNum");
                         model.addAttribute("successMessage", "비밀번호 변경이 완료되었습니다.");
-                    } else {
-                        model.addAttribute("errorMessage", "새로운 비밀번호와 확인용 비밀번호가 일치하지 않습니다.");
+                    }else {
+                        model.addAttribute("errorMessage", "이전 비밀번호와 같습니다. 다른걸로 변경해 주세요.");
                         model.addAttribute("email",email);
                         return "members/findPasswordResult";
                     }
-                }else {
-                    model.addAttribute("errorMessage", "이전 비밀번호와 같습니다. 다른걸로 변경해 주세요.");
+                } else {
+                    model.addAttribute("errorMessage", "새로운 비밀번호와 확인용 비밀번호가 일치하지 않습니다.");
                     model.addAttribute("email",email);
                     return "members/findPasswordResult";
                 }
