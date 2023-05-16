@@ -60,7 +60,7 @@
   </style>
 </head>
 <body>
-<nav th:replace="fragments/common :: menu"></nav>
+<nav th:replace="~{fragments/common :: menu}"></nav>
 <div class="create ">
   <a th:href="@{/posts/create/{memberId}(memberId=${member.get().id})}"> 글 작성하기</a>
 </div>
@@ -74,16 +74,33 @@
   </tr>
   </thead>
   <tbody class="all">
-  <tr th:each="post, postNumber : ${postList}">
-    <td th:text="${postNumber.index + 1}"></td>
+  <tr th:each="post, postNumber : ${postPage.content}">
+    <td th:text="${postPage.number * postPage.size + postNumber.index + 1}"></td>
     <td th:text="${post.member != null ? post.member.nickname : 'unknown'}"></td>
-<!--    <td th:text="${post.getMember().getNickname()}"></td>-->
     <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
     <td th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
   </tr>
-  </tr>
   </tbody>
 </table>
+
+<div th:if="${postPage.totalPages > 1}" class="pagination-box">
+  <div class="pagination">
+    <div th:class="${postPage.number == 0} ? 'disabled' : ''">
+      <a th:href="@{/posts/lists(page=${postPage.number - 1}, size=${postPage.size})}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </div>
+    <div th:each="pageNumber : ${#numbers.sequence(0, postPage.totalPages - 1)}"
+         th:class="${pageNumber == postPage.number} ? 'active' : ''">
+      <a th:href="@{/posts/lists(page=${pageNumber}, size=${postPage.size})}" th:text="${pageNumber + 1}"></a>
+    </div>
+    <div th:class="${postPage.number == postPage.totalPages - 1} ? 'disabled' : ''">
+      <a th:href="@{/posts/lists(page=${postPage.number + 1}, size=${postPage.size})}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

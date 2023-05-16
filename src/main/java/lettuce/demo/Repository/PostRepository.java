@@ -2,6 +2,8 @@ package lettuce.demo.Repository;
 
 import lettuce.demo.Member.Member;
 import lettuce.demo.Post.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface PostRepository extends CrudRepository <Post,Long> {
     List<Post> findAllByOrderByCreateDateDesc();
 
     List<Post> findByMemberOrderByCreateDateDesc(Member member);
+
+    Page<Post> findAllByOrderByCreateDateDesc(Pageable pageable);
 }

@@ -5,6 +5,9 @@ import lettuce.demo.Member.Member;
 import lettuce.demo.Post.Post;
 import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Repository.PostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,16 +31,17 @@ public class PostController {
         this.memberRepository = memberRepository;
     }
 
+
     @GetMapping("/lists")
     @PreAuthorize("isAuthenticated()")
-    public String list(Model model){
-        List<Post> postList = postRepository.findAllByOrderByCreateDateDesc();
+    public String list(Model model, @PageableDefault(size = 10)Pageable pageable) {
+        Page<Post> postPage = postRepository.findAllByOrderByCreateDateDesc(pageable);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
-        model.addAttribute("nickname",findmember.get().getNickname());
-        model.addAttribute("memberId",findmember.get().getId());
-        model.addAttribute("postList" , postList);
-        model.addAttribute("member",findmember);
+        Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
+        model.addAttribute("nickname", findMember.get().getNickname());
+        model.addAttribute("memberId", findMember.get().getId());
+        model.addAttribute("postPage", postPage); // Pass the Page object to the view
+        model.addAttribute("member", findMember);
         return "Post/postList";
     }
 
