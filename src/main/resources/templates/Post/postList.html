@@ -46,9 +46,9 @@
     }
 
     td{
-       text-align: center;
-       padding-top: 1%;
-     }
+      text-align: center;
+      padding-top: 1%;
+    }
     th{
       background: #c4ff9e;
     }
@@ -60,7 +60,7 @@
   </style>
 </head>
 <body>
-<nav th:replace="~{fragments/common :: menu}"></nav>
+<nav th:replace="fragments/common :: menu"></nav>
 <div class="create ">
   <a th:href="@{/posts/create/{memberId}(memberId=${member.get().id})}"> 글 작성하기</a>
 </div>
@@ -74,15 +74,16 @@
   </tr>
   </thead>
   <tbody class="all">
-  <tr th:each="post, postNumber : ${postPage.content}">
-    <td th:text="${postPage.number * postPage.size + postNumber.index + 1}"></td>
-    <td th:text="${post.member != null ? post.member.nickname : 'unknown'}"></td>
+  <tr th:each="post, postNumber : ${postPage}">
+    <td th:text="${postNumber.index + 1}"></td>
+    <td><a th:href="@{/profile/myinfo/{nickname}(nickname=${post.member.nickname})}" th:text="${post.member != null ? post.member.nickname : 'unknown'}"></a></td>
+    <!--    <td th:text="${post.getMember().getNickname()}"></td>-->
     <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
     <td th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
   </tr>
+  </tr>
   </tbody>
 </table>
-
 <div th:if="${postPage.totalPages > 1}" class="pagination-box">
   <div class="pagination">
     <div th:class="${postPage.number == 0} ? 'disabled' : ''">
@@ -101,6 +102,5 @@
     </div>
   </div>
 </div>
-
 </body>
 </html>
