@@ -3,8 +3,10 @@ package lettuce.demo.Controller;
 
 import lettuce.demo.Member.Member;
 import lettuce.demo.Post.Post;
+import lettuce.demo.Reply.Reply;
 import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Repository.PostRepository;
+import lettuce.demo.Repository.ReplyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -29,9 +31,12 @@ public class PostController {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
-    public PostController(PostRepository postRepository, MemberRepository memberRepository) {
+    private final ReplyRepository replyRepository;
+
+    public PostController(PostRepository postRepository, MemberRepository memberRepository, ReplyRepository replyRepository) {
         this.postRepository = postRepository;
         this.memberRepository = memberRepository;
+        this.replyRepository = replyRepository;
     }
 
 
@@ -85,6 +90,8 @@ public class PostController {
             model.addAttribute("post", findPost.get());
             model.addAttribute("memberId", findmember.get().getId());
             model.addAttribute("nickname", findmember.get().getNickname());
+            List<Reply> replies = replyRepository.findByPost(findPost.get());
+            model.addAttribute("replies",replies);
             return "Post/detail";
         } else {
             return "redirect:/mypage/mylist";

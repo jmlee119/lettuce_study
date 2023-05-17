@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lettuce.demo.Post.Post;
+import lettuce.demo.Reply.Reply;
 import lombok.Builder;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -120,6 +121,26 @@ public class Member {
     public void removePost(Post post) {
         posts.remove(post);
         post.setMember(null);
+    }
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reply> replies = new ArrayList<>();
+
+    public void addReply(Reply reply) {
+        replies.add(reply);
+        reply.setMember(this);
+    }
+
+    public void removeReply(Reply reply) {
+        replies.remove(reply);
+        reply.setMember(null);
+    }
+
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
     }
 
     public List<Post> getPosts() {

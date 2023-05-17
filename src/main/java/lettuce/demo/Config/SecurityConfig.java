@@ -38,8 +38,9 @@ public class SecurityConfig{
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.authorizeRequests().requestMatchers("/profile/myinfo/{nickname}").authenticated();
-        http.authorizeRequests().requestMatchers("/posts/create/**").authenticated();
+        http.authorizeRequests().requestMatchers("/profile/**").authenticated();
+        http.authorizeRequests().requestMatchers("/posts/**").authenticated();
+        http.authorizeRequests().requestMatchers("/reply/**").authenticated();
         http.authorizeRequests().anyRequest().permitAll();
 //        http.formLogin().loginPage("/member/login")
 //                .usernameParameter("email")
