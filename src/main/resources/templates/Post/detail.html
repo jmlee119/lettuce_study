@@ -65,7 +65,7 @@
   <p class="name">작성자: <a th:href="@{/profile/myinfo/{nickname}(nickname=${post.member.nickname})}" th:text="${post.member.nickname}"></a></p>
   <p class="content" th:text="${post.content}"></p>
   <p class="date">작성일: <span th:text="${post.createDate}"></span></p>
-  <a th:href="@{/posts/delete/{postId}(postId=${post.id})}">글 삭제</a>
+  <a th:href="@{/posts/delete/{postId}(postId=${post.id})}" onclick="return confirm('정말로 글을 삭제하시겠습니까?')">글 삭제</a>
   <a th:href="@{/posts/update/{postId}(postId=${post.id})}">글 수정</a>
 
 </div>
