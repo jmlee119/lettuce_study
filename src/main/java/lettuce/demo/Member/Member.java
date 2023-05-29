@@ -81,7 +81,7 @@ public class Member {
     }
 
     public String getGithub() {
-        return github;
+         return github;
     }
 
     public void setGithub(String github) {

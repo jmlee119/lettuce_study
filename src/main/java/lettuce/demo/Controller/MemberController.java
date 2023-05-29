@@ -103,12 +103,12 @@ public class MemberController {
     }
 
     @PostMapping("/location")
-    public ResponseEntity<String> updateLocation(@RequestBody Map<String, String> requestBody, Principal principal) {
+    public ResponseEntity<String> updateLocation(@RequestBody String requestBody, Principal principal) {
         String username = principal.getName();
         Optional<Member> optionalMember = memberRepository.findByEmail(username);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
-            String location = requestBody.get("location");
+            String location = requestBody;
             member.setLocation(location);
             memberRepository.save(member);
             System.out.println("location = " + location);
