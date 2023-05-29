@@ -53,6 +53,17 @@ public class Member {
 
     private String imageType;
 
+    @Column(length = 100)
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getImageType() {
         return imageType;
     }

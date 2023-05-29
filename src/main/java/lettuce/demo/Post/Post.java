@@ -43,22 +43,12 @@ public class Post {
     private List<Reply> replies = new ArrayList<>();
 
 
-    @PrePersist
-    protected void onCreate() {
-        createDate = new Date();
-        modifyDate = new Date();
-    }
-
     public Member getMember() {
         return member;
     }
 
     public void setMember(Member member){
         this.member = member;
-    }
-    @PreUpdate
-    protected void onUpdate() {
-        modifyDate = new Date();
     }
 
     public Long getId() {
@@ -95,6 +85,11 @@ public class Post {
 
     public Date getModifyDate() {
         return modifyDate;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        modifyDate = new Date();
     }
 
     public void setModifyDate(Date modifyDate) {

@@ -1,8 +1,41 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
+<html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
 <head>
     <script src="location.js"></script>
     <meta charset="utf-8">
+    <script>
+        function getLocationAndSaveLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(saveLocationToServer);
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function saveLocationToServer(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const location = `${latitude},${longitude}`;
+
+            const url = '/members/location';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ location }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Location saved:', data);
+                    // Redirect to the post creation page or perform any other action
+                })
+                .catch(error => {
+                    console.error('Error saving location:', error);
+                });
+        }
+    </script>
     <style>
         body {
             padding-left: 10%;
@@ -76,6 +109,9 @@
             전체 글 보기
         </button>
     </div>
+    <button onclick="getLocationAndSaveLocation()">
+        위치 인증
+    </button>
 </th:block>
 </div> <!-- /container -->
 </body>

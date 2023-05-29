@@ -11,9 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.Optional;
@@ -41,14 +40,29 @@ public class ReplyController {
             Reply reply = new Reply();
             reply.setContent(content);
             reply.setCreateDate(new Date());
-            reply.setModifyDate(new Date());
             reply.setPost(findPost.get());
             reply.setMember(findmember.get());
-
-            // 답글 저장
             replyRepository.save(reply);
         }
 
         return "redirect:/posts/detail/" + postId;
+    }
+
+    @GetMapping("/delete/{replyId}")
+    @PreAuthorize("isAuthenticated()")
+    public String deleteReply(@PathVariable Long replyId, @RequestParam("postId") Long postId, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
+        Optional<Reply> findReply = replyRepository.findById(replyId);
+        model.addAttribute("memberId", findmember.get().getId());
+        model.addAttribute("nickname", findmember.get().getNickname());
+        if(findReply.isPresent() && findReply.get().getMember().getNickname().equals(findmember.get().getNickname())) {
+            replyRepository.delete(findReply.get());
+            return "redirect:/posts/detail/" + postId;
+        }
+        else{
+            model.addAttribute("errorMessage", "답글을 작성하신 사용자와 다릅니다. 삭제 불가능합니다");
+            return "errorPage";
+        }
     }
 }

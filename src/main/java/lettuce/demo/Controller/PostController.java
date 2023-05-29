@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,14 +64,12 @@ public class PostController {
 
     @PostMapping("/create")
     public String save(@Validated @ModelAttribute Post post, Model model, Principal principal) {
-//        model.addAttribute("title", post.getTitle());
-//        model.addAttribute("content", post.getContent());
         String username = principal.getName();
         Optional<Member> optionalMember = memberRepository.findByEmail(username);
-//        Member member = (Member) memberRepository.findByName(username);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
             post.setMember(member);
+            post.setCreateDate(new Date());
             postRepository.save(post);
             Long postId = post.getId();
             return "redirect:/posts/detail/" + postId;
@@ -140,13 +139,12 @@ public class PostController {
             Post post = findpost.get();
             post.setTitle(title);
             post.setContent(content);
+            post.setModifyDate(new Date()); // Set the modifyDate to the current date
             postRepository.save(post);
             return "redirect:/posts/detail/" + postId;
         } else{
             model.addAttribute("errorMessage","404 not found");
             return "errorPage";
         }
-
-
     }
 }

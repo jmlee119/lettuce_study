@@ -70,7 +70,10 @@
     <td th:text="${postNumber.index + 1}"></td>
     <td th:text="${nickname}"></td>
     <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
-    <td th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+    <td>
+      <span th:if="${post.modifyDate != null}" th:text="${#dates.format(post.modifyDate, 'yyyy-MM-dd HH:mm')} + ' (수정됨) '"></span>
+      <span th:unless="${post.modifyDate != null}" th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+    </td>
   </tr>
   </tr>
   </tbody>

@@ -7,6 +7,7 @@ import lettuce.demo.Repository.PostRepository;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +21,7 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Pageable;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -71,7 +73,7 @@ public class MyPageController {
 
     @GetMapping("/mylist/{nickname}")
     @PreAuthorize("isAuthenticated()")
-    public String myPosts(@PathVariable String nickname,Model model) {
+    public String myPosts(@PathVariable String nickname, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         if ((nickname.equals(findMember.get().getNickname()))){

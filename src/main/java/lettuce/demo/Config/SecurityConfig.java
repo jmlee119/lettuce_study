@@ -42,10 +42,6 @@ public class SecurityConfig{
         http.authorizeRequests().requestMatchers("/posts/**").authenticated();
         http.authorizeRequests().requestMatchers("/reply/**").authenticated();
         http.authorizeRequests().anyRequest().permitAll();
-//        http.formLogin().loginPage("/member/login")
-//                .usernameParameter("email")
-//                .passwordParameter("password")
-//                .defaultSuccessUrl("/");
         http.formLogin().loginPage("/member/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
@@ -57,18 +53,13 @@ public class SecurityConfig{
                     res.sendRedirect("/");
                 })
                 .permitAll();
-
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .logout()
                 .logoutUrl("/member/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);
-//        System.out.println("Security");
-
         return http.build();
     }
-
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{

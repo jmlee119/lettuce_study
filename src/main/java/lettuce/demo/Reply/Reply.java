@@ -82,6 +82,9 @@ public class Reply {
     @PrePersist
     protected void onCreate() {
         createDate = new Date();
+    }
+    @PreUpdate
+    protected void onUpdate() {
         modifyDate = new Date();
     }
 }
