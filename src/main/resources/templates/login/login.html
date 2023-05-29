@@ -3,6 +3,25 @@
 <head>
     <meta charset="utf-8" name="viewport" content="width=device-width, height=device-height, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
     <style>
+        .container_else {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #c4ff9e;
+            /* background-color: rgba(196, 255, 158, 0.4); */
+            /* 투명한건 어떤가 싶어서 주석 처리 */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container_else h2 {
+            margin: 0;
+            font-size: 36px; /* 텍스트 크기 조정 */
+            white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
+            animation: moveRight 5s linear infinite;
+            position: absolute;
+        }
         .container{
             max-width: 90%;
             padding-top: 100px;
@@ -70,7 +89,9 @@
     </style>
 </head>
 <body>
-
+<div class="container_else">
+    <marquee direction=right>지역별로 세분화 된 공부 스터디, 양상추 스터디 입니다</marquee>
+</div>
 <div class="container">
     <header> <h2>로그인</h2> </header>
     <form th:action="@{/member/login}" th:object="${login}" method="post">

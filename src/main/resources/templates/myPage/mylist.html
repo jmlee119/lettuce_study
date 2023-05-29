@@ -3,10 +3,60 @@
 <head>
   <meta charset="utf-8">
   <title>My Posts</title>
+  <style>
+    body {
+      padding-left: 10%;
+      padding-right: 10%;
+      padding-top: 2%;
+    }
+    .container_else {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: #c4ff9e;
+      /*background-color: rgba(196, 255, 158, 0.4);
+      투명한건 어떤가 싶어서 주석 처리
+      */
+    }
+
+    .container h2 {
+      margin: 0;
+    }
+    .container_else button {
+      background-color: transparent;
+      color: black;
+      border: 0px;
+      outline: none;
+    }
+    .container_else .left_button {
+      display: flex;
+      align-items: center;
+    }
+    .container_else .left_button button{
+      margin-right: 30px;
+    }
+    container_else .right_button {
+      display: flex;
+      align-items: center;
+    }
+    .all {
+      width: 100%;
+      padding: 1%;
+    }
+    td{
+      text-align: center;
+      padding-top: 1%;
+    }
+    th{
+      background: #c4ff9e;
+    }
+  </style>
 </head>
 <body>
+<nav th:replace="fragments/common :: menu"></nav>
 <h1>My Post_List</h1>
-<table>
+<table class="all">
   <thead>
   <tr>
     <th>글 번호</th>
@@ -15,18 +65,18 @@
     <th>생성날짜</th>
   </tr>
   </thead>
-  <tbody>
+  <tbody class="all">
   <tr th:each="post, postNumber : ${myPosts}">
     <td th:text="${postNumber.index + 1}"></td>
     <td th:text="${nickname}"></td>
     <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
-    <td th:text="${post.createDate}"></td>
+    <td>
+      <span th:if="${post.modifyDate != null}" th:text="${#dates.format(post.modifyDate, 'yyyy-MM-dd HH:mm')} + ' (수정됨) '"></span>
+      <span th:unless="${post.modifyDate != null}" th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+    </td>
   </tr>
   </tr>
   </tbody>
 </table>
-<button th:onclick="|location.href='@{/}'|">
-  Home
-</button>
 </body>
 </html>

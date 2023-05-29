@@ -8,12 +8,18 @@ import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -94,5 +100,21 @@ public class MemberController {
         System.out.println("member = " + member);
         memberRepository.save(member);
         return "redirect:/";
+    }
+
+    @PostMapping("/location")
+    public ResponseEntity<String> updateLocation(@RequestBody Map<String, String> requestBody, Principal principal) {
+        String username = principal.getName();
+        Optional<Member> optionalMember = memberRepository.findByEmail(username);
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+            String location = requestBody.get("location");
+            member.setLocation(location);
+            memberRepository.save(member);
+            System.out.println("location = " + location);
+            return ResponseEntity.ok("Location updated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Member not found.");
+        }
     }
 }

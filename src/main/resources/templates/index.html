@@ -1,20 +1,77 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
+<html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
 <head>
+    <script src="location.js"></script>
     <meta charset="utf-8">
-    <link th:href="@{/css/bootstrap.min.css}"
-          href="css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function getLocationAndSaveLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(saveLocationToServer);
+            } else {
+                console.log("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function saveLocationToServer(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            const location = `${latitude},${longitude}`;
+
+            const url = '/members/location';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ location }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Location saved:', data);
+                    // Redirect to the post creation page or perform any other action
+                })
+                .catch(error => {
+                    console.error('Error saving location:', error);
+                });
+        }
+    </script>
     <style>
+        body {
+            padding-left: 10%;
+            padding-right: 10%;
+            padding-top: 2%;
+        }
         .container_else {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            background-color: #eee;
+            padding: 20px;
+            background-color: #c4ff9e;
+            /*background-color: rgba(196, 255, 158, 0.4);
+            투명한건 어떤가 싶어서 주석 처리
+            */
         }
 
         .container h2 {
             margin: 0;
+        }
+        .container_else button {
+            background-color: transparent;
+            color: black;
+            border: 0px;
+            outline: none;
+        }
+        .container_else .left_button {
+            display: flex;
+            align-items: center;
+        }
+        .container_else .left_button button{
+            margin-right: 30px;
+        }
+        container_else .right_button {
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
@@ -25,12 +82,6 @@
             <h2>홈 화면</h2>
         </div>
         <div class="row">
-            <!--        <div>-->
-            <!--            <a class="w-100 btn btn-dark btn-lg" sec:authorize="isAuthenticated()"-->
-            <!--               th:href="@{/member/logout}" type="button">-->
-            <!--                로그아웃-->
-            <!--            </a>-->
-            <!--        </div>-->
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg" type="button" sec:authorize="isAnonymous()"
                         th:onclick="|location.href='@{/members/add}'|">
@@ -39,7 +90,7 @@
             </div>
             <div class="col">
                 <a class="w-100 btn btn-dark btn-lg" sec:authorize="isAnonymous()"
-                   th:href="@{/member/login}" type="button">
+                        th:href="@{/member/login}" type="button">
                     로그인
                 </a>
             </div>
@@ -48,25 +99,7 @@
 </th:block>
 <th:block sec:authorize = "isAuthenticated()">
     <nav th:replace="fragments/common :: menu"></nav>
-    <div class="container_else">
-        <h2>양상추 스터디에 오신걸 환영합니다</h2>
-        <p th:text="${nickname} + '님 환영합니다!'"></p>
-        <button th:onclick="|location.href='@{/profile/myinfo/{nickname}(nickname=${nickname})}'|">
-            마이페이지
-        </button>
-        <button th:onclick="|location.href='@{/}'|">
-            Home
-        </button>
-        <button th:onclick ="|location.href = '@{/member/logout}'|" type="button">
-            로그아웃
-        </button>
-    </div>
-    <hr>
     <div>
-        <!--        <form action="/posts/create" method="get">-->
-        <!--            <input type="hidden" name="memberId" th:value="${memberId}">-->
-        <!--            <button class="w-100 btn btn-dark btn-lg" type= "submit">글 생성</button>-->
-        <!--        </form>-->
         <button th:onclick="|location.href='@{/posts/create/{memberId}(memberId=${memberId})}'|">
             글 생성
         </button>
@@ -76,6 +109,9 @@
             전체 글 보기
         </button>
     </div>
+    <button onclick="getLocationAndSaveLocation()">
+        위치 인증
+    </button>
 </th:block>
 </div> <!-- /container -->
 </body>

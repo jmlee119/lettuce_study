@@ -1,13 +1,90 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <style>
+    body {
+      padding-left: 10%;
+      padding-right: 10%;
+      padding-top: 2%;
+    }
+    .container_else {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: #c4ff9e;
+      /*background-color: rgba(196, 255, 158, 0.4);
+      투명한건 어떤가 싶어서 주석 처리
+      */
+    }
+
+    .container h2 {
+      margin: 0;
+    }
+    .container_else button {
+      background-color: transparent;
+      color: black;
+      border: 0px;
+      outline: none;
+    }
+    .container_else .left_button {
+      display: flex;
+      align-items: center;
+    }
+    .container_else .left_button button{
+      margin-right: 30px;
+    }
+    container_else .right_button {
+      display: flex;
+      align-items: center;
+    }
+    .container {
+      padding-left: 15%;
+      padding-right: 15%;
+    }
+    .date {
+      text-align: right;
+    }
+    h1{
+      text-align: center;
+    }
+    .content{
+      padding: 10%;
+    }
+    .name{
+      text-align: right;
+    }
+  </style>
   <meta charset="utf-8">
   <title>Post Detail</title>
 </head>
 <body>
-<h1 th:text="${post.title}"></h1>
-<p th:text="${post.content}"></p>
-<p>작성일: <span th:text="${post.createDate}"></span></p>
-<p>작성자: <a th:href="@{/profile/myinfo/{nickname}(nickname=${post.member.nickname})}" th:text="${post.member.nickname}"></a></p>
+<nav th:replace="fragments/common :: menu"></nav>
+<div class="container">
+  <h1 th:text="${post.title}"></h1>
+  <p class="name">작성자: <a th:href="@{/profile/myinfo/{nickname}(nickname=${post.member.nickname})}" th:text="${post.member.nickname}"></a></p>
+  <p class="content" th:text="${post.content}"></p>
+  <p class="date">작성일: <span th:text="${post.createDate}"></span></p>
+  <p class="date" th:if="${post.modifyDate}">수정일: <span th:text="${post.modifyDate}"></span></p>
+  <a th:href="@{/posts/delete/{postId}(postId=${post.id})}" onclick="return confirm('정말로 글을 삭제하시겠습니까?')">글 삭제</a>
+  <a th:href="@{/posts/update/{postId}(postId=${post.id})}">글 수정</a>
+  <form action="/reply/createreply" method="post">
+    <input type="hidden" name="postId" th:value="${post.id}" />
+    <textarea name="content" rows="3" placeholder="답글을 입력하세요" required></textarea>
+    <button type="submit">답글 작성</button>
+  </form>
+
+  <div>
+    <h3>답글 목록</h3>
+    <ul>
+      <li th:each="reply : ${replies}">
+        <span th:text="${reply.content}"></span>
+        <span th:text="${reply.createDate}"></span>
+        <a th:href="@{/profile/myinfo/{nickname}(nickname=${reply.member.nickname})}" th:text="${reply.member.nickname}"></a>
+        <a th:href="@{/reply/delete/{replyId}(replyId=${reply.id}, postId=${post.id})}">삭제</a>
+      </li>
+    </ul>
+  </div>
+</div>
 </body>
 </html>

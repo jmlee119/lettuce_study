@@ -4,11 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lettuce.demo.Member.Member;
+import lettuce.demo.Reply.Reply;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -36,12 +39,9 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reply> replies = new ArrayList<>();
 
-    @PrePersist
-    protected void onCreate() {
-        createDate = new Date();
-        modifyDate = new Date();
-    }
 
     public Member getMember() {
         return member;
@@ -49,10 +49,6 @@ public class Post {
 
     public void setMember(Member member){
         this.member = member;
-    }
-    @PreUpdate
-    protected void onUpdate() {
-        modifyDate = new Date();
     }
 
     public Long getId() {
@@ -89,6 +85,11 @@ public class Post {
 
     public Date getModifyDate() {
         return modifyDate;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        modifyDate = new Date();
     }
 
     public void setModifyDate(Date modifyDate) {

@@ -28,21 +28,12 @@ public class MailService {
 
     public String createEmailCode() {
         Random random = new Random();
-        StringBuffer key = new StringBuffer();
-        for (int i = 0; i < 8; i++) {
-            switch (random.nextInt(3)) {
-                case 0:
-                    key.append((char) (random.nextInt(26) + 97));
-                    break;
-                case 1:
-                    key.append((char) (random.nextInt(26) + 65));
-                    break;
-                case 2:
-                    key.append(random.nextInt(9));
-                    break;
-            }
+        authNum = "";
+        for (int i = 0; i < 6;  i++) {
+            String nkey = Integer.toString(random.nextInt(10));
+            authNum += nkey;
         }
-        String authNum = key.toString();
+
         return authNum;
     }
 

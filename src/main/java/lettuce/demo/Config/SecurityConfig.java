@@ -38,13 +38,10 @@ public class SecurityConfig{
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.authorizeRequests().requestMatchers("/profile/myinfo/{nickname}").authenticated();
-        http.authorizeRequests().requestMatchers("/posts/create/**").authenticated();
+        http.authorizeRequests().requestMatchers("/profile/**").authenticated();
+        http.authorizeRequests().requestMatchers("/posts/**").authenticated();
+        http.authorizeRequests().requestMatchers("/reply/**").authenticated();
         http.authorizeRequests().anyRequest().permitAll();
-//        http.formLogin().loginPage("/member/login")
-//                .usernameParameter("email")
-//                .passwordParameter("password")
-//                .defaultSuccessUrl("/");
         http.formLogin().loginPage("/member/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
@@ -56,18 +53,13 @@ public class SecurityConfig{
                     res.sendRedirect("/");
                 })
                 .permitAll();
-
-//        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .logout()
                 .logoutUrl("/member/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);
-//        System.out.println("Security");
-
         return http.build();
     }
-
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{

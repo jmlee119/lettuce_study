@@ -3,9 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Error Page</title>
+    <style>
+        body {
+            background-color: #f8f8f8;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #666666;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .error-image {
+            width: 800px;
+            height: auto;
+        }
+        .container_else {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: #c4ff9e;
+            /* background-color: rgba(196, 255, 158, 0.4); */
+            /* 투명한건 어떤가 싶어서 주석 처리 */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .container_else h2 {
+            margin: 0;
+            font-size: 36px; /* 텍스트 크기 조정 */
+            white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
+            animation: moveRight 5s linear infinite;
+            position: absolute;
+        }
+    </style>
 </head>
 <body>
-<h1>Error!</h1>
-<p th:text="${errorMessage}"></p>
+<div class="container_else">
+    <marquee direction=right>에러 페이지 입니다.</marquee>
+</div>
+<img src="/images/error-image.png" alt="Error" class="error-image">
+<fieldset>
+    <legend>ErrorMessage</legend>
+    <p th:text="${errorMessage}"></p>
+</fieldset>
 </body>
 </html>

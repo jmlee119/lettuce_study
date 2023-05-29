@@ -3,6 +3,44 @@
 <html>
 <head>
   <title>My Profile</title>
+  <style>
+    body {
+      padding-left: 10%;
+      padding-right: 10%;
+      padding-top: 2%;
+    }
+    .container_else {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: #c4ff9e;
+      /*background-color: rgba(196, 255, 158, 0.4);
+      투명한건 어떤가 싶어서 주석 처리
+      */
+    }
+
+    .container h2 {
+      margin: 0;
+    }
+    .container_else button {
+      background-color: transparent;
+      color: black;
+      border: 0px;
+      outline: none;
+    }
+    .container_else .left_button {
+      display: flex;
+      align-items: center;
+    }
+    .container_else .left_button button{
+      margin-right: 30px;
+    }
+    container_else .right_button {
+      display: flex;
+      align-items: center;
+    }
+  </style>
 </head>
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
@@ -10,16 +48,18 @@
 <p th:text="'Hello, ' + ${member.email} + '!'"></p>
 <p th:text="'Name: ' + ${member.name}"></p>
 <p th:text="'Nickname: ' + ${member.nickname}"></p>
-<p th:text="'Phone: ' + ${member.phone}"></p>
-<!--<img th:if="${member.image != null}" th:src="@{'/image/' + ${member.id}}" alt="Profile Image">-->
-<!--<img th:if="${member.image == null}" src="/images/default-profile-image.png" alt="Default Profile Image">-->
+<p th:if="${member.nickname == nickname}">Phone: <span th:text="${member.phone}"></span></p>
+<p th:if="${member.github}"><a th:href="${member.github}" th:text="${member.github}" target="_blank"></a></p>
+<p th:if="${member.instargram}"><a th:href="${member.instargram}" th:text="${member.instargram}" target="_blank"></a></p>
+<img th:if="${member.image != null}" th:src="@{'/profile/get-image/' + ${member.id}}" th:alt="'Profile Image'">
+<!--<img th:if="${member.image != null}" th:src="@{'/profile/get-image/2'}" th:alt="'Profile Image'">-->
+<img th:if="${member.image == null}" src="/images/noimage.webp" alt="Default Profile Image">
 
-
-<form th:action="@{/profile/mylist/{nickname}(nickname=${nickname})}" method="get">
+<form th:action="@{/profile/mylist/{nickname}(nickname=${nickname_profile})}" method="get">
   <button type="submit">View My Posts</button>
 </form>
 
-<form th:action="@{/profile/edit/{nickname}(nickname=${nickname})}" method="get">
+<form th:action="@{/profile/edit/{nickname}(nickname=${nickname_profile})}" method="get">
   <button type="submit">Edit My profile</button>
 </form>
 

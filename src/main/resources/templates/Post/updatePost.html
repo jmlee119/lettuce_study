@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="head(title)">
-  <title th:text="${title}">Hello, Spring Boot!</title>
+<head>
+  <meta charset="UTF-8">
+  <title>Create Post</title>
   <style>
     body {
       padding-left: 10%;
@@ -42,28 +43,16 @@
   </style>
 </head>
 <body>
-  <nav th:fragment="menu">
-    <div class="container_else">
-      <div class="left_button">
-        <button th:onclick="|location.href='@{/}'|">양상추 스터디</button>
-        <button th:onclick="|location.href='@{/posts/create/{memberId}(memberId=${memberId})}'|">
-          글 생성
-        </button>
-        <button th:onclick="|location.href='@{/posts/lists}'|">
-          글 구경
-        </button>
-      </div>
+<nav th:replace="fragments/common :: menu"></nav>
+<h1>Create Post</h1>
+<form th:action="@{/posts/update}" method="post">
+  <input type="hidden" name="postId" th:value="${post.get().getId()}" />
+  <label for="title">Title</label>
+  <input type="text" name="title" id="title" required  th:value="${post.get().getTitle()}"><br><br>
+  <label for="content">Content</label>
+  <textarea name="content" id="content" rows="10" required th:text="${post.get().getContent()}"></textarea><br><br>
+  <button type="submit">Create</button>
+</form>
 
-      <div class="right_button">
-        <button  th:text="${nickname}" th:onclick="|location.href='@{/profile/myinfo/{nickname}(nickname=${nickname})}'|">님
-        </button>
-        <button th:onclick ="|location.href = '@{/member/logout}'|" type="button">
-          로그아웃
-        </button>
-      </div>
-
-    </div>
-    <hr>
-  </nav>
 </body>
 </html>

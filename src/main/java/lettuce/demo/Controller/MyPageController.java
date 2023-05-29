@@ -4,7 +4,12 @@ import lettuce.demo.Member.Member;
 import lettuce.demo.Post.Post;
 import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Repository.PostRepository;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,10 +17,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Pageable;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -39,13 +51,17 @@ public class MyPageController {
         Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
         if (nickname.equals(findmember.get().getNickname())) {
             model.addAttribute("member", findmember.get());
-            model.addAttribute("nickname", findmember.get().getNickname());
+            model.addAttribute("memberId",findmember.get().getId());
+            model.addAttribute("nickname",findmember.get().getNickname());
+            model.addAttribute("nickname_profile", findmember.get().getNickname());
             return "myPage/mypage";
         } else {
             Optional<Member> anothermember = memberRepository.findByNickname(nickname);
             if (anothermember.isPresent()) { // 값이 있는지 먼저 확인
                 model.addAttribute("member", anothermember.get());
-                model.addAttribute("nickname", anothermember.get().getNickname());
+                model.addAttribute("memberId",findmember.get().getId());
+                model.addAttribute("nickname",findmember.get().getNickname());
+                model.addAttribute("nickname_profile", anothermember.get().getNickname());
                 return "myPage/mypage";
             } else { // 값이 없을 경우 예외 처리 또는 적절한 대응
                 model.addAttribute("errorMsg", "해당 회원을 찾을 수 없습니다.");
@@ -57,13 +73,14 @@ public class MyPageController {
 
     @GetMapping("/mylist/{nickname}")
     @PreAuthorize("isAuthenticated()")
-    public String myPosts(@PathVariable String nickname,Model model) {
+    public String myPosts(@PathVariable String nickname, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         if ((nickname.equals(findMember.get().getNickname()))){
             if (findMember.isPresent()) {
                 List<Post> myPosts = postRepository.findByMemberOrderByCreateDateDesc(findMember.get());
                 model.addAttribute("myPosts", myPosts);
+                model.addAttribute("memberId",findMember.get().getId());
                 model.addAttribute("nickname",findMember.get().getNickname());
                 return "myPage/mylist";
             } else {
@@ -86,6 +103,8 @@ public class MyPageController {
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         if (nickname.equals(findMember.get().getNickname())){
             model.addAttribute("member", findMember);
+            model.addAttribute("nickname",findMember.get().getNickname());
+            model.addAttribute("memberId",findMember.get().getId());
             return "myPage/edit";
         }
         else{
@@ -97,74 +116,69 @@ public class MyPageController {
     @PostMapping("/edit")
     @PreAuthorize("isAuthenticated()")
     public String updateProfile(@RequestParam("Id") Long Id,
-                                @RequestParam("nickname") String nickname,
+                                @RequestParam(value = "nickname", defaultValue = "", required = true) String nickname,
                                 @RequestParam("name") String name,
                                 @RequestParam("phone") String phone,
+                                @RequestParam("github") String github,
+                                @RequestParam("instargram") String instargram,
+                                @RequestParam(value = "image", required = false) MultipartFile imageFile,
                                 Model model) {
         Optional<Member> findmember = memberRepository.findById(Id);
         if (findmember.isPresent()) { // 값이 있는지 먼저 확인
             Member member = findmember.get();
-            if (!member.getNickname().equals(nickname) && memberRepository.existsByNickname(nickname)) {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                try {
+                    byte[] imageData = imageFile.getBytes();
+                    member.setImage(imageData);
+                    member.setImageType(imageFile.getContentType());
+                } catch (IOException e) {
+                    model.addAttribute("errorMessage", "이미지 업로드 중 오류가 발생했습니다.");
+                    return "errorPage";
+                }
+            } else {
+                member.setImage(null);
+            }
+            if (!member.getNickname().equals(nickname) && memberRepository.findByNickname(nickname).isPresent()) {
                 model.addAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
                 model.addAttribute("member", member);
-                model.addAttribute("nickname", nickname);
-                return "redirect:/profile/edit/{nickname}";
+                model.addAttribute("nickname",nickname);
+                model.addAttribute("nickname_profile", nickname);
+//                return "redirect:/profile/edit/" + nickname;
+                return "errorPage";
             }
             member.setNickname(nickname);
             member.setName(name);
             member.setPhone(phone);
+            member.setGithub(github);
+            member.setInstargram(instargram);
             memberRepository.save(member);
             model.addAttribute("member", member);
             model.addAttribute("nickname", nickname);
-            return "myPage/mypage";
+            model.addAttribute("nickname_profile", member.getNickname());
+//            return "myPage/mypage";
+            return "redirect:/profile/myinfo/" + nickname;
         } else {
             model.addAttribute("errorMessage", "해당 회원을 찾을 수 없습니다.");
             return "errorPage";
         }
     }
-//    @PostMapping("/edit")
-//    @PreAuthorize("isAuthenticated()")
-//    public String updateProfile(@RequestParam("Id") Long Id,
-//                                @RequestParam("nickname") String nickname,
-//                                @RequestParam("name") String name,
-//                                @RequestParam("phone") String phone,
-//                                @RequestParam("image") MultipartFile image,
-//                                Model model) throws IOException {
-//        Optional<Member> findmember = memberRepository.findById(Id);
-//        if (findmember.isPresent()) { // 값이 있는지 먼저 확인
-//            Member member = findmember.get();
-//            if (!member.getNickname().equals(nickname) && memberRepository.existsByNickname(nickname)) {
-//                model.addAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
-//                model.addAttribute("member", member);
-//                model.addAttribute("nickname", nickname);
-//                return "redirect:/profile/edit/{nickname}";
-//            }
-//            member.setNickname(nickname);
-//            member.setName(name);
-//            member.setPhone(phone);
-//            if (!image.isEmpty()) {
-//                byte[] bytes = image.getBytes();
-//                member.setImage(bytes);
-//            }
-//            memberRepository.save(member);
-//            model.addAttribute("member", member);
-//            model.addAttribute("nickname", nickname);
-//            return "myPage/mypage";
-//        } else {
-//            model.addAttribute("errorMessage", "해당 회원을 찾을 수 없습니다.");
-//            return "errorPage";
-//        }
-//    }
-//
-//    @GetMapping("/image/{id}")
-//    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
-//        Optional<Member> member = memberRepository.findById(id);
-//        if (member.isPresent() && member.get().getImage() != null) {
-//            byte[] image = member.get().getImage();
-//            return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
 
+    @GetMapping(value = "/get-image/{memberId}", produces = { MediaType.IMAGE_JPEG_VALUE, "image/webp" })
+    public ResponseEntity<byte[]> getImage(@PathVariable Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        if (member.isPresent() && member.get().getImage() != null) {
+            byte[] imageBytes = member.get().getImage();
+            HttpHeaders headers = new HttpHeaders();
+            if (MediaType.IMAGE_JPEG_VALUE.equals(member.get().getImageType())) {
+                headers.setContentType(MediaType.IMAGE_JPEG);
+            } else if ("image/webp".equals(member.get().getImageType())) {
+                headers.setContentType(MediaType.parseMediaType("image/webp"));
+            }
+            headers.setContentLength(imageBytes.length);
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

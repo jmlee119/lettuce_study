@@ -18,22 +18,6 @@ public class HomeController {
     public HomeController(MemberRepository memberRepository){
         this.memberRepository = memberRepository;
     }
-//    @GetMapping("/")
-//    public String home(Model model) {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String nickname = authentication.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .filter(a -> a.startsWith("NICKNAME_"))
-//                .findFirst()
-//                .map(a -> a.replace("NICKNAME_", ""))
-//                .orElse("");
-//        model.addAttribute("nickname", nickname);
-//        Optional<Member> member = memberRepository.findByNickname(nickname);
-//        Long memberId = member.map(Member::getId).orElse(null);
-////        Long memberId = member.get().getId();
-//        model.addAttribute("memberId",memberId);
-//        return "index";
-//    }
     @GetMapping("/")
     public String home(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
