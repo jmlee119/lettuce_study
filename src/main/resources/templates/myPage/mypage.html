@@ -9,12 +9,16 @@
       padding-right: 10%;
       padding-top: 2%;
     }
+    body {
+      padding-left: 10%;
+      padding-right: 10%;
+      padding-top: 2%;
+    }
     .container_else {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 20px;
-      background-color: #c4ff9e;
       /*background-color: rgba(196, 255, 158, 0.4);
       투명한건 어떤가 싶어서 주석 처리
       */
@@ -33,38 +37,217 @@
       display: flex;
       align-items: center;
     }
+    .container_else .left_button .firstbut:hover button {
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
+    .container_else .left_button .secbut:hover button{
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
+    .container_else .left_button .thrbut:hover button{
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
     .container_else .left_button button{
       margin-right: 30px;
     }
-    container_else .right_button {
+
+    .container_else .right_button {
       display: flex;
       align-items: center;
+      margin: 8%;    /*nav 위치 */
     }
+    .container_else .right_button button{
+      margin: 10px;
+    }
+    .container_else .right_button .nick_btn {
+      background-color: #45a049;
+      margin-right: 10px;
+      border-radius: 17px;
+
+    }
+    .container_else .right_button .log_btn {
+      background-color: #45a049;
+      border-radius: 17px;
+
+    }
+    .body_container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .first_text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+
+    }
+
+    .first_text .first_text_1 h1 {
+      background-color: #45a049;
+      font-size: 40px;
+      color:white;
+    }
+    .first_text .first_text_2 h1 {
+      color: #45a049;
+      font-size: 40px;
+
+    }
+    .first_text p{
+      color:#45a049;
+
+    }
+    .img_box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 100px;
+    }
+    .img_box .img img{
+      border-radius: 50%;
+      height: 200px;
+      width :200px;
+      margin-right: 100px;
+    }
+    .info .info_text {
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .img_box .info .site_img {
+      display: flex;
+      flex-direction: row;
+    }
+    .img_box .info .site_img p a img{
+      width: 30px;
+      margin-right: 15px;
+      height: 30px;
+    }
+    .footer_btn {
+      display: flex;
+      flex-direction: row;
+      background-color: white;
+    }
+    .footer_btn button {
+      margin: 10px;
+    }
+
+    .footer_btn_post form button {
+      border: 5px solid #45a049;
+      border-radius: 2px;
+      padding: 30px;
+      background-color: white;
+      width: 300px;
+    }
+    .footer_btn_post form button img {
+      width: 70px;
+      height: 70px;
+    }
+    .footer_btn_edit form button {
+      border: 5px solid #45a049;
+      border-radius: 2px;
+      padding: 30px;
+      background-color: white;
+      width: 300px;
+    }
+    .footer_btn_edit form button img{
+      width: 70px;
+      height: 70px;
+    }
+    .footer_btn_home button {
+      border: 5px solid #45a049;
+      border-radius: 2px;
+      padding: 30px;
+      background-color: white;
+      width: 300px;
+    }
+    .footer_btn_home button img{
+      width: 70px;
+      height: 70px;
+    }
+    .footer_btn_home p{
+      font-weight: bold;
+    }
+    .footer_btn_home button:hover{
+      background-color: #45a049;
+    }
+    .footer_btn_post button:hover{
+      background-color: #45a049;
+    }
+    .footer_btn_edit button:hover{
+      background-color: #45a049;
+    }
+    .footer_btn_edit p{
+      font-weight: bold;
+
+    }
+    .footer_btn_post p{
+      font-weight: bold;
+
+    }
+
+
   </style>
 </head>
+<header>
+  ddfsdfd
+</header>
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
-<h1>Welcome to My Page</h1>
-<p th:text="'Hello, ' + ${member.email} + '!'"></p>
-<p th:text="'Name: ' + ${member.name}"></p>
-<p th:text="'Nickname: ' + ${member.nickname}"></p>
-<p th:if="${member.nickname == nickname}">Phone: <span th:text="${member.phone}"></span></p>
-<p th:if="${member.github}"><a th:href="${member.github}" th:text="${member.github}" target="_blank"></a></p>
-<p th:if="${member.instargram}"><a th:href="${member.instargram}" th:text="${member.instargram}" target="_blank"></a></p>
-<img th:if="${member.image != null}" th:src="@{'/profile/get-image/' + ${member.id}}" th:alt="'Profile Image'">
-<!--<img th:if="${member.image != null}" th:src="@{'/profile/get-image/2'}" th:alt="'Profile Image'">-->
-<img th:if="${member.image == null}" src="/images/noimage.webp" alt="Default Profile Image">
+<div class="body_container">
+<div class="first_text">
+  <div class="first_text_2"><h1>#Welcome to My Page</h1></div>
+  <div class="first_text_1"><h1 th:text="'#Hello, ' + ${member.nickname} + '!'"></h1></div>
+</div>
+<div class="img_box">
+  <div class="img">
+    <img th:if="${member.image != null}" th:src="@{'/profile/get-image/' + ${member.id}}" th:alt="'Profile Image'">
+    <!--<img th:if="${member.image != null}" th:src="@{'/profile/get-image/2'}" th:alt="'Profile Image'">-->
+    <img th:if="${member.image == null}" src="/images/noimage.webp" alt="Default Profile Image">
+  </div>
+  <div class="info">
+    <div class="info_text">
+    <p th:text="'Name: ' + ${member.name}"></p>
+    <p th:if="${member.nickname == nickname}">Phone: <span th:text="${member.phone}"></span></p>
+    </div>
+    <div class ="site_img">
+    <p th:if="${member.github}"><a th:href="${member.github}" target="_blank"><img src="/images/free-icon-github-sign-25657.png"></a></p>
+    <p th:if="${member.instargram}"><a th:href="${member.instargram}"  target="_blank"><img src="/images/free-icon-instagram-174855.png"></a></p>
+    </div>
+  </div>
+</div>
 
-<form th:action="@{/profile/mylist/{nickname}(nickname=${nickname_profile})}" method="get">
-  <button type="submit">View My Posts</button>
-</form>
+<div class ="footer_btn">
+  <div class ="footer_btn_post">
+    <form th:action="@{/profile/mylist/{nickname}(nickname=${nickname_profile})}" method="get">
+      <button type="submit"> <img src="/images/free-icon-sticky-note-7688466.png" alt="이미지" /><p> View My Posts <p/></button>
+    </form>
+  </div>
+  <div class ="footer_btn_edit">
+    <form th:action="@{/profile/edit/{nickname}(nickname=${nickname_profile})}" method="get">
+      <button type="submit"> <img src="/images/free-icon-edit-info-9424666.png" alt="이미지" /><p> Edit My profile<p/></button>
+    </form>
+  </div>
+  <div class ="footer_btn_home">
+    <button th:onclick="|location.href='@{/}'|">
+      <img src="/images/free-icon-house-black-silhouette-without-door-20176.png" alt="이미지" /><p>
+      Home
+    </p>
+    </button>
+  </div>
+</div>
 
-<form th:action="@{/profile/edit/{nickname}(nickname=${nickname_profile})}" method="get">
-  <button type="submit">Edit My profile</button>
-</form>
+</div>
 
-<button th:onclick="|location.href='@{/}'|">
-  Home
-</button>
+
+</div>
 </body>
 </html>

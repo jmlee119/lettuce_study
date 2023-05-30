@@ -13,7 +13,6 @@
       justify-content: space-between;
       align-items: center;
       padding: 20px;
-      background-color: #c4ff9e;
       /*background-color: rgba(196, 255, 158, 0.4);
       투명한건 어떤가 싶어서 주석 처리
       */
@@ -32,34 +31,81 @@
       display: flex;
       align-items: center;
     }
+    .container_else .left_button .firstbut:hover button {
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
+    .container_else .left_button .secbut:hover button{
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
+    .container_else .left_button .thrbut:hover button{
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
     .container_else .left_button button{
       margin-right: 30px;
     }
-    container_else .right_button {
+
+    .container_else .right_button {
       display: flex;
       align-items: center;
+      margin: 8%;    /*nav 위치 */
     }
+    .container_else .right_button button{
+      margin: 10px;
+    }
+    .container_else .right_button .nick_btn {
+     background-color: #45a049;
+      border-radius: 17px;
+      margin-right: 10px;
+
+    }
+    .container_else .right_button .log_btn {
+      background-color: #45a049;
+      border-radius: 17px;
+
+    }
+
+
   </style>
 </head>
 <body>
   <nav th:fragment="menu">
     <div class="container_else">
       <div class="left_button">
-        <button th:onclick="|location.href='@{/}'|">양상추 스터디</button>
-        <button th:onclick="|location.href='@{/posts/create/{memberId}(memberId=${memberId})}'|">
-          글 생성
-        </button>
-        <button th:onclick="|location.href='@{/posts/lists}'|">
-          글 구경
-        </button>
+        <div class="firstbut">
+          <button th:onclick="|location.href='@{/}'|">양상추 스터디</button>
+        </div>
+        <div class="secbut">
+          <button th:onclick="|location.href='@{/posts/create/{memberId}(memberId=${memberId})}'|">
+            글 생성
+          </button>
+        </div>
+        <div class="thrbut">
+          <button th:onclick="|location.href='@{/posts/lists}'|">
+            글 구경
+          </button>
+        </div>
       </div>
 
       <div class="right_button">
-        <button  th:text="${nickname}" th:onclick="|location.href='@{/profile/myinfo/{nickname}(nickname=${nickname})}'|">님
-        </button>
-        <button th:onclick ="|location.href = '@{/member/logout}'|" type="button">
-          로그아웃
-        </button>
+
+        <div class="nick_btn">
+          <button  th:text="${nickname}" th:onclick="|location.href='@{/profile/myinfo/{nickname}(nickname=${nickname})}'|">님
+          </button>
+        </div>
+        <div class="log_btn">
+          <button th:onclick ="|location.href = '@{/member/logout}'|" type="button">
+            로그아웃
+          </button>
+        </div>
       </div>
 
     </div>
