@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
 
@@ -103,15 +104,16 @@ public class MemberController {
     }
 
     @PostMapping("/location")
-    public ResponseEntity<String> updateLocation(@RequestBody String requestBody, Principal principal) {
+    public ResponseEntity<String> updateLocation(@RequestBody String location, Principal principal) {
         String username = principal.getName();
         Optional<Member> optionalMember = memberRepository.findByEmail(username);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
-            String location = requestBody;
-            member.setLocation(location);
+            String[] splitLocation = location.split(" ");
+            String simplifiedLocation = String.join(" ", Arrays.copyOfRange(splitLocation, 0, 2));
+            member.setLocation(simplifiedLocation);
             memberRepository.save(member);
-            System.out.println("location = " + location);
+            System.out.println("location = " + simplifiedLocation);
             return ResponseEntity.ok("Location updated successfully.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Member not found.");

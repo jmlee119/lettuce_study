@@ -101,23 +101,7 @@
         const longitude = position.coords.longitude;
         const location = `${latitude},${longitude}`;
 
-        const url = '/members/location';
 
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ location }),
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Location saved:', data);
-                // Redirect to the post creation page or perform any other action
-            })
-            .catch(error => {
-                console.error('Error saving location:', error);
-            });
 
         // 변환된 좌표를 이용하여 주소를 검색하고 표시합니다
         var latlng = new kakao.maps.LatLng(latitude, longitude);
@@ -135,6 +119,28 @@
             var infoDiv = document.getElementById('centerAddr');
             infoDiv.innerHTML = result[0].address_name;
             address = result[0].address_name;
+
+            // Split the address by whitespace and take the first two components
+            var splitAddress = address.split(' ');
+            var simplifiedAddress = splitAddress.slice(0, 2).join(' ');
+
+            const url = '/members/location';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(simplifiedAddress),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Location saved:', data);
+                    // Redirect to the post creation page or perform any other action
+                })
+                .catch(error => {
+                    console.error('Error saving location:', error);
+                });
         }
     }
 </script>
