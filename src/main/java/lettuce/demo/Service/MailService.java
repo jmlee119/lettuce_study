@@ -62,7 +62,7 @@ public class MailService {
         helper.setTo(email);
         helper.setSubject(subject);
         helper.setText(html, true);
-        javaMailSender.send(message);
+//        javaMailSender.send(message);
         System.out.println(authNum);
     }
 }
