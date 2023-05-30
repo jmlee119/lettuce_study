@@ -14,7 +14,6 @@
       justify-content: space-between;
       align-items: center;
       padding: 20px;
-      background-color: #c4ff9e;
       /*background-color: rgba(196, 255, 158, 0.4);
       투명한건 어떤가 싶어서 주석 처리
       */
@@ -33,30 +32,108 @@
       display: flex;
       align-items: center;
     }
+    .container_else .left_button .firstbut:hover button {
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
+    .container_else .left_button .secbut:hover button{
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
+    .container_else .left_button .thrbut:hover button{
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
     .container_else .left_button button{
       margin-right: 30px;
     }
-    container_else .right_button {
+
+    .container_else .right_button {
       display: flex;
       align-items: center;
+      margin: 8%;    /*nav 위치 */
     }
+    .container_else .right_button button{
+      margin: 10px;
+      color: white;
+    }
+    .container_else .right_button .nick_btn {
+      background-color: #45a049;
+      border-radius: 17px;
+      margin-right: 10px;
+
+    }
+    .container_else .right_button .log_btn {
+      background-color: #45a049;
+      border-radius: 17px;
+
+    }
+
     .all {
       width: 100%;
       padding: 1%;
+      font-weight: bold;
     }
 
     td{
+      padding: 0.5%;
       text-align: center;
-      padding-top: 1%;
+      background-color: rgba(69, 160, 73, 0.2);
+      text-align: center;
+      vertical-align: middle;
+
     }
     th{
-      background: #c4ff9e;
+      background:  #45a049;
+      color :white;
+      padding:1.5%;
     }
     .create {
       text-align: right;
       margin-top: 1%;
+      margin-right:15px ;
     }
+    .nickname:hover {
+      background-color: rgba(69, 160, 73, 0.5);
+    }
+    .posttitle:hover{
+      background-color: rgba(69, 160, 73, 0.7);
+    }
+    .create a{
+      border: solid 2px;
+      border-color: #45a049;
+      padding: 0.4%;
 
+    }
+    a:hover {
+      color:white;
+      background-color: #45a049;
+    }
+    .pagination{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+    .pagination a{
+      background-color: #45a049;
+      flex-grow: 1;
+      margin: 10px;
+      padding: 10px;
+      color:white;
+      font-weight: bold;
+      font-size: 13px;
+      border-radius: 30px;
+    }
+    .pagination a:hover {
+      background-color: rgba(69, 160, 73, 0.5);
+    }
   </style>
 </head>
 <body>
@@ -67,18 +144,18 @@
 <table class="all">
   <thead>
   <tr>
-    <th>글 번호</th>
-    <th>닉네임</th>
-    <th>글 제목</th>
-    <th>생성날짜</th>
+    <th>Num</th>
+    <th>NickName</th>
+    <th>PostTitle</th>
+    <th>CreatDate</th>
   </tr>
   </thead>
   <tbody class="all">
   <tr th:each="post, postNumber : ${postPage}">
     <td th:text="${postNumber.index + 1}"></td>
-    <td><a th:href="@{/profile/myinfo/{nickname}(nickname=${post.member.nickname})}" th:text="${post.member != null ? post.member.nickname : 'unknown'}"></a></td>
+    <td class ="nickname"><a th:href="@{/profile/myinfo/{nickname}(nickname=${post.member.nickname})}" th:text="${post.member != null ? post.member.nickname : 'unknown'}"></a></td>
     <!--    <td th:text="${post.getMember().getNickname()}"></td>-->
-    <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
+    <td class="posttitle"><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
     <td>
       <span th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></span>
     </td>
