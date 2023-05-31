@@ -2,39 +2,6 @@
 <html lang="ko" xmlns:th="http://thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
-    <script>
-        function getLocationAndSaveLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(saveLocationToServer);
-            } else {
-                console.log("Geolocation is not supported by this browser.");
-            }
-        }
-
-        function saveLocationToServer(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            const location = `${latitude},${longitude}`;
-
-            const url = '/members/location';
-
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ location }),
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Location saved:', data);
-                    // Redirect to the post creation page or perform any other action
-                })
-                .catch(error => {
-                    console.error('Error saving location:', error);
-                });
-        }
-    </script>
     <style>
         body {
             padding-left: 10%;
@@ -73,20 +40,25 @@
             align-items: center;
         }
     </style>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ea6dedfd426ef3bfa6075139675dcaf7&libraries=services"></script>
+    <link rel="stylesheet" type="text/css" href="/css/fullpage.css">
+    <script type="text/javascript" src="/css/fullpage.js"></script>
 </head>
 <body>
 <th:block sec:authorize = "isAnonymous()">
-    <div class="container" style="max-width: 600px">
-        <div class="py-5 text-center">
-            <h2>홈 화면</h2>
-        </div>
-        <div class="row">
-            <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg" type="button" sec:authorize="isAnonymous()"
-                        th:onclick="|location.href='@{/members/add}'|">
-                    회원 가입
-                </button>
-            </div>
+<!--    <div class="container" style="max-width: 600px">-->
+<!--        <div class="row">-->
+<!--            <div class="col">-->
+<!--                <button class="w-100 btn btn-secondary btn-lg" type="button" sec:authorize="isAnonymous()"-->
+<!--                        th:onclick="|location.href='@{/members/add}'|">-->
+<!--                    회원 가입-->
+<!--                </button>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </div>-->
+    <div id="full-page">
+        <div class="section">
             <div class="col">
                 <a class="w-100 btn btn-dark btn-lg" sec:authorize="isAnonymous()"
                         th:href="@{/member/login}" type="button">
@@ -94,6 +66,9 @@
                 </a>
             </div>
         </div>
+        <div class="section">Some section</div>
+        <div class="section">Some section</div>
+        <div class="section">Some section</div>
     </div>
 </th:block>
 <th:block sec:authorize = "isAuthenticated()">
@@ -116,8 +91,101 @@
     <div id="map" style="width:100%;height:550px;"></div>
 </th:block>
 </div> <!-- /container -->
+<script>
+    new fullpage('#full-page', {
+        //options here
+        autoScrolling:true,
+        scrollHorizontally: true
+    });
+    // new fullpage('#fullpage', {
+    //     // 이동
+    //     menu: '#menu',
+    //     lockAnchors: false,
+    //     anchors:['firstPage', 'secondPage'],
+    //     navigation: false,
+    //     navigationPosition: 'right',
+    //     navigationTooltips: ['firstSlide', 'secondSlide'],
+    //     showActiveTooltip: false,
+    //     slidesNavigation: false,
+    //     slidesNavPosition: 'bottom',
+    //
+    //     // 스크롤
+    //     css3: true,
+    //     scrollingSpeed: 700,
+    //     autoScrolling: true,
+    //     fitToSection: true,
+    //     fitToSectionDelay: 600,
+    //     scrollBar: false,
+    //     easing: 'easeInOutCubic',
+    //     easingcss3: 'ease',
+    //     loopBottom: false,
+    //     loopTop: false,
+    //     loopHorizontal: true,
+    //     continuousVertical: false,
+    //     continuousHorizontal: false,
+    //     scrollHorizontally: false,
+    //     interlockedSlides: false,
+    //     dragAndMove: false,
+    //     offsetSections: false,
+    //     resetSliders: false,
+    //     fadingEffect: false,
+    //     normalScrollElements: '#element1, .element2',
+    //     scrollOverflow: true,
+    //     scrollOverflowMacStyle: false,
+    //     scrollOverflowReset: false,
+    //     touchSensitivity: 15,
+    //     bigSectionsDestination: null,
+    //
+    //     // 접근성
+    //     keyboardScrolling: true,
+    //     animateAnchor: true,
+    //     recordHistory: true,
+    //
+    //     // 디자인
+    //     controlArrows: true,
+    //     controlArrowsHTML: [
+    //         '<div class="fp-arrow"></div>',
+    //         '<div class="fp-arrow"></div>'
+    //     ],
+    //     verticalCentered: true,
+    //     sectionsColor : ['#ccc', '#fff'],
+    //     paddingTop: '3em',
+    //     paddingBottom: '10px',
+    //     fixedElements: '#header, .footer',
+    //     responsiveWidth: 0,
+    //     responsiveHeight: 0,
+    //     responsiveSlides: false,
+    //     parallax: false,
+    //     parallaxOptions: {type: 'reveal', percentage: 62, property: 'translate'},
+    //     dropEffect: false,
+    //     dropEffectOptions: { speed: 2300, color: '#F82F4D', zIndex: 9999},
+    //     waterEffect: false,
+    //     waterEffectOptions: { animateContent: true, animateOnMouseMove: true},
+    //     cards: false,
+    //     cardsOptions: {perspective: 100, fadeContent: true, fadeBackground: true},
+    //
+    //     // 맞춤 선택자
+    //     sectionSelector: '.section',
+    //     slideSelector: '.slide',
+    //
+    //     lazyLoading: true,
+    //     observer: true,
+    //     credits: { enabled: true, label: 'Made with fullPage.js', position: 'right'},
+    //
+    //     // 사건(이벤트)
+    //     beforeLeave: function(origin, destination, direction, trigger){},
+    //     onLeave: function(origin, destination, direction, trigger){},
+    //     afterLoad: function(origin, destination, direction, trigger){},
+    //     afterRender: function(){},
+    //     afterResize: function(width, height){},
+    //     afterReBuild: function(){},
+    //     afterResponsive: function(isResponsive){},
+    //     afterSlideLoad: function(section, origin, destination, direction, trigger){},
+    //     onSlideLeave: function(section, origin, destination, direction, trigger){},
+    //     onScrollOverflow: function(section, slide, position, direction){}
+    // });
+</script>
 
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ea6dedfd426ef3bfa6075139675dcaf7&libraries=services"></script>
 <script>
     // 주소-좌표 변환 객체를 생성합니다
     var geocoder = new kakao.maps.services.Geocoder();
@@ -138,7 +206,7 @@
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
                 center: new kakao.maps.LatLng(latitude,longitude), // 지도의 중심좌표
-                level: 3 // 지도의 확대 레벨
+                level:3 // 지도의 확대 레벨
             };
 
         // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
@@ -169,18 +237,6 @@
         if (status === kakao.maps.services.Status.OK) {
             var infoDiv = document.getElementById('centerAddr');
             infoDiv.innerHTML = result[0].address_name;
-            address = result[0].address_name;
-
-            // var mapContainer = document.getElementById('map'), // 지도를 표시할 div
-            //     mapOption = {
-            //         center: new kakao.maps.LatLng(35.143142, 129.095168), // 지도의 중심좌표
-            //         level: 3 // 지도의 확대 레벨
-            //     };
-            //
-            // // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-            // var map = new kakao.maps.Map(mapContainer, mapOption);
-
-            // Split the address by whitespace and take the first two components
             var splitAddress = address.split(' ');
             var simplifiedAddress = splitAddress.slice(0, 2).join(' ');
 
@@ -203,7 +259,6 @@
                 });
         }
     }
-
 </script>
 </body>
 </html>
