@@ -3,7 +3,7 @@ package lettuce.demo.Controller;
 
 import jakarta.mail.MessagingException;
 import lettuce.demo.Member.AuthForm;
-import lettuce.demo.Member.Member;
+import lettuce.demo.Entity.Member;
 import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Service.MailService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller

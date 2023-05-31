@@ -1,12 +1,9 @@
-package lettuce.demo.Post;
+package lettuce.demo.Entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lettuce.demo.Member.Member;
-import lettuce.demo.Reply.Reply;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
+import lettuce.demo.Entity.Member;
+import lettuce.demo.Entity.Reply;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.ArrayList;
@@ -42,6 +39,24 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
 
+    @Column(length = 100)
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
+    }
 
     public Member getMember() {
         return member;

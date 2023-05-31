@@ -1,26 +1,23 @@
 package lettuce.demo.Controller;
 
 
-import lettuce.demo.Member.Member;
-import lettuce.demo.Post.Post;
-import lettuce.demo.Reply.Reply;
+import lettuce.demo.Entity.Member;
+import lettuce.demo.Entity.Post;
+import lettuce.demo.Entity.Reply;
 import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Repository.PostRepository;
 import lettuce.demo.Repository.ReplyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.data.annotation.Id;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -43,13 +40,14 @@ public class PostController {
 
     @GetMapping("/lists")
     @PreAuthorize("isAuthenticated()")
-    public String list(Model model, @PageableDefault(size = 10)Pageable pageable) {
-        Page<Post> postPage = postRepository.findAllByOrderByCreateDateDesc(pageable);
+    public String list(Model model, @PageableDefault(size = 10) Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
+        String memberLocation = findMember.get().getLocation();
+        Page<Post> postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
         model.addAttribute("nickname", findMember.get().getNickname());
         model.addAttribute("memberId", findMember.get().getId());
-        model.addAttribute("postPage", postPage); // Pass the Page object to the view
+        model.addAttribute("postPage", postPage);
         model.addAttribute("member", findMember);
         return "Post/postList";
     }
@@ -70,6 +68,7 @@ public class PostController {
             Member member = optionalMember.get();
             post.setMember(member);
             post.setCreateDate(new Date());
+            post.setLocation(optionalMember.get().getLocation());
             postRepository.save(post);
             Long postId = post.getId();
             return "redirect:/posts/detail/" + postId;

@@ -88,7 +88,20 @@
     .name{
       text-align: right;
     }
+    .comment-form {
+      display: none; /* Hide comment form by default */
+    }
   </style>
+  <script>
+    function toggleCommentForm(replyId) {
+      var commentForm = document.getElementById('commentForm-' + replyId);
+      if (commentForm.style.display === 'none') {
+        commentForm.style.display = 'block';
+      } else {
+        commentForm.style.display = 'none';
+      }
+    }
+  </script>
   <meta charset="utf-8">
   <title>Post Detail</title>
 </head>
@@ -116,6 +129,25 @@
         <span th:text="${reply.createDate}"></span>
         <a th:href="@{/profile/myinfo/{nickname}(nickname=${reply.member.nickname})}" th:text="${reply.member.nickname}"></a>
         <a th:href="@{/reply/delete/{replyId}(replyId=${reply.id}, postId=${post.id})}">삭제</a>
+        <button th:onclick="|toggleCommentForm('${reply.id}'); return false;|">댓글쓰기</button>
+          <div>
+          <h4>댓글 목록</h4>
+          <ul>
+            <li th:each="comment : ${reply.comments}">
+              <span th:text="${comment.content}"></span>
+              <span th:text="${comment.createDate}"></span>
+              <a th:href="@{/profile/myinfo/{nickname}(nickname=${comment.member.nickname})}" th:text="${comment.member.nickname}"></a>
+              <a th:href="@{/comment/delete/{commentId}(commentId=${comment.id}, postId=${post.id})}" onclick="return confirm('comment를 지우시겠습니까?')">Delete</a>
+            </li>
+          </ul>
+          <div class="comment-form" th:id="'commentForm-'+${reply.id}">
+            <form action="/comment/createcomment" method="post">
+              <input type="hidden" name="replyId" th:value="${reply.id}" />
+              <textarea name="content" rows="2" placeholder="댓글을 입력하세요" required></textarea>
+              <button type="submit">댓글 작성</button>
+            </form>
+          </div>
+        </div>
       </li>
     </ul>
   </div>

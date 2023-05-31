@@ -1,6 +1,6 @@
 package lettuce.demo.Controller;
 
-import lettuce.demo.Member.Member;
+import lettuce.demo.Entity.Member;
 import lettuce.demo.Repository.MemberRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

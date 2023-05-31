@@ -1,6 +1,6 @@
 package lettuce.demo.Service;
 
-import lettuce.demo.Member.Member;
+import lettuce.demo.Entity.Member;
 import lettuce.demo.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

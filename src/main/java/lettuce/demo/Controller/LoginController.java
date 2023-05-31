@@ -2,7 +2,7 @@ package lettuce.demo.Controller;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
-import lettuce.demo.Member.Member;
+import lettuce.demo.Entity.Member;
 import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +10,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/member")

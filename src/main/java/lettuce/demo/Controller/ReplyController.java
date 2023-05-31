@@ -1,8 +1,8 @@
 package lettuce.demo.Controller;
 
-import lettuce.demo.Member.Member;
-import lettuce.demo.Post.Post;
-import lettuce.demo.Reply.Reply;
+import lettuce.demo.Entity.Member;
+import lettuce.demo.Entity.Post;
+import lettuce.demo.Entity.Reply;
 import lettuce.demo.Repository.MemberRepository;
 import lettuce.demo.Repository.PostRepository;
 import lettuce.demo.Repository.ReplyRepository;

@@ -1,13 +1,9 @@
-package lettuce.demo.Member;
+package lettuce.demo.Entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
-import lettuce.demo.Post.Post;
-import lettuce.demo.Reply.Reply;
-import lombok.Builder;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -144,6 +140,17 @@ public class Member {
     public void removeReply(Reply reply) {
         replies.remove(reply);
         reply.setMember(null);
+    }
+
+    @OneToMany(mappedBy = "member")
+    private List<Comment> comments;
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public List<Reply> getReplies() {

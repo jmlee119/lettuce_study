@@ -1,11 +1,10 @@
-package lettuce.demo.Reply;
+package lettuce.demo.Entity;
 
 import jakarta.persistence.*;
-import lettuce.demo.Member.Member;
-import lettuce.demo.Post.Post;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Reply {
@@ -79,6 +78,18 @@ public class Reply {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     @PrePersist
     protected void onCreate() {
         createDate = new Date();
