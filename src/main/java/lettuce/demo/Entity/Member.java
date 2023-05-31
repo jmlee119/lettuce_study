@@ -51,6 +51,8 @@ public class Member {
 
     @Column(length = 100)
     private String location;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
 
     public String getLocation() {
         return location;
@@ -118,8 +120,6 @@ public class Member {
         this.authNum = authNum;
     }
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
 
     public void addPost(Post post) {
         posts.add(post);

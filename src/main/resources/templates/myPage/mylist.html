@@ -68,7 +68,7 @@
   <tbody class="all">
   <tr th:each="post, postNumber : ${myPosts}">
     <td th:text="${postNumber.index + 1}"></td>
-    <td th:text="${nickname}"></td>
+    <td th:text="${post.getMember().nickname}"></td>
     <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
     <td>
       <span th:if="${post.modifyDate != null}" th:text="${#dates.format(post.modifyDate, 'yyyy-MM-dd HH:mm')} + ' (수정됨) '"></span>

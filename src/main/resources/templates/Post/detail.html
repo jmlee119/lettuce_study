@@ -111,8 +111,11 @@
   <h1 th:text="${post.title}"></h1>
   <p class="name">작성자: <a th:href="@{/profile/myinfo/{nickname}(nickname=${post.member.nickname})}" th:text="${post.member.nickname}"></a></p>
   <p class="content" th:text="${post.content}"></p>
-  <p class="date">작성일: <span th:text="${post.createDate}"></span></p>
-  <p class="date" th:if="${post.modifyDate}">수정일: <span th:text="${post.modifyDate}"></span></p>
+  <p class="date">작성일: <span th:text="${#dates.format(post.createDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></span></p>
+  <p class="date" th:if="${post.modifyDate}">
+    수정일: <span th:text="${#dates.format(post.modifyDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
+  </p>
+  <p class="date">올린 지역: <span th:text="${post.location}"></span></p>
   <a th:href="@{/posts/delete/{postId}(postId=${post.id})}" onclick="return confirm('정말로 글을 삭제하시겠습니까?')">글 삭제</a>
   <a th:href="@{/posts/update/{postId}(postId=${post.id})}">글 수정</a>
   <form action="/reply/createreply" method="post">

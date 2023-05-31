@@ -53,7 +53,7 @@ public class MyPageController {
                 model.addAttribute("nickname_profile", anothermember.get().getNickname());
                 return "myPage/mypage";
             } else { // 값이 없을 경우 예외 처리 또는 적절한 대응
-                model.addAttribute("errorMsg", "해당 회원을 찾을 수 없습니다.");
+                model.addAttribute("errorMessage", "해당 회원을 찾을 수 없습니다.");
                 return "errorPage"; // 예외 처리 페이지로 이동하거나, 다른 적절한 대응을 취할 수 있습니다.
             }
         }
@@ -77,12 +77,15 @@ public class MyPageController {
             }
         }else{
             Optional<Member> anotherMember = memberRepository.findByNickname(nickname);
-            List<Post> anotherPosts = postRepository.findByMemberOrderByCreateDateDesc(anotherMember.get());
-            model.addAttribute("myPosts", anotherPosts);
-            model.addAttribute("nickname",anotherMember.get().getNickname());
-            return "myPage/mylist";
+            if (anotherMember.isPresent()) {
+                List<Post> anotherPosts = postRepository.findByMemberOrderByCreateDateDesc(anotherMember.get());
+                model.addAttribute("myPosts", anotherPosts);
+                model.addAttribute("nickname", findMember.get().getNickname());
+                return "myPage/mylist";
+            } else {
+                return "redirect:/";
+            }
         }
-
     }
 
     @GetMapping("/edit/{nickname}")

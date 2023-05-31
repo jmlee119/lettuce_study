@@ -1,6 +1,7 @@
 package lettuce.demo.Controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import lettuce.demo.Entity.Member;
 import lettuce.demo.Entity.Post;
 import lettuce.demo.Entity.Reply;
@@ -19,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -44,17 +46,51 @@ public class PostController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         String memberLocation = findMember.get().getLocation();
+        if(memberLocation == null){
+            model.addAttribute("errorMessage", "현재 위치인증을 받지 않아 글 보기 기능을 사용할 수 없습니다. 위치인증을 먼저 받아주세요!!");
+            return "errorPage";
+        }
+        String[] memberLocationSplit = memberLocation.split(" ");
+        String city = memberLocationSplit[0];
         Page<Post> postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
         model.addAttribute("nickname", findMember.get().getNickname());
         model.addAttribute("memberId", findMember.get().getId());
         model.addAttribute("postPage", postPage);
         model.addAttribute("member", findMember);
+        model.addAttribute("extends",city);
         return "Post/postList";
+    }
+
+    @GetMapping("/extends")
+    @PreAuthorize("isAuthenticated()")
+    public String extendlist(Model model, @PageableDefault(size = 10) Pageable pageable){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
+        String memberLocation = findMember.get().getLocation();
+        if (memberLocation == null) {
+            model.addAttribute("errorMessage", "현재 위치인증을 받지 않아 글 보기 기능을 사용할 수 없습니다. 위치인증을 먼저 받아주세요!!");
+            return "errorPage";
+        }
+
+        String[] memberLocationSplit = memberLocation.split(" ");
+        String city = memberLocationSplit[0];
+
+        Page<Post> postPage = postRepository.findAllByLocationStartingWithOrderByCreateDateDesc(city, pageable);
+        model.addAttribute("nickname", findMember.get().getNickname());
+        model.addAttribute("memberId", findMember.get().getId());
+        model.addAttribute("postPage", postPage);
+        model.addAttribute("member", findMember);
+        model.addAttribute("extends",city);
+        return "Post/extendslist";
     }
 
     @GetMapping("/create/{memberId}")
     public String postCreate(@PathVariable Long memberId, Model model) {
         Optional<Member> member = memberRepository.findById(memberId);
+        if(member.get().getLocation() == null) {
+            model.addAttribute("errorMessage", "현재 위치인증을 받지 않아 글 생성이 불가능 합니다. 위치인증을 먼저 받아주세요!!");
+            return "errorPage";
+        }
         model.addAttribute("memberId", memberId);
         model.addAttribute("nickname", member.get().getNickname());
         return "Post/createPost";
@@ -80,16 +116,26 @@ public class PostController {
 
     @GetMapping("/detail/{postId}")
     @PreAuthorize("isAuthenticated()")
-    public String myPostDetail(@PathVariable Long postId, Model model) {
+    public String myPostDetail(@PathVariable Long postId, Model model, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
+        Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         Optional<Post> findPost = postRepository.findById(postId);
         if (findPost.isPresent()) {
+            String referer = request.getHeader("Referer");
+            boolean isFromExtend = referer != null && referer.contains("/posts/extends");
+
+            if(!isFromExtend){
+                if(!findMember.get().getLocation().equals(findPost.get().getLocation())
+                        && !findMember.get().getId().equals(findPost.get().getMember().getId())){
+                    model.addAttribute("errorMessage", "글을 쓴 위치와 현재 사용자의 위치가 달라서 글을 볼 수 없습니다.");
+                    return "errorPage";
+                }
+            }
             model.addAttribute("post", findPost.get());
-            model.addAttribute("memberId", findmember.get().getId());
-            model.addAttribute("nickname", findmember.get().getNickname());
+            model.addAttribute("memberId", findMember.get().getId());
+            model.addAttribute("nickname", findMember.get().getNickname());
             List<Reply> replies = replyRepository.findByPost(findPost.get());
-            model.addAttribute("replies",replies);
+            model.addAttribute("replies", replies);
             return "Post/detail";
         } else {
             return "redirect:/mypage/mylist";
@@ -121,6 +167,8 @@ public class PostController {
             model.addAttribute("post", findpost);
             model.addAttribute("title", findpost.get().getTitle());
             model.addAttribute("content", findpost.get().getContent());
+            model.addAttribute("memberId", findMember.get().getId());
+            model.addAttribute("nickname", findMember.get().getNickname());
             return "Post/updatePost";
         } else {
             model.addAttribute("errorMessage", "본인의 글만 수정 가능합니다");
@@ -138,7 +186,7 @@ public class PostController {
             Post post = findpost.get();
             post.setTitle(title);
             post.setContent(content);
-            post.setModifyDate(new Date()); // Set the modifyDate to the current date
+            post.setModifyDate(new Date());
             postRepository.save(post);
             return "redirect:/posts/detail/" + postId;
         } else{
