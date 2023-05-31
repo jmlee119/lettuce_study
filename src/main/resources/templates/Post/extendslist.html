@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8" name="viewport" content="width=device-width, height=device-height, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
-  <title>PostList</title>
+  <title>extendList</title>
   <style>
     body {
       padding-left: 10%;
@@ -139,8 +139,8 @@
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
 <div class="create ">
-  <span>현재 지역은 <span th:text="${member.get().location}"></span>입니다.</span>
-  <a th:href="@{/posts/extends}"><span th:text="${extends}"></span>"로 확장하기</a>
+  <span>현재 확장된 지역은 <span th:text="${extends}"></span>" 입니다.</span>
+  <a th:href="@{/posts/lists}"><span th:text="${member.get().location}"></span>로 축소하기</a>
   <a th:href="@{/posts/create/{memberId}(memberId=${member.get().id})}"> 글 작성하기</a>
 </div>
 <table class="all">

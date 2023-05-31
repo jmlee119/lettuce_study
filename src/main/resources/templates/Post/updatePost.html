@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Create Post</title>
+  <title>Update Post</title>
   <style>
     body {
       padding-left: 10%;
@@ -14,7 +14,6 @@
       justify-content: space-between;
       align-items: center;
       padding: 20px;
-      background-color: #c4ff9e;
       /*background-color: rgba(196, 255, 158, 0.4);
       투명한건 어떤가 싶어서 주석 처리
       */
@@ -33,25 +32,95 @@
       display: flex;
       align-items: center;
     }
+    .container_else .left_button .firstbut:hover button {
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
+    .container_else .left_button .secbut:hover button{
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
+    .container_else .left_button .thrbut:hover button{
+      text-decoration: underline;
+      text-decoration-color: #45a049;
+      color: #45a049;
+
+    }
     .container_else .left_button button{
       margin-right: 30px;
     }
-    container_else .right_button {
+
+    .container_else .right_button {
       display: flex;
       align-items: center;
+      margin: 8%;    /*nav 위치 */
+    }
+    .container_else .right_button button{
+      margin: 10px;
+      color: white;
+    }
+    .container_else .right_button .nick_btn {
+      background-color: #45a049;
+      border-radius: 17px;
+      margin-right: 10px;
+
+    }
+    .container_else .right_button .log_btn {
+      background-color: #45a049;
+      border-radius: 17px;
+
+    }
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    button[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
-<h1>Create Post</h1>
+<h1>Update Post</h1>
 <form th:action="@{/posts/update}" method="post">
   <input type="hidden" name="postId" th:value="${post.get().getId()}" />
   <label for="title">Title</label>
   <input type="text" name="title" id="title" required  th:value="${post.get().getTitle()}"><br><br>
   <label for="content">Content</label>
   <textarea name="content" id="content" rows="10" required th:text="${post.get().getContent()}"></textarea><br><br>
-  <button type="submit">Create</button>
+  <button type="submit">Update</button>
 </form>
 
 </body>

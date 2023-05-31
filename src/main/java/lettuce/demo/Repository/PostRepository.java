@@ -16,4 +16,6 @@ public interface PostRepository extends CrudRepository <Post,Long> {
     void deleteById(Long id);
     Page<Post> findAllByOrderByCreateDateDesc(Pageable pageable);
     Page<Post> findAllByLocationOrderByCreateDateDesc(String location, Pageable pageable);
+
+    Page<Post> findAllByLocationStartingWithOrderByCreateDateDesc(String city, Pageable pageable);
 }
