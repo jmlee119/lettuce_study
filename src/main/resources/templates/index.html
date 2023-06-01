@@ -39,6 +39,14 @@
             display: flex;
             align-items: center;
         }
+        .start_bttn {
+            align-items: center;
+            border: 0;
+            font-size: 50px;
+            background-color: #1d6222;
+            color: white;
+
+        }
     </style>
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ea6dedfd426ef3bfa6075139675dcaf7&libraries=services"></script>
     <link rel="stylesheet" type="text/css" href="/css/fullpage.css">
@@ -46,29 +54,25 @@
 </head>
 <body>
 <th:block sec:authorize = "isAnonymous()">
-<!--    <div class="container" style="max-width: 600px">-->
-<!--        <div class="row">-->
-<!--            <div class="col">-->
-<!--                <button class="w-100 btn btn-secondary btn-lg" type="button" sec:authorize="isAnonymous()"-->
-<!--                        th:onclick="|location.href='@{/members/add}'|">-->
-<!--                    회원 가입-->
-<!--                </button>-->
-<!--            </div>-->
-
-<!--        </div>-->
-<!--    </div>-->
     <div id="full-page">
         <div class="section">
+            <h2 align="center">다른 누군가와 공부를 하고 싶으신가요?</h2>
+        </div>
+        <div class="section">
+            <h2 align="center">동네 스터디원을 구하고 싶으신가요?</h2>
+        </div>
+        <div class="section">
+            <h2 align="ceneter">근처 이웃과 함꼐 공부하는 양상추 스터디</h2>
+        </div>
+        <div class="section">
             <div class="col">
-                <a class="w-100 btn btn-dark btn-lg" sec:authorize="isAnonymous()"
-                        th:href="@{/member/login}" type="button">
-                    로그인
-                </a>
+                <button class="start_bttn"
+                        sec:authorize="isAnonymous()" th:onclick="|location.href='@{/member/login}'|"
+                        type="button">
+                    지금 바로 시작하기
+                </button>
             </div>
         </div>
-        <div class="section">Some section</div>
-        <div class="section">Some section</div>
-        <div class="section">Some section</div>
     </div>
 </th:block>
 <th:block sec:authorize = "isAuthenticated()">
@@ -93,97 +97,89 @@
 </div> <!-- /container -->
 <script>
     new fullpage('#full-page', {
-        //options here
-        autoScrolling:true,
-        scrollHorizontally: true
+        // 이동
+        menu: '#menu',
+        lockAnchors: false,
+        anchors:['firstPage', 'secondPage','thirdPage','fourthPage'],
+        navigation: true,
+        navigationPosition: 'right',
+        navigationTooltips: ['인트로', '인트로2','thirdSlide', '시작'],
+        showActiveTooltip: true,
+        // 스크롤
+        css3: true,
+        scrollingSpeed: 700,
+        autoScrolling: true,
+        fitToSection: true,
+        fitToSectionDelay: 600,
+        scrollBar: false,
+        easing: 'easeInOutCubic',
+        easingcss3: 'ease',
+        loopBottom: false,
+        loopTop: false,
+        loopHorizontal: true,
+        continuousVertical: false,
+        continuousHorizontal: false,
+        scrollHorizontally: false,
+        interlockedSlides: false,
+        dragAndMove: false,
+        offsetSections: false,
+        resetSliders: false,
+        fadingEffect: false,
+        normalScrollElements: '#element1, .element2',
+        scrollOverflow: true,
+        scrollOverflowMacStyle: false,
+        scrollOverflowReset: false,
+        touchSensitivity: 15,
+        bigSectionsDestination: null,
+
+        // 접근성
+        keyboardScrolling: true,
+        animateAnchor: true,
+        recordHistory: true,
+
+        // 디자인
+        controlArrows: true,
+        controlArrowsHTML: [
+            '<div class="fp-arrow"></div>',
+            '<div class="fp-arrow"></div>'
+        ],
+        verticalCentered: true,
+        sectionsColor : ['#A5D6A7','#66BB6A','#43A047','#2E7D32'],
+        paddingTop: '3em',
+        paddingBottom: '10px',
+        fixedElements: '#header, .footer',
+        responsiveWidth: 0,
+        responsiveHeight: 0,
+        responsiveSlides: false,
+        parallax: false,
+        parallaxOptions: {type: 'reveal', percentage: 62, property: 'translate'},
+        dropEffect: false,
+        dropEffectOptions: { speed: 2300, color: '#F82F4D', zIndex: 9999},
+        waterEffect: false,
+        waterEffectOptions: { animateContent: true, animateOnMouseMove: true},
+        cards: false,
+        cardsOptions: {perspective: 100, fadeContent: true, fadeBackground: true},
+
+        // 맞춤 선택자
+        sectionSelector: '.section',
+        slideSelector: '.slide',
+
+        lazyLoading: true,
+        observer: true,
+        credits: { enabled: true, label: 'Made with fullPage.js', position: 'right'},
+
+        // 사건(이벤트)
+        beforeLeave: function(origin, destination, direction, trigger){},
+        onLeave: function(origin, destination, direction, trigger){},
+        afterLoad: function(origin, destination, direction, trigger){},
+        afterRender: function(){},
+        afterResize: function(width, height){},
+        afterReBuild: function(){},
+        afterResponsive: function(isResponsive){},
+        afterSlideLoad: function(section, origin, destination, direction, trigger){},
+        onSlideLeave: function(section, origin, destination, direction, trigger){},
+        onScrollOverflow: function(section, slide, position, direction){}
     });
-    // new fullpage('#fullpage', {
-    //     // 이동
-    //     menu: '#menu',
-    //     lockAnchors: false,
-    //     anchors:['firstPage', 'secondPage'],
-    //     navigation: false,
-    //     navigationPosition: 'right',
-    //     navigationTooltips: ['firstSlide', 'secondSlide'],
-    //     showActiveTooltip: false,
-    //     slidesNavigation: false,
-    //     slidesNavPosition: 'bottom',
-    //
-    //     // 스크롤
-    //     css3: true,
-    //     scrollingSpeed: 700,
-    //     autoScrolling: true,
-    //     fitToSection: true,
-    //     fitToSectionDelay: 600,
-    //     scrollBar: false,
-    //     easing: 'easeInOutCubic',
-    //     easingcss3: 'ease',
-    //     loopBottom: false,
-    //     loopTop: false,
-    //     loopHorizontal: true,
-    //     continuousVertical: false,
-    //     continuousHorizontal: false,
-    //     scrollHorizontally: false,
-    //     interlockedSlides: false,
-    //     dragAndMove: false,
-    //     offsetSections: false,
-    //     resetSliders: false,
-    //     fadingEffect: false,
-    //     normalScrollElements: '#element1, .element2',
-    //     scrollOverflow: true,
-    //     scrollOverflowMacStyle: false,
-    //     scrollOverflowReset: false,
-    //     touchSensitivity: 15,
-    //     bigSectionsDestination: null,
-    //
-    //     // 접근성
-    //     keyboardScrolling: true,
-    //     animateAnchor: true,
-    //     recordHistory: true,
-    //
-    //     // 디자인
-    //     controlArrows: true,
-    //     controlArrowsHTML: [
-    //         '<div class="fp-arrow"></div>',
-    //         '<div class="fp-arrow"></div>'
-    //     ],
-    //     verticalCentered: true,
-    //     sectionsColor : ['#ccc', '#fff'],
-    //     paddingTop: '3em',
-    //     paddingBottom: '10px',
-    //     fixedElements: '#header, .footer',
-    //     responsiveWidth: 0,
-    //     responsiveHeight: 0,
-    //     responsiveSlides: false,
-    //     parallax: false,
-    //     parallaxOptions: {type: 'reveal', percentage: 62, property: 'translate'},
-    //     dropEffect: false,
-    //     dropEffectOptions: { speed: 2300, color: '#F82F4D', zIndex: 9999},
-    //     waterEffect: false,
-    //     waterEffectOptions: { animateContent: true, animateOnMouseMove: true},
-    //     cards: false,
-    //     cardsOptions: {perspective: 100, fadeContent: true, fadeBackground: true},
-    //
-    //     // 맞춤 선택자
-    //     sectionSelector: '.section',
-    //     slideSelector: '.slide',
-    //
-    //     lazyLoading: true,
-    //     observer: true,
-    //     credits: { enabled: true, label: 'Made with fullPage.js', position: 'right'},
-    //
-    //     // 사건(이벤트)
-    //     beforeLeave: function(origin, destination, direction, trigger){},
-    //     onLeave: function(origin, destination, direction, trigger){},
-    //     afterLoad: function(origin, destination, direction, trigger){},
-    //     afterRender: function(){},
-    //     afterResize: function(width, height){},
-    //     afterReBuild: function(){},
-    //     afterResponsive: function(isResponsive){},
-    //     afterSlideLoad: function(section, origin, destination, direction, trigger){},
-    //     onSlideLeave: function(section, origin, destination, direction, trigger){},
-    //     onScrollOverflow: function(section, slide, position, direction){}
-    // });
 </script>
 
 <script>
