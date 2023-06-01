@@ -13,7 +13,6 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background-color: #c4ff9e;
             /*background-color: rgba(196, 255, 158, 0.4);
             투명한건 어떤가 싶어서 주석 처리
             */
@@ -32,12 +31,47 @@
             display: flex;
             align-items: center;
         }
+        .container_else .left_button .firstbut:hover button {
+            text-decoration: underline;
+            text-decoration-color: #45a049;
+            color: #45a049;
+
+        }
+        .container_else .left_button .secbut:hover button{
+            text-decoration: underline;
+            text-decoration-color: #45a049;
+            color: #45a049;
+
+        }
+        .container_else .left_button .thrbut:hover button{
+            text-decoration: underline;
+            text-decoration-color: #45a049;
+            color: #45a049;
+
+        }
         .container_else .left_button button{
             margin-right: 30px;
         }
-        container_else .right_button {
+
+        .container_else .right_button {
             display: flex;
             align-items: center;
+            margin: 8%;    /*nav 위치 */
+        }
+        .container_else .right_button button{
+            margin: 10px;
+            color: white;
+        }
+        .container_else .right_button .nick_btn {
+            background-color: #45a049;
+            border-radius: 17px;
+            margin-right: 10px;
+
+        }
+        .container_else .right_button .log_btn {
+            background-color: #45a049;
+            border-radius: 17px;
+
         }
         .start_bttn {
             align-items: center;
@@ -77,16 +111,6 @@
 </th:block>
 <th:block sec:authorize = "isAuthenticated()">
     <nav th:replace="fragments/common :: menu"></nav>
-    <div>
-        <button th:onclick="|location.href='@{/posts/create/{memberId}(memberId=${memberId})}'|">
-            글 생성
-        </button>
-    </div>
-    <div>
-        <button th:onclick="|location.href='@{/posts/lists}'|">
-            전체 글 보기
-        </button>
-    </div>
     <button onclick="getLocationAndSaveLocation()">
         위치 인증
     </button>
