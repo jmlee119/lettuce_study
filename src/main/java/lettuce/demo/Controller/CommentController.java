@@ -1,5 +1,6 @@
 package lettuce.demo.Controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lettuce.demo.Entity.Comment;
 import lettuce.demo.Entity.Member;
 import lettuce.demo.Entity.Reply;
@@ -28,7 +29,7 @@ public class CommentController {
 
     @PostMapping("/createcomment")
     @PreAuthorize("isAuthenticated()")
-    public String createComment(@RequestParam("replyId") Long replyId, @RequestParam("content") String content) {
+    public String createComment(@RequestParam("replyId") Long replyId, @RequestParam("content") String content,@RequestParam("extends") Boolean extend, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         Optional<Reply> findReply = replyRepository.findById(replyId);
@@ -41,8 +42,13 @@ public class CommentController {
             comment.setMember(findMember.get());
             commentRepository.save(comment);
         }
-
-        return "redirect:/posts/detail/" + findReply.get().getPost().getId();
+        boolean isExtend = extend != null && extend;
+        String extendsParam = request.getParameter("extends");
+        if (extendsParam != null && !extendsParam.isEmpty() || isExtend) {
+            return "redirect:/posts/detail/" + findReply.get().getPost().getId() + "?extends=" + extendsParam;
+        } else {
+            return "redirect:/posts/detail/" + findReply.get().getPost().getId();
+        }
     }
 
     @GetMapping("/delete/{commentId}")

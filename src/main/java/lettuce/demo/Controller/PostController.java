@@ -116,13 +116,14 @@ public class PostController {
 
     @GetMapping("/detail/{postId}")
     @PreAuthorize("isAuthenticated()")
-    public String myPostDetail(@PathVariable Long postId, Model model, HttpServletRequest request) {
+    public String myPostDetail(@PathVariable Long postId, Model model,@RequestParam(value = "extends", required = false) Boolean extend, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         Optional<Post> findPost = postRepository.findById(postId);
         if (findPost.isPresent()) {
             String referer = request.getHeader("Referer");
-            boolean isFromExtend = referer != null && referer.contains("/posts/extends");
+            boolean isFromExtend = referer != null && (referer.contains("/posts/extends") || (extend != null && extend));
+
 
             if(!isFromExtend){
                 if(!findMember.get().getLocation().equals(findPost.get().getLocation())
@@ -136,6 +137,7 @@ public class PostController {
             model.addAttribute("nickname", findMember.get().getNickname());
             List<Reply> replies = replyRepository.findByPost(findPost.get());
             model.addAttribute("replies", replies);
+            model.addAttribute("extends",isFromExtend);
             return "Post/detail";
         } else {
             return "redirect:/mypage/mylist";

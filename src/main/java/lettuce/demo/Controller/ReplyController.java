@@ -32,7 +32,7 @@ public class ReplyController {
 
     @PostMapping("/createreply")
     @PreAuthorize("isAuthenticated()")
-    public String createReply(@RequestParam("postId") Long postId, @RequestParam("content") String content, HttpServletRequest request) {
+    public String createReply(@RequestParam("postId") Long postId, @RequestParam("content") String content,@RequestParam("extends") Boolean extend, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
         Optional<Post> findPost = postRepository.findById(postId);
@@ -45,10 +45,9 @@ public class ReplyController {
             reply.setMember(findmember.get());
             replyRepository.save(reply);
         }
-
-//        return "redirect:/posts/detail/" + postId;
-        String extendsParam = request.getParameter("/posts/extends");
-        if (extendsParam != null && !extendsParam.isEmpty()) {
+        boolean isExtend = extend != null && extend;
+        String extendsParam = request.getParameter("extends");
+        if (extendsParam != null && !extendsParam.isEmpty() || isExtend) {
             return "redirect:/posts/detail/" + postId + "?extends=" + extendsParam;
         } else {
             return "redirect:/posts/detail/" + postId;

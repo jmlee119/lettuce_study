@@ -214,6 +214,7 @@
     <div class="info_text">
     <p th:text="'Name: ' + ${member.name}"></p>
     <p th:if="${member.nickname == nickname}">Phone: <span th:text="${member.phone}"></span></p>
+    <p th:text="'location: ' + ${member.location}"></p>
     </div>
     <div class ="site_img">
     <p th:if="${member.github}"><a th:href="${member.github}" target="_blank"><img src="/images/free-icon-github-sign-25657.png"></a></p>
