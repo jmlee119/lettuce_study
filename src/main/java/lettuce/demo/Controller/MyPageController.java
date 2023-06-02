@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,6 +44,7 @@ public class MyPageController {
             model.addAttribute("memberId",findmember.get().getId());
             model.addAttribute("nickname",findmember.get().getNickname());
             model.addAttribute("nickname_profile", findmember.get().getNickname());
+            model.addAttribute("real",findmember.get());
             return "myPage/mypage";
         } else {
             Optional<Member> anothermember = memberRepository.findByNickname(nickname);
@@ -51,6 +53,7 @@ public class MyPageController {
                 model.addAttribute("memberId",findmember.get().getId());
                 model.addAttribute("nickname",findmember.get().getNickname());
                 model.addAttribute("nickname_profile", anothermember.get().getNickname());
+                model.addAttribute("real",findmember.get());
                 return "myPage/mypage";
             } else { // 값이 없을 경우 예외 처리 또는 적절한 대응
                 model.addAttribute("errorMessage", "해당 회원을 찾을 수 없습니다.");
@@ -112,7 +115,7 @@ public class MyPageController {
                                 @RequestParam("name") String name,
                                 @RequestParam("phone") String phone,
                                 @RequestParam("github") String github,
-                                @RequestParam("instargram") String instargram,
+                                @RequestParam("instagram") String instagram,
                                 @RequestParam(value = "image", required = false) MultipartFile imageFile,
                                 Model model) {
         Optional<Member> findmember = memberRepository.findById(Id);
@@ -130,7 +133,7 @@ public class MyPageController {
             } else {
                 member.setImage(null);
             }
-            if (!member.getNickname().equals(nickname) && memberRepository.findByNickname(nickname).isPresent()) {
+            if (!StringUtils.isEmpty(nickname) && !member.getNickname().equals(nickname) && memberRepository.findByNickname(nickname).isPresent()) {
                 model.addAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
                 model.addAttribute("member", member);
                 model.addAttribute("nickname",nickname);
@@ -142,7 +145,7 @@ public class MyPageController {
             member.setName(name);
             member.setPhone(phone);
             member.setGithub(github);
-            member.setInstargram(instargram);
+            member.setInstagram(instagram);
             memberRepository.save(member);
             model.addAttribute("member", member);
             model.addAttribute("nickname", nickname);

@@ -18,4 +18,16 @@ public interface PostRepository extends CrudRepository <Post,Long> {
     Page<Post> findAllByLocationOrderByCreateDateDesc(String location, Pageable pageable);
 
     Page<Post> findAllByLocationStartingWithOrderByCreateDateDesc(String city, Pageable pageable);
+
+    Page<Post> findByMember_NicknameContainingAndLocationOrderByCreateDateDesc(String nickname, String location, Pageable pageable);
+
+    Page<Post> findByTitleContainingAndLocationOrderByCreateDateDesc(String nickname, String location, Pageable pageable);
+
+    Page<Post> findByContentContainingAndLocationOrderByCreateDateDesc(String nickname, String location, Pageable pageable);
+
+    Page<Post> findByMember_NicknameContainingAndLocationStartingWithOrderByCreateDateDesc(String nickname, String location, Pageable pageable);
+
+    Page<Post> findByTitleContainingAndLocationStartingWithOrderByCreateDateDesc(String nickname, String location, Pageable pageable);
+
+    Page<Post> findByContentContainingAndLocationStartingWithOrderByCreateDateDesc(String nickname, String location, Pageable pageable);
 }

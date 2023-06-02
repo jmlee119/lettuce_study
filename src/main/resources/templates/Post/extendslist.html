@@ -111,6 +111,15 @@
       padding: 0.4%;
 
     }
+    .create form {
+      margin-left: auto;
+      margin-right: 10px;
+    }
+
+    .create input[type="text"],
+    .create button {
+      vertical-align: middle;
+    }
     a:hover {
       color:white;
       background-color: #45a049;
@@ -142,6 +151,15 @@
   <span>현재 확장된 지역은 <span th:text="${extends}"></span>" 입니다.</span>
   <a th:href="@{/posts/lists}"><span th:text="${member.get().location}"></span>로 축소하기</a>
   <a th:href="@{/posts/create/{memberId}(memberId=${member.get().id})}"> 글 작성하기</a>
+  <form action="#" th:action="@{/posts/extends}" method="get" style="display: inline-block;">
+    <select name="criteria">
+      <option value="nickname">Nickname</option>
+      <option value="title">Title</option>
+      <option value="content">Content</option>
+    </select>
+    <input type="text" name="search" placeholder="Search..." />
+    <button type="submit">Search</button>
+  </form>
 </div>
 <table class="all">
   <thead>

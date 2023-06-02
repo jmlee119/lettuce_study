@@ -218,15 +218,32 @@
     </div>
     <div class ="site_img">
     <p th:if="${member.github}"><a th:href="${member.github}" target="_blank"><img src="/images/free-icon-github-sign-25657.png"></a></p>
-    <p th:if="${member.instargram}"><a th:href="${member.instargram}"  target="_blank"><img src="/images/free-icon-instagram-174855.png"></a></p>
+    <p th:if="${member.instagram}"><a th:href="${member.instagram}"  target="_blank"><img src="/images/free-icon-instagram-174855.png"></a></p>
+    <p th:if="${real.nickname != member.nickname}"><a><img src="/images/declaration.png"></a></p>
     </div>
   </div>
 </div>
 
 <div class ="footer_btn">
-  <div class ="footer_btn_post">
+<!--  <div class ="footer_btn_post">-->
+<!--    <form th:action="@{/profile/mylist/{nickname}(nickname=${nickname_profile})}" method="get">-->
+<!--      <button type="submit"> <img src="/images/free-icon-sticky-note-7688466.png" alt="이미지" /><p> View My Posts <p/></button>-->
+<!--    </form>-->
+<!--  </div>-->
+  <div class="footer_btn_post" th:if="${member.isAdmin()}">
+    <form th:action="@{/admin/main}" method="get">
+      <button type="submit">
+        <img src="/images/free-icon-sticky-note-7688466.png" alt="Admin" />
+        <p>Manage Homepage</p>
+      </button>
+    </form>
+  </div>
+  <div class="footer_btn_post" th:unless="${member.isAdmin()}">
     <form th:action="@{/profile/mylist/{nickname}(nickname=${nickname_profile})}" method="get">
-      <button type="submit"> <img src="/images/free-icon-sticky-note-7688466.png" alt="이미지" /><p> View My Posts <p/></button>
+      <button type="submit">
+        <img src="/images/free-icon-sticky-note-7688466.png" alt="Posts" />
+        <p>View My Posts</p>
+      </button>
     </form>
   </div>
   <div class ="footer_btn_edit">

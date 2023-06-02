@@ -10,11 +10,18 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Configuration
 @RequiredArgsConstructor
@@ -37,6 +44,7 @@ public class SecurityConfig{
         http.authorizeRequests().requestMatchers("/posts/**").authenticated();
         http.authorizeRequests().requestMatchers("/reply/**").authenticated();
         http.authorizeRequests().requestMatchers("/comment/**").authenticated();
+        http.authorizeRequests().requestMatchers("/admin/**").authenticated();
         http.authorizeRequests().anyRequest().permitAll();
         http.formLogin().loginPage("/member/login")
                 .usernameParameter("email")
@@ -61,6 +69,4 @@ public class SecurityConfig{
     AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
-
-
 }

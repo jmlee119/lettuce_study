@@ -42,7 +42,7 @@ public class Member {
 
     private String github;
 
-    private String instargram;
+    private String instagram;
 
     @Lob
     private byte[] image;
@@ -51,6 +51,18 @@ public class Member {
 
     @Column(length = 100)
     private String location;
+
+    @Column(name = "is_admin")
+    private Boolean isAdmin = false;
+
+    public Boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
@@ -86,12 +98,12 @@ public class Member {
         this.github = github;
     }
 
-    public String getInstargram() {
-        return instargram;
+    public String getInstagram() {
+        return instagram;
     }
 
-    public void setInstargram(String instargram) {
-        this.instargram = instargram;
+    public void setInstagram(String instagram) {
+        this.instagram = instagram;
     }
 
     public Boolean getVerified() {

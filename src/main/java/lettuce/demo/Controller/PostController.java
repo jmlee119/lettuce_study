@@ -42,7 +42,9 @@ public class PostController {
 
     @GetMapping("/lists")
     @PreAuthorize("isAuthenticated()")
-    public String list(Model model, @PageableDefault(size = 10) Pageable pageable) {
+    public String list(Model model, @PageableDefault(size = 10) Pageable pageable,
+                       @RequestParam(value = "search", required = false) String search,
+                       @RequestParam(value = "criteria", required = false) String criteria) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         String memberLocation = findMember.get().getLocation();
@@ -52,7 +54,21 @@ public class PostController {
         }
         String[] memberLocationSplit = memberLocation.split(" ");
         String city = memberLocationSplit[0];
-        Page<Post> postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
+        Page<Post> postPage;
+        if (search != null && !search.isEmpty()) {
+            if (criteria.equals("nickname")) {
+                postPage = postRepository.findByMember_NicknameContainingAndLocationOrderByCreateDateDesc(search, memberLocation, pageable);
+            } else if (criteria.equals("title")) {
+                postPage = postRepository.findByTitleContainingAndLocationOrderByCreateDateDesc(search, memberLocation, pageable);
+            } else if (criteria.equals("content")) {
+                postPage = postRepository.findByContentContainingAndLocationOrderByCreateDateDesc(search, memberLocation, pageable);
+            } else {
+                // Handle invalid criteria value
+                postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
+            }
+        } else {
+            postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
+        }
         model.addAttribute("nickname", findMember.get().getNickname());
         model.addAttribute("memberId", findMember.get().getId());
         model.addAttribute("postPage", postPage);
@@ -63,7 +79,9 @@ public class PostController {
 
     @GetMapping("/extends")
     @PreAuthorize("isAuthenticated()")
-    public String extendlist(Model model, @PageableDefault(size = 10) Pageable pageable){
+    public String extendlist(Model model, @PageableDefault(size = 10) Pageable pageable,
+                             @RequestParam(value = "search", required = false) String search,
+                             @RequestParam(value = "criteria", required = false) String criteria){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         String memberLocation = findMember.get().getLocation();
@@ -74,8 +92,22 @@ public class PostController {
 
         String[] memberLocationSplit = memberLocation.split(" ");
         String city = memberLocationSplit[0];
-
-        Page<Post> postPage = postRepository.findAllByLocationStartingWithOrderByCreateDateDesc(city, pageable);
+        Page<Post> postPage;
+        if (search != null && !search.isEmpty()) {
+            if (criteria.equals("nickname")) {
+                postPage = postRepository.findByMember_NicknameContainingAndLocationStartingWithOrderByCreateDateDesc(search, city, pageable);
+            } else if (criteria.equals("title")) {
+                postPage = postRepository.findByTitleContainingAndLocationStartingWithOrderByCreateDateDesc(search, city, pageable);
+            } else if (criteria.equals("content")) {
+                postPage = postRepository.findByContentContainingAndLocationStartingWithOrderByCreateDateDesc(search, city, pageable);
+            } else {
+                // Handle invalid criteria value
+                postPage = postRepository.findAllByLocationStartingWithOrderByCreateDateDesc(city, pageable);
+            }
+        } else {
+            postPage = postRepository.findAllByLocationStartingWithOrderByCreateDateDesc(city, pageable);
+        }
+//        Page<Post> postPage = postRepository.findAllByLocationStartingWithOrderByCreateDateDesc(city, pageable);
         model.addAttribute("nickname", findMember.get().getNickname());
         model.addAttribute("memberId", findMember.get().getId());
         model.addAttribute("postPage", postPage);

@@ -133,7 +133,7 @@
       <li th:each="reply : ${replies}">
         <span th:text="${reply.content}"></span>
         <span th:text="${reply.createDate}"></span>
-        <span th:if="${reply.member.location != post.location}">[타지역]</span>
+        <span th:if="${reply.member.location != post.location && reply.member.id != post.member.id}">[타지역]</span>
         <a th:href="@{/profile/myinfo/{nickname}(nickname=${reply.member.nickname})}" th:text="${reply.member.nickname}"></a>
         <a th:href="@{/reply/delete/{replyId}(replyId=${reply.id}, postId=${post.id})}">삭제</a>
         <button th:onclick="|toggleCommentForm('${reply.id}'); return false;|">댓글쓰기</button>
@@ -143,7 +143,7 @@
             <li th:each="comment : ${reply.comments}">
               <span th:text="${comment.content}"></span>
               <span th:text="${comment.createDate}"></span>
-              <span th:if="${comment.member.location != post.location}">[타지역]</span>
+              <span th:if="${comment.member.location != post.location && comment.member.id != post.member.id}">[타지역]</span>
               <a th:href="@{/profile/myinfo/{nickname}(nickname=${comment.member.nickname})}" th:text="${comment.member.nickname}"></a>
               <a th:href="@{/comment/delete/{commentId}(commentId=${comment.id}, postId=${post.id})}" onclick="return confirm('comment를 지우시겠습니까?')">Delete</a>
             </li>
