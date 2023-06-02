@@ -74,30 +74,84 @@
             border-radius: 17px;
 
         }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2cm;
+            width: calc(500px + 2cm); /* 가로 길이 2cm 추가 */
+            background-color: #e6ffe6;
+            border-radius: 10px;
+        }
+
+        label {
+            color: #006600;
+            font-weight: bold;
+            margin-bottom: 0.2cm;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            padding: 0.3cm;
+            margin-bottom: 0.3cm; /* 간격 0.1cm 추가 */
+        }
+        input[type="file"] {
+            padding: 0.3cm;
+            margin-bottom: 0.3cm;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            padding: 0.5cm;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .alert {
+            margin-top: 1cm;
+            padding: 0.5cm;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+        }
+        .div{
+            padding-top: 2%;
+            display: flex;
+            justify-content: center; /* 수평 가운데 정렬 */
+            align-items: center; /* 수직 가운데 정렬 */
+        }
     </style>
 </head>
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
-<h1>Welcome to Edit Page</h1>
+<h1 style="text-align: center">MyPage Update</h1>
+<div class="div">
+    <form th:action="@{/profile/edit}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="Id" th:value="${member.get().getId()}" />
+        <label for="nickname">Nickname:</label>
+        <input type="text" id="nickname" name="nickname" th:value="${member.get().getNickname()}" />
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" th:value="${member.get().getName()}" />
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" th:value="${member.get().getPhone()}" />
+        <label for="github">Github:</label>
+        <input type="text" id="github" name="github" th:value="${member.get().getGithub()}" />
+        <label for="instargram">Instagram:</label>
+        <input type="text" id="instargram" name="instargram" th:value="${member.get().getInstargram()}" />
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" />
+        <button type="submit">Update</button>
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <p th:text="${errorMessage}"></p>
+        </div>
+    </form>
+</div>
 
-<form th:action="@{/profile/edit}" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="Id" th:value="${member.get().getId()}" />
-    <label for="nickname">Nickname:</label>
-    <input type="text" id="nickname" name="nickname" th:value="${member.get().getNickname()}" />
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" th:value="${member.get().getName()}" /><br />
-    <label for="phone">Phone:</label>
-    <input type="text" id="phone" name="phone" th:value="${member.get().getPhone()}" /><br />
-    <label for="github">Github:</label>
-    <input type="text" id="github" name="github" th:value="${member.get().getGithub()}" /><br />
-    <label for="instargram">Instargram:</label>
-    <input type="text" id="instargram" name="instargram" th:value="${member.get().getInstargram()}" /><br />
-    <label for="image">Image:</label>
-    <input type="file" id="image" name="image" /><br />
-    <button type="submit">Update</button>
-    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-        <p th:text="${errorMessage}"></p>
-    </div>
-</form>
 </body>
 </html>
