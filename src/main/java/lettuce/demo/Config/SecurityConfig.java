@@ -51,7 +51,7 @@ public class SecurityConfig{
                 .passwordParameter("password")
                 .successHandler((req, res, auth) -> {
                     Optional<Member> member = memberRepository.findByEmail(auth.getName());
-                    if (!member.get().getVerified()) {
+                    if (!member.get().getVerified() || !member.get().getEnable()) {
                         throw new BadCredentialsException("The account is not verified.");
                     }
                     res.sendRedirect("/");

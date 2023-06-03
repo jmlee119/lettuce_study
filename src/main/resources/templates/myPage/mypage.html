@@ -219,7 +219,7 @@
     <div class ="site_img">
     <p th:if="${member.github}"><a th:href="${member.github}" target="_blank"><img src="/images/free-icon-github-sign-25657.png"></a></p>
     <p th:if="${member.instagram}"><a th:href="${member.instagram}"  target="_blank"><img src="/images/free-icon-instagram-174855.png"></a></p>
-    <p th:if="${real.nickname != member.nickname}"><a><img src="/images/declaration.png"></a></p>
+    <p th:if="${real.nickname != member.nickname && !real.isAdmin()}"><a th:href="@{/admin/declaration(reported=${member.id})}"><img src="/images/declaration.png"></a></p>
     </div>
   </div>
 </div>

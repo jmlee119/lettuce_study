@@ -2,13 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>detaildeclaration</title>
     <style>
-        body {
-            padding-left: 10%;
-            padding-right: 10%;
-            padding-top: 2%;
-        }
         body {
             padding-left: 10%;
             padding-right: 10%;
@@ -66,11 +61,12 @@
         }
         .container_else .right_button button{
             margin: 10px;
+            color: white;
         }
         .container_else .right_button .nick_btn {
             background-color: #45a049;
-            margin-right: 10px;
             border-radius: 17px;
+            margin-right: 10px;
 
         }
         .container_else .right_button .log_btn {
@@ -78,65 +74,46 @@
             border-radius: 17px;
 
         }
-        .all {
-            width: 100%;
-            padding: 1%;
-            font-weight: bold;
+        .date {
+            text-align: right;
         }
-
-        td{
-            padding: 0.5%;
+        h1{
             text-align: center;
-            background-color: rgba(69, 160, 73, 0.2);
-            text-align: center;
-            vertical-align: middle;
-
         }
-        th{
-            background:  #45a049;
-            color :white;
-            padding:1.5%;
+        .content{
+            padding: 10%;
         }
-        .reporter:hover {
-            background-color: rgba(69, 160, 73, 0.5);
-        }
-        .reported:hover{
-            background-color: rgba(69, 160, 73, 0.7);
-        }
-        a:hover {
-            color:white;
-            background-color: #45a049;
+        .name{
+            text-align: right;
         }
     </style>
+    <script>
+        function disableAccount() {
+            document.getElementById("disableAccountForm").submit();
+        }
+        function enableAccount() {
+            document.getElementById("enableAccountForm").submit();
+        }
+    </script>
 </head>
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
-<h1>관리자 님 환영합니다!!</h1>
-<table class="all">
-    <thead>
-    <tr>
-        <th>Num</th>
-        <th>신고자</th>
-        <th>신고당한 사람</th>
-        <th>제목</th>
-    </tr>
-    </thead>
-    <tbody class="all">
-    <tr th:each="dec,decNumber : ${declaration}">
-        <td th:text="${decNumber.index + 1}"></td>
-        <td class ="reporter"><a th:href="@{/profile/myinfo/{nickname}(nickname=${dec.getReporter().nickname})}" th:text="${dec.getReporter().nickname}"></a></td>
-        <td class="reported"><a th:href="@{/profile/myinfo/{nickname}(nickname=${dec.getReported().nickname})}" th:text="${dec.getReported().nickname}"></a></td>
-        <td>
-            <a th:href="@{/admin/detaildeclaration/{id}(id=${dec.getId()})}">
-                <span th:text="'신고내용 보러가기'"></span>
-            </a>
-        </td>
-    </tr>
-    </tr>
-<!--    <tr th:if="${postPage.totalElements == 0}">-->
-<!--        <td colspan="4">No posts found.</td>-->
-<!--    </tr>-->
-    </tbody>
-</table>
+<div class="container">
+    <h1 th:text="${declaration.report_content}"></h1>
+    <p class="name">신고자: <a th:href="@{/profile/myinfo/{nickname}(nickname=${declaration.getReporter().getNickname()})}" th:text="${declaration.getReporter().nickname}"></a></p>
+    <p class="content" th:text="${declaration.content}"></p>
+    <p class="date">신고 당한 사람: <a th:href="@{/profile/myinfo/{nickname}(nickname=${declaration.getReported().getNickname()})}"><span th:text="${declaration.getReported().getNickname()}"></span></a></p>
+    <form id="disableAccountForm" th:action="@{/admin/disable-account/{nickname}(nickname=${declaration.getReported().getNickname()})}" method="POST" style="display: none;">
+        <input type="hidden" name="_method" value="POST"/>
+    </form>
+    <form id="enableAccountForm" th:action="@{/admin/enable-account/{nickname}(nickname=${declaration.getReported().getNickname()})}" method="POST" style="display: none;">
+        <input type="hidden" name="_method" value="POST"/>
+    </form>
+    <button onclick="disableAccount()">계정 비활성화</button>
+    <button onclick="enableAccount()">계정 활성화</button>
+    <p class="date">
+        신고일: <span th:text="${declaration.createDate}"></span>
+    </p>
+</div>
 </body>
 </html>
