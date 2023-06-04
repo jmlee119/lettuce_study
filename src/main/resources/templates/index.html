@@ -96,10 +96,10 @@
             <h2 align="center">동네 스터디원을 구하고 싶으신가요?</h2>
         </div>
         <div class="section">
-            <h2 align="ceneter">근처 이웃과 함꼐 공부하는 양상추 스터디</h2>
+            <h2 align="center">근처 이웃과 함꼐 공부하는 양상추 스터디</h2>
         </div>
         <div class="section">
-            <div class="col">
+            <div class="col" align="center">
                 <button class="start_bttn"
                         sec:authorize="isAnonymous()" th:onclick="|location.href='@{/member/login}'|"
                         type="button">
@@ -257,7 +257,7 @@
         if (status === kakao.maps.services.Status.OK) {
             var infoDiv = document.getElementById('centerAddr');
             infoDiv.innerHTML = result[0].address_name;
-            var splitAddress = address.split(' ');
+            var splitAddress = result[0].address_name.split(' ');
             var simplifiedAddress = splitAddress.slice(0, 2).join(' ');
 
             const url = '/members/location';
