@@ -66,6 +66,8 @@ public class PostController {
                 // Handle invalid criteria value
                 postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
             }
+        } else if (findMember.get().isAdmin()) {
+            postPage = postRepository.findAllByOrderByCreateDateDesc(pageable);
         } else {
             postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
         }
@@ -152,6 +154,10 @@ public class PostController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         Optional<Post> findPost = postRepository.findById(postId);
+        if (findMember.get().getLocation() == null){
+            model.addAttribute("errorMessage","아직 동네인증 전으로 글을 볼 수 없습니다.");
+            return "errorPage";
+        }
         if (findPost.isPresent()) {
             String referer = request.getHeader("Referer");
             boolean isFromExtend = referer != null && (referer.contains("/posts/extends") || (extend != null && extend));

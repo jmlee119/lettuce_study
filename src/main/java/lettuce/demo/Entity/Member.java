@@ -1,5 +1,6 @@
 package lettuce.demo.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -55,8 +56,40 @@ public class Member {
     @Column(name = "is_admin")
     private Boolean isAdmin = false;
 
+    @Column(name = "is_enable")
+    private Boolean isEnable;
+
+    public Boolean getEnable() {
+        return isEnable;
+    }
+
+    public void setEnable(Boolean enable) {
+        isEnable = enable;
+    }
+
     public Boolean isAdmin() {
         return isAdmin;
+    }
+
+    @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Declaration> reportedDeclarations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "reported", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Declaration> receivedDeclarations = new ArrayList<>();
+    @JsonIgnore
+    public List<Declaration> getReportedDeclarations() {
+        return reportedDeclarations;
+    }
+    @JsonIgnore
+    public List<Declaration> getReceivedDeclarations() {
+        return receivedDeclarations;
+    }
+    public void setReportedDeclarations(List<Declaration> reportedDeclarations) {
+        this.reportedDeclarations = reportedDeclarations;
+    }
+
+    public void setReceivedDeclarations(List<Declaration> receivedDeclarations) {
+        this.receivedDeclarations = receivedDeclarations;
     }
 
     public void setAdmin(Boolean admin) {

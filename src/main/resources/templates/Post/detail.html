@@ -119,8 +119,9 @@
     수정일: <span th:text="${#dates.format(post.modifyDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
   </p>
   <p class="date">올린 지역: <span th:text="${post.location}"></span></p>
-  <a th:href="@{/posts/delete/{postId}(postId=${post.id})}" onclick="return confirm('정말로 글을 삭제하시겠습니까?')">글 삭제</a>
-  <a th:href="@{/posts/update/{postId}(postId=${post.id})}">글 수정</a>
+  <a th:if = "${post.member.id == memberId}" th:href="@{/posts/delete/{postId}(postId=${post.id})}" onclick="return confirm('정말로 글을 삭제하시겠습니까?')">글 삭제</a>
+  <a th:if = "${post.member.id == memberId}" th:href="@{/posts/update/{postId}(postId=${post.id})}">글 수정</a>
+  <a th:if = "${post.member.id != memberId}" th:href="@{/admin/declaration(reported=${post.member.id}, content=${post.content})}">신고하기</a>
   <form th:action="|/reply/createreply?extends=${extends}|" method="post">
     <input type="hidden" name="postId" th:value="${post.id}" />
     <textarea name="content" rows="3" placeholder="답글을 입력하세요" required></textarea>
@@ -135,7 +136,8 @@
         <span th:text="${reply.createDate}"></span>
         <span th:if="${reply.member.location != post.location && reply.member.id != post.member.id}">[타지역]</span>
         <a th:href="@{/profile/myinfo/{nickname}(nickname=${reply.member.nickname})}" th:text="${reply.member.nickname}"></a>
-        <a th:href="@{/reply/delete/{replyId}(replyId=${reply.id}, postId=${post.id})}">삭제</a>
+        <a th:if = "${reply.member.id == memberId}" th:href="@{/reply/delete/{replyId}(replyId=${reply.id}, postId=${post.id})}">삭제</a>
+        <a th:if = "${reply.member.id != memberId}" th:href="@{/admin/declaration(reported=${reply.member.id}, content=${reply.content})}">신고하기</a>
         <button th:onclick="|toggleCommentForm('${reply.id}'); return false;|">댓글쓰기</button>
           <div>
           <h4>댓글 목록</h4>
@@ -145,7 +147,8 @@
               <span th:text="${comment.createDate}"></span>
               <span th:if="${comment.member.location != post.location && comment.member.id != post.member.id}">[타지역]</span>
               <a th:href="@{/profile/myinfo/{nickname}(nickname=${comment.member.nickname})}" th:text="${comment.member.nickname}"></a>
-              <a th:href="@{/comment/delete/{commentId}(commentId=${comment.id}, postId=${post.id})}" onclick="return confirm('comment를 지우시겠습니까?')">Delete</a>
+              <a th:if = "${comment.member.id == memberId}" th:href="@{/comment/delete/{commentId}(commentId=${comment.id}, postId=${post.id})}" onclick="return confirm('comment를 지우시겠습니까?')">Delete</a>
+              <a th:if = "${comment.member.id != memberId}" th:href="@{/admin/declaration(reported=${comment.member.id}, content=${comment.content})}">신고하기</a>
             </li>
           </ul>
           <div class="comment-form" th:id="'commentForm-'+${reply.id}">

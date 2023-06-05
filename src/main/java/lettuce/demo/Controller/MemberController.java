@@ -67,6 +67,7 @@ public class MemberController {
         model.addAttribute("authNum",member.getAuthNum());
         String authNum = mailService.createEmailCode();
         member.setVerified(false);
+        member.setEnable(true);
         member.setAuthNum(authNum);
         memberRepository.save(member);
         try {
