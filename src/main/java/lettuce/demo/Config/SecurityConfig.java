@@ -18,6 +18,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -51,10 +53,16 @@ public class SecurityConfig{
                 .passwordParameter("password")
                 .successHandler((req, res, auth) -> {
                     Optional<Member> member = memberRepository.findByEmail(auth.getName());
-                    if (!member.get().getVerified() || !member.get().getEnable()) {
-                        throw new BadCredentialsException("The account is not verified.");
+                    if (!member.get().getVerified()) {
+//                        throw new BadCredentialsException("The account is not verified.");
+                        String errorMessage = "회원가입 진행 후 메일인증을 하지 않았습니다. 인증을 진행해 주세요";
+                        res.sendRedirect("/error-page?errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    } else if (!member.get().getEnable()) {
+                        String errorMessage = "신고누적으로 인해 계정이 정지당했습니다. admin@naver.com으로 문의 주세요";
+                        res.sendRedirect("/error-page?errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
+                    } else{
+                        res.sendRedirect("/");
                     }
-                    res.sendRedirect("/");
                 })
                 .permitAll();
         http
