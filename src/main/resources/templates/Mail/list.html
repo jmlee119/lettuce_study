@@ -1,31 +1,89 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/css/mailcss.css">
+    <style>
+        .container {
+            display: flex;
+        }
+
+        .menu {
+            width: 15%;
+            background-color: #c8ffb5bf;
+            border-right: 2px;
+            position: fixed;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+        }
+
+        .content {
+            margin-left: 15%;
+            padding: 20px;
+        }
+
+        .menu a {
+            display: block;
+            padding-top: 15%;
+            padding-bottom: 15%;
+            font-size: 20px;
+            color: #000000;
+            text-align: center;
+            color: black;
+            font-weight: bold;
+        }
+
+        .menu a:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .write_btn {
+            border: none;
+            background-color: rgb(5, 103, 33);
+            color: white;
+            font-weight: bold;
+            font-size: 25px;
+            width: 100%;
+            padding-top: 10%;
+            padding-bottom: 10%;
+        }
+
+        .count {
+            padding-left: 5px;
+        }
+    </style>
 </head>
 <body>
-<nav th:replace="fragments/MailCom :: menu"></nav>
-<table>
-    <thead>
-    <tr>
-        <th>보낸사람</th>
-        <th>제목</th>
-    </tr>
-    </thead>
-    <tbody class="all">
-    <tr th:each="m : ${mail}">
-        <td class ="sender"><a th:href="@{/profile/myinfo/{nickname}(nickname=${m.getSender().nickname})}" th:text="${m.getSender().nickname}"></a></td>
-        <td class="title"><a th:href="@{/mail/detail/{mailId}(mailId=${m.id})}" th:text="${m.title}"></a></td>
-        <td class="createDate"><span th:text="${#dates.format(m.sendDate, 'yyyy-MM-dd HH:mm')}"></span></td>
-    </tr>
-    <!-- <a th:href="@{/mail/send}">메일 쓰기</a>
-    <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All') } ">전체 메일함</a>
-    <span th:text="${mailCount}"></span>
-    <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Receiver')} ">받은 메일함</a>
-    <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Sender' ) } ">보낸 메일함</a> -->
-    </tbody>
-</table>
+<div class="container">
+    <nav class="menu">
+        <a th:href="@{/mail/send}"> <button class="write_btn"> 메일 쓰기</button></a>
+        <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All') } ">전체 메일함(<span class="count" th:text="${mailCount}"></span> )</a>
+        <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Receiver')} ">받은 메일함</a>
+        <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Sender' ) } ">보낸 메일함</a>
+    </nav>
+    <div class="content">
+        <table>
+            <thead>
+            <tr>
+                <th>보낸사람</th>
+                <th>제목</th>
+            </tr>
+            </thead>
+            <tbody class="all">
+            <tr th:each="m : ${mail}">
+                <td class="sender"><a th:href="@{/profile/myinfo/{nickname}(nickname=${m.getSender().nickname})}"
+                                      th:text="${m.getSender().nickname}"></a></td>
+                <td class="title"><a th:href="@{/mail/detail/{mailId}(mailId=${m.id})}"
+                                     th:text="${m.title}"></a></td>
+                <td class="createDate"><span th:text="${#dates.format(m.sendDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>
