@@ -32,7 +32,8 @@ public class ReplyController {
 
     @PostMapping("/createreply")
     @PreAuthorize("isAuthenticated()")
-    public String createReply(@RequestParam("postId") Long postId, @RequestParam("content") String content,@RequestParam("extends") Boolean extend, HttpServletRequest request) {
+    public String createReply(@RequestParam("postId") Long postId, @RequestParam("content") String content,
+            @RequestParam("extends") Boolean extend, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
         Optional<Post> findPost = postRepository.findById(postId);
@@ -56,17 +57,16 @@ public class ReplyController {
 
     @GetMapping("/delete/{replyId}")
     @PreAuthorize("isAuthenticated()")
-    public String deleteReply(@PathVariable Long replyId, @RequestParam("postId") Long postId, Model model){
+    public String deleteReply(@PathVariable Long replyId, @RequestParam("postId") Long postId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findmember = memberRepository.findByEmail(authentication.getName());
         Optional<Reply> findReply = replyRepository.findById(replyId);
         model.addAttribute("memberId", findmember.get().getId());
         model.addAttribute("nickname", findmember.get().getNickname());
-        if(findReply.isPresent() && findReply.get().getMember().getNickname().equals(findmember.get().getNickname())) {
+        if (findReply.isPresent() && findReply.get().getMember().getNickname().equals(findmember.get().getNickname())) {
             replyRepository.delete(findReply.get());
             return "redirect:/posts/detail/" + postId;
-        }
-        else{
+        } else {
             model.addAttribute("errorMessage", "답글을 작성하신 사용자와 다릅니다. 삭제 불가능합니다");
             return "errorPage";
         }
