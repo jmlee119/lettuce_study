@@ -19,6 +19,9 @@ public class Mail {
     @Temporal(TemporalType.TIMESTAMP)
     private Date sendDate;
 
+    @Column(nullable = false)
+    private boolean isread;
+
     @ManyToOne
     @JoinColumn(name ="sender_id" , referencedColumnName = "id",nullable = false)
     private Member sender;
@@ -76,5 +79,13 @@ public class Mail {
 
     public void setSendDate(Date sendDate) {
         this.sendDate = sendDate;
+    }
+
+    public Boolean getIsread() {
+        return isread;
+    }
+
+    public void setIsread(Boolean isread) {
+        this.isread = isread;
     }
 }

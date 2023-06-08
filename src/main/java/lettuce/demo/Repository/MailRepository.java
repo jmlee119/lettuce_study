@@ -12,4 +12,5 @@ public interface MailRepository extends CrudRepository<Mail,Long> {
     List<Mail> findBySenderOrderBySendDateDesc(Member sender);
 
     List<Mail> findByReceiverOrSenderOrderBySendDateDesc(Member receiver, Member sender);
+    long countByReceiverAndIsread(Member receiver, boolean read);
 }

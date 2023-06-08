@@ -43,16 +43,21 @@ public class MailController {
     @PostMapping("/send")
     @PreAuthorize("isAuthenticated()")
     public String send(@Valid Mail mail, @RequestParam("receiverNickname") String receiverNickname,
-                       @RequestParam("title") String title, @RequestParam("content") String content) {
+                       @RequestParam("title") String title, @RequestParam("content") String content,Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         Optional<Member> receiver = memberRepository.findByNickname(receiverNickname);
+        if (!receiver.isPresent()) {
+            model.addAttribute("errorMessage", "받는사람이 존재하지 않는 유저입니다. 다시 입력해 주세요");
+            return "errorPage";
+        }
         mail.setReceiver(receiver.orElseThrow(() -> new IllegalArgumentException("Invalid receiver")));
         mail.setSender(findMember.get());
         mail.setTitle(title);
         mail.setContent(content);
         mail.setSendDate(new Date());
+        mail.setIsread(false);
         mailRepository.save(mail);
         return "redirect:/mail/lists/" + findMember.get().getNickname() + "?who=All";
     }
@@ -78,6 +83,8 @@ public class MailController {
         }
         model.addAttribute("mail", listmail);
         model.addAttribute("nickname", Me.get().getNickname());
+        long mailCount = mailRepository.countByReceiverAndIsread(findMember.get(),false);
+        model.addAttribute("mailCount", mailCount);
         return "Mail/list";
     }
 
@@ -90,10 +97,14 @@ public class MailController {
         Optional<Mail> findMail = mailRepository.findById(mailId);
         if(findMember.get().getNickname().equals(findMail.get().getReceiver().getNickname()) || findMember.get().getNickname().equals(findMail.get().getSender().getNickname()) ){
             model.addAttribute("mail", findMail.get());
-        }else{
-            model.addAttribute("errorMessage","로그인 한 유저와 메일 유저가 달라 상세 메일을 볼 수 없습니다.");
-            return "errorPage";
-        }
+            if (findMember.get().getNickname().equals(findMail.get().getReceiver().getNickname())){
+                findMail.get().setIsread(true);
+                mailRepository.save(findMail.get());
+            }
+    }else{
+        model.addAttribute("errorMessage","로그인 한 유저와 메일 유저가 달라 상세 메일을 볼 수 없습니다.");
+        return "errorPage";
+    }
         return "Mail/detail";
     }
 }
