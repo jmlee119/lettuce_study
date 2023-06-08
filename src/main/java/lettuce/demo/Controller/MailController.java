@@ -15,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +57,7 @@ public class MailController {
         mail.setContent(content);
         mail.setSendDate(new Date());
         mailRepository.save(mail);
-        return "redirect:/mail/lists/" + findMember.get().getNickname() + "?who=All";
+        return "redirect:/mail/lists/" + URLEncoder.encode( findMember.get().getNickname(), StandardCharsets.UTF_8) + "?who=All";
     }
 
     @GetMapping("/lists/{nickname}")

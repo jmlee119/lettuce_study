@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/css/mailcss.css">
 </head>
 <body>
-<table class="all">
+<nav th:replace="fragments/MailCom :: menu"></nav>
+<table>
     <thead>
     <tr>
         <th>보낸사람</th>
@@ -18,10 +20,10 @@
         <td class="title"><a th:href="@{/mail/detail/{mailId}(mailId=${m.id})}" th:text="${m.title}"></a></td>
         <td class="createDate"><span th:text="${#dates.format(m.sendDate, 'yyyy-MM-dd HH:mm')}"></span></td>
     </tr>
-    <a th:href="@{/mail/send}">메일 쓰기</a>
+    <!-- <a th:href="@{/mail/send}">메일 쓰기</a>
     <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All') } ">전체 메일함</a>
     <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Receiver')} ">받은 메일함</a>
-    <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Sender' ) } ">보낸 메일함</a>
+    <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Sender' ) } ">보낸 메일함</a> -->
     </tbody>
 </table>
 </body>

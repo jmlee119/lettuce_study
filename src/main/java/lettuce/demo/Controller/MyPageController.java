@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -150,8 +152,7 @@ public class MyPageController {
             model.addAttribute("member", member);
             model.addAttribute("nickname", nickname);
             model.addAttribute("nickname_profile", member.getNickname());
-//            return "myPage/mypage";
-            return "redirect:/profile/myinfo/" + nickname;
+            return "redirect:/profile/myinfo/" + URLEncoder.encode(nickname, StandardCharsets.UTF_8);
         } else {
             model.addAttribute("errorMessage", "해당 회원을 찾을 수 없습니다.");
             return "errorPage";

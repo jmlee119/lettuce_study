@@ -1,0 +1,36 @@
+nav {
+    width: 15%;
+    background-color: #c8ffb5bf;
+    border-right: 2px;
+    position: fixed;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.menu{
+    padding-top: 10%;
+}
+.menu a {
+    display: block;
+    padding-top: 15%;
+    padding-bottom: 15%;
+    font-size: 20px;
+    color: #000000;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+}
+.menu a:hover {
+    background-color: white;
+    color: black;
+}
+.write_btn {
+    border: none;
+    background-color: rgb(5, 103, 33);
+    color: white;
+    font-weight: bold;
+    font-size: 25px;
+    width: 100%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+}
