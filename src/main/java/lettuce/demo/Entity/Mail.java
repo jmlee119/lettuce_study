@@ -20,7 +20,7 @@ public class Mail {
     private Date sendDate;
 
     @Column(nullable = false)
-    private boolean isread;
+    private Boolean isread;
 
     @ManyToOne
     @JoinColumn(name ="sender_id" , referencedColumnName = "id",nullable = false)
