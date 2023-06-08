@@ -3,14 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <title>인증번호 입력</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 10%;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 80%;
+      padding: 20px;
+      border-radius: 5px;
+      background-color: #fff;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+    form p {
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .input-group label {
+      margin-right: 10px;
+    }
+
+    .input-group input[type="text"] {
+      flex: 1; /* 추가된 부분 */
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    span {
+      color: red;
+    }
+
+    button[type="submit"] {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
 <h1>회원가입 인증번호 입력</h1>
 <p>이메일 주소: <strong th:text="${email}"></strong></p>
 <form th:action="@{/members/auth}" method="post" th:object="${auth}">
-  <!-- email 파라미터를 숨겨진 필드(hidden field)로 추가 -->
   <input type="hidden" name="email" th:value="${email}" />
-  <p>
+  <p class="input-group">
     <label for="authNum">인증번호:</label>
     <input type="text" id="authNum" name="authNum" th:field="*{authNum}" />
     <span th:if="${#fields.hasErrors('authNum')}" th:errors="*{authNum}"></span>

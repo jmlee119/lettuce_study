@@ -150,11 +150,6 @@
 </div>
 
 <div class ="footer_btn">
-<!--  <div class ="footer_btn_post">-->
-<!--    <form th:action="@{/profile/mylist/{nickname}(nickname=${nickname_profile})}" method="get">-->
-<!--      <button type="submit"> <img src="/images/free-icon-sticky-note-7688466.png" alt="이미지" /><p> View My Posts <p/></button>-->
-<!--    </form>-->
-<!--  </div>-->
   <div class="footer_btn_post" th:if="${member.isAdmin()}">
     <form th:action="@{/admin/main}" method="get">
       <button type="submit">

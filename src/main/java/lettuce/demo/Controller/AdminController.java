@@ -86,7 +86,8 @@ public class AdminController {
         declaration.setCreateDate(new Date());
         declarationRepository.save(declaration);
 
-        return "redirect:/profile/myinfo/" + declaration.getReporter().getNickname();
+//        return "redirect:/profile/myinfo/" + declaration.getReporter().getNickname();
+        return "redirect:/posts/lists";
     }
     
     @GetMapping("/detaildeclaration/{id}")
