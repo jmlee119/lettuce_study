@@ -2,20 +2,74 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>신고</title>
+  <title>MailSend</title>
   <link rel="stylesheet" href="/css/mailcss.css">
+  <style>
+    form {
+      width: 70%;
+      padding-left: 40px;
+      padding-right: 40px;
+      padding-bottom: 40px;
+      padding-top: 11%;
+      border-radius: 5px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+      text-align: left;
+      width: 100%;
+    }
+
+    label span {
+      margin-right: 10px;
+      width: 40%;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+      border-radius: 1px;
+    }
+
+    button[type="submit"] {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-<div class="container">
+<div>
   <nav th:replace="fragments/MailCom :: menu"></nav>
   <form method="post" action="/mail/send">
-    <label for="receiverNickname">보낼 사람</label>
-    <input type="text" name="receiverNickname" id="receiverNickname" required>
-    <label for="title">Title</label>
-    <input type="text" name="title" id="title" required><br><br>
-    <label for="content">Content</label>
-    <textarea name="content" id="content" rows="10" required></textarea><br><br>
-    <button type="submit">send</button>
+    <label for="receiverNickname">
+      <span>보낼 사람</span>
+      <input type="text" name="receiverNickname" id="receiverNickname" required>
+    </label>
+
+    <label for="title">
+      <span>Title</span>
+      <input type="text" name="title" id="title" required>
+    </label>
+
+    <label for="content">
+      <span>Content</span>
+      <textarea name="content" id="content" rows="10" required></textarea>
+    </label>
+
+    <button type="submit">Send</button>
   </form>
 </div>
 </body>
