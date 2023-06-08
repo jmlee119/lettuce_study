@@ -6,13 +6,13 @@
     <link rel="stylesheet" href="/css/mailcss.css">
 </head>
 <body>
-    <!-- <a href="/" onclick="location.href='/'; return false;">
+    <a href="/" onclick="location.href='/'; return false;">
         <img src="/images/lettuce.png" alt="양상추 스터디" width="150" height="150">
-      </a> -->
+    </a>
     <nav th:fragment="menu">
         <div class="menu">
             <a th:href="@{/mail/send}"> <button class="write_btn"> 메일 쓰기</button></a>
-            <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All') } ">전체 메일함</a>
+            <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All') } ">전체 메일함(<span class="count" th:text="${mailCount}"></span> )</a>
             <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Receiver')} ">받은 메일함</a>
             <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Sender' ) } ">보낸 메일함</a>
         </div>
