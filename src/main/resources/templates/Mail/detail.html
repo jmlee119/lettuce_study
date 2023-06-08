@@ -2,17 +2,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>내용</title>
     <link rel="stylesheet" href="/css/mailcss.css">
+    <style>
+        .title_info {
+            background-color: #dedede;
+            padding-right: 10%;
+            margin-right: 10%;
+        }
+        .content {
+
+        }
+    </style>
 </head>
 <body>
 <nav th:replace="fragments/MailCom :: menu"></nav>
-<h1 th:text="${mail.title}"></h1>
-<p class="name">보낸 사람: <a th:text="${mail.getSender().nickname}"></a></p>
-<!--        th:href="@{/profile/myinfo/{nickname}(nickname=${post.member.nickname})}" -->
-<p class="name">받는 사람: <a th:text="${mail.getReceiver().nickname}"></a></p>
-<p class="content" th:text="${mail.content}"></p>
+<div class="title_info">
+    <h2 th:text="${mail.title}"></h2>
+    <p class="name">보낸 사람: <a th:href="@{/profile/myinfo/{nickname}(nickname=${mail.getSender().nickname})}" th:text="${mail.getSender().nickname}"></a></p>
+    <p class="name">보낸 사람의 지역: <a th:text="${mail.getReceiver().location}"></a></p>
+    <p class="name">받는 사람: <a th:href="@{/profile/myinfo/{nickname}(nickname=${mail.getReceiver().nickname})}" th:text="${mail.getReceiver().nickname}"></a></p>
+    <hr>
+</div>
 
-
+<div class="content" th:text="${mail.content}"></div>
 </body>
 </html>
