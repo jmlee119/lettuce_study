@@ -23,8 +23,6 @@ public class Member {
     @NotEmpty
     @Email
     private String email;
-
-//    @Pattern(regexp = "^(?=.*[!@#$%^&*(),.?\":{}|<>]).{8,12}$", message = "특수문자 포함 8~12자리 비밀번호를 입력해주세요.")
     @NotEmpty
     private String password;
 
@@ -36,8 +34,6 @@ public class Member {
     @Pattern(regexp = "^01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$", message = "번호를 다시 확인해주세요.")
     @NotEmpty
     private String phone;
-
-    // 이메일 인증 여부를 저장하는 필드
 
     private String authNum;
 

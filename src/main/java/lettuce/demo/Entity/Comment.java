@@ -17,7 +17,6 @@ public class Comment {
     @Column(nullable = false)
     private Date createDate;
 
-    // 작성자와 게시물 간의 관계 설정
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

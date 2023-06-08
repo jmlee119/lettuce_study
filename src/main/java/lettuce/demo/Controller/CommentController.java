@@ -68,6 +68,5 @@ public class CommentController {
             model.addAttribute("errorMessage", "댓글을 작성하신 사용자와 다릅니다. 삭제 불가능합니다");
             return "errorPage";
         }
-
     }
 }
