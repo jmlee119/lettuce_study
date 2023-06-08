@@ -3,16 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>신고</title>
+  <link rel="stylesheet" href="/css/mailcss.css">
 </head>
 <body>
-<form method="post" action="/mail/send">
-  <label for="receiverNickname">보낼 사람</label>
-  <input type="text" name="receiverNickname" id="receiverNickname" required>
-  <label for="title">Title</label>
-  <input type="text" name="title" id="title" required><br><br>
-  <label for="content">Content</label>
-  <textarea name="content" id="content" rows="10" required></textarea><br><br>
-  <button type="submit">send</button>
-</form>
+<div class="container">
+  <nav th:replace="fragments/MailCom :: menu"></nav>
+  <form method="post" action="/mail/send">
+    <label for="receiverNickname">보낼 사람</label>
+    <input type="text" name="receiverNickname" id="receiverNickname" required>
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title" required><br><br>
+    <label for="content">Content</label>
+    <textarea name="content" id="content" rows="10" required></textarea><br><br>
+    <button type="submit">send</button>
+  </form>
+</div>
 </body>
 </html>

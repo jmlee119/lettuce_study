@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>MailList</title>
     <link rel="stylesheet" href="/css/mailcss.css">
     <style>
         .container {
             display: flex;
+            align-items: flex-start;
         }
-
-        .menu {
+        nav {
             width: 15%;
             background-color: #c8ffb5bf;
             border-right: 2px;
@@ -17,73 +17,58 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            z-index: 1;
         }
-
-        .content {
+        table {
+            width: 85%;
             margin-left: 15%;
-            padding: 20px;
+            padding: 5%;
+        }
+        td{
+            padding: 1.5%;
+            vertical-align: middle;
+
+        }
+        td:nth-child(1){
+            width: 10%;
         }
 
-        .menu a {
-            display: block;
-            padding-top: 15%;
-            padding-bottom: 15%;
-            font-size: 20px;
-            color: #000000;
-            text-align: center;
-            color: black;
-            font-weight: bold;
+        td:nth-child(2) {
+            width: 30%;
         }
 
-        .menu a:hover {
-            background-color: white;
-            color: black;
+        td:nth-child(3) {
+            width: 40%;
         }
-
-        .write_btn {
-            border: none;
-            background-color: rgb(5, 103, 33);
-            color: white;
-            font-weight: bold;
-            font-size: 25px;
-            width: 100%;
-            padding-top: 10%;
-            padding-bottom: 10%;
+        td:nth-child(4){
+            width: 20%;
         }
-
-        .count {
-            padding-left: 5px;
+        th{
+            padding:1.5%;
+            text-align: left;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <nav class="menu">
-        <a th:href="@{/mail/send}"> <button class="write_btn"> 메일 쓰기</button></a>
-        <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All') } ">전체 메일함(<span class="count" th:text="${mailCount}"></span> )</a>
-        <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Receiver')} ">받은 메일함</a>
-        <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Sender' ) } ">보낸 메일함</a>
-    </nav>
-    <div class="content">
-        <table>
-            <thead>
-            <tr>
-                <th>보낸사람</th>
-                <th>제목</th>
-            </tr>
-            </thead>
-            <tbody class="all">
-            <tr th:each="m : ${mail}">
-                <td class="sender"><a th:href="@{/profile/myinfo/{nickname}(nickname=${m.getSender().nickname})}"
-                                      th:text="${m.getSender().nickname}"></a></td>
-                <td class="title"><a th:href="@{/mail/detail/{mailId}(mailId=${m.id})}"
-                                     th:text="${m.title}"></a></td>
-                <td class="createDate"><span th:text="${#dates.format(m.sendDate, 'yyyy-MM-dd HH:mm')}"></span></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <nav th:replace="fragments/MailCom :: menu"></nav>
+    <table align="left">
+        <thead>
+        <tr>
+            <th>메일번호</th>
+            <th>보낸사람</th>
+            <th>제목</th>
+            <th>날짜</th>
+        </tr>
+        </thead>
+        <tbody class="all">
+        <tr th:each="m,mailNumber : ${mail}">
+            <td th:text="${mailNumber.index + 1}"></td>
+            <td class="sender"><a th:href="@{/profile/myinfo/{nickname}(nickname=${m.getSender().nickname})}" th:text="${m.getSender().nickname}"></a></td>
+            <td class="title"><a th:href="@{/mail/detail/{mailId}(mailId=${m.id})}" th:text="${m.title}"></a></td>
+            <td class="createDate"><span th:text="${#dates.format(m.sendDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

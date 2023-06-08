@@ -7,17 +7,17 @@
 </head>
 <body>
 
-    <nav th:fragment="menu">
-        <a href="/" onclick="location.href='/'; return false;">
-            <img src="/images/lettuce.png" alt="양상추 스터디">
-        </a>
-        <div class="menu">
-            <a class="mail" th:href="@{/mail/send}"> <button class="write_btn"> 메일 쓰기</button></a>
-            <a class="mail" th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All') } ">전체 메일함(<span class="count" th:text="${mailCount}"></span>)</a>
-            <a class="mail" th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Receiver')} ">받은 메일함</a>
-            <a class="mail" th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Sender' ) } ">보낸 메일함</a>
-        </div>
-        <div class="right_button">
+<nav th:fragment="menu">
+    <a href="/" onclick="location.href='/'; return false;">
+        <img src="/images/lettuce.png" alt="양상추 스터디">
+    </a>
+    <div class="menu">
+        <a class="mail" th:href="@{/mail/send}"> <button class="write_btn"> 메일 쓰기</button></a>
+        <a class="mail" th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All') } ">전체 메일함(<span class="count" th:text="${mailCount}"></span>)</a>
+        <a class="mail" th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Receiver')} ">받은 메일함</a>
+        <a class="mail" th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Sender' ) } ">보낸 메일함</a>
+    </div>
+    <div class="right_button">
 
         <div class="nick_btn">
             <button  th:text="${nickname}" th:onclick="|location.href='@{/profile/myinfo/{nickname}(nickname=${nickname})}'|">님
@@ -28,10 +28,10 @@
                 로그아웃
             </button>
         </div>
-        </div><
-        <hr>
+    </div><
+    <hr>
 
-    </nav>
-    
+</nav>
+
 </body>
 </html>
