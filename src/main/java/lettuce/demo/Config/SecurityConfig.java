@@ -43,6 +43,7 @@ public class SecurityConfig{
         http.authorizeRequests().requestMatchers("/reply/**").authenticated();
         http.authorizeRequests().requestMatchers("/comment/**").authenticated();
         http.authorizeRequests().requestMatchers("/admin/**").authenticated();
+        http.authorizeRequests().requestMatchers("/mail/**").authenticated();
         http.authorizeRequests().anyRequest().permitAll();
         http.formLogin().loginPage("/member/login")
                 .usernameParameter("email")
@@ -50,7 +51,6 @@ public class SecurityConfig{
                 .successHandler((req, res, auth) -> {
                     Optional<Member> member = memberRepository.findByEmail(auth.getName());
                     if (!member.get().getVerified()) {
-//                        throw new BadCredentialsException("The account is not verified.");
                         String errorMessage = "회원가입 진행 후 메일인증을 하지 않았습니다. 인증을 진행해 주세요";
                         res.sendRedirect("/error-page?errorMessage=" + URLEncoder.encode(errorMessage, StandardCharsets.UTF_8));
                     } else if (!member.get().getEnable()) {

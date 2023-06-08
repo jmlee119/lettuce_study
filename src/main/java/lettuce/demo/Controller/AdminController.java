@@ -85,8 +85,6 @@ public class AdminController {
         declaration.setContent(content);
         declaration.setCreateDate(new Date());
         declarationRepository.save(declaration);
-
-//        return "redirect:/profile/myinfo/" + declaration.getReporter().getNickname();
         return "redirect:/posts/lists";
     }
     
@@ -119,7 +117,6 @@ public class AdminController {
         }
         member.setEnable(false);
         memberRepository.save(member);
-
         return "redirect:/admin/main";
     }
 
@@ -133,7 +130,6 @@ public class AdminController {
         }
         member.setEnable(true);
         memberRepository.save(member);
-
         return "redirect:/admin/main";
     }
 }

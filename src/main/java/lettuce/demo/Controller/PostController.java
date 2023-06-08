@@ -20,7 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -109,7 +108,6 @@ public class PostController {
         } else {
             postPage = postRepository.findAllByLocationStartingWithOrderByCreateDateDesc(city, pageable);
         }
-//        Page<Post> postPage = postRepository.findAllByLocationStartingWithOrderByCreateDateDesc(city, pageable);
         model.addAttribute("nickname", findMember.get().getNickname());
         model.addAttribute("memberId", findMember.get().getId());
         model.addAttribute("postPage", postPage);

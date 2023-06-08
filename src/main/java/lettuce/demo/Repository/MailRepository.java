@@ -7,9 +7,9 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface MailRepository extends CrudRepository<Mail,Long> {
-    List<Mail> findByReceiver(Member member);
+    List<Mail> findByReceiverOrderBySendDateDesc(Member receiver);
 
-    List<Mail> findBySender(Member member);
+    List<Mail> findBySenderOrderBySendDateDesc(Member sender);
 
-    List<Mail> findByReceiverOrSender(Member receiver, Member sender);
+    List<Mail> findByReceiverOrSenderOrderBySendDateDesc(Member receiver, Member sender);
 }

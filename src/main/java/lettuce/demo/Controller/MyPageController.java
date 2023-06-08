@@ -48,16 +48,16 @@ public class MyPageController {
             return "myPage/mypage";
         } else {
             Optional<Member> anothermember = memberRepository.findByNickname(nickname);
-            if (anothermember.isPresent()) { // 값이 있는지 먼저 확인
+            if (anothermember.isPresent()) {
                 model.addAttribute("member", anothermember.get());
                 model.addAttribute("memberId",findmember.get().getId());
                 model.addAttribute("nickname",findmember.get().getNickname());
                 model.addAttribute("nickname_profile", anothermember.get().getNickname());
                 model.addAttribute("real",findmember.get());
                 return "myPage/mypage";
-            } else { // 값이 없을 경우 예외 처리 또는 적절한 대응
+            } else {
                 model.addAttribute("errorMessage", "해당 회원을 찾을 수 없습니다.");
-                return "errorPage"; // 예외 처리 페이지로 이동하거나, 다른 적절한 대응을 취할 수 있습니다.
+                return "errorPage";
             }
         }
     }

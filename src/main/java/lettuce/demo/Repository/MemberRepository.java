@@ -10,10 +10,8 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends CrudRepository<Member,Long> {
 
-    public List<Member> findByName(String name);
     public Optional<Member> findByEmail(String email);
 
-    public boolean existsByNickname(String nickname);
     public Optional<Member> findByNickname(String nickname);
 
 

@@ -8,7 +8,7 @@
 <table class="all">
     <thead>
     <tr>
-        <th>보낸사람ㅁ</th>
+        <th>보낸사람</th>
         <th>제목</th>
     </tr>
     </thead>
@@ -16,20 +16,12 @@
     <tr th:each="m : ${mail}">
         <td class ="sender"><a th:href="@{/profile/myinfo/{nickname}(nickname=${m.getSender().nickname})}" th:text="${m.getSender().nickname}"></a></td>
         <td class="title"><a th:href="@{/mail/detail/{mailId}(mailId=${m.id})}" th:text="${m.title}"></a></td>
+        <td class="createDate"><span th:text="${#dates.format(m.sendDate, 'yyyy-MM-dd HH:mm')}"></span></td>
     </tr>
-    </tr>
-
     <a th:href="@{/mail/send}">메일 쓰기</a>
     <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All') } ">전체 메일함</a>
     <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Receiver')} ">받은 메일함</a>
     <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Sender' ) } ">보낸 메일함</a>
-
-    <!--    <a th:href="@{mail/list/">받은 메일함</a>-->
-<!--    <a th:href="@{mail/list/">보낸 메일함</a>-->
-    <!--    <tr th:if="${postPage.totalElements == 0}">-->
-
-    <!--        <td colspan="4">No posts found.</td>-->
-    <!--    </tr>-->
     </tbody>
 </table>
 </body>

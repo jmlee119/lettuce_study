@@ -26,22 +26,22 @@ import java.util.Optional;
 public class MailController {
     @Autowired
     private MailRepository mailRepository;
-
     @Autowired
     private MemberRepository memberRepository;
 
     @GetMapping("/send")
+    @PreAuthorize("isAuthenticated()")
     public String sendMail(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         model.addAttribute("nickname", findMember.get().getNickname());
         model.addAttribute("memberId", findMember.get().getId());
-        Mail mail = new Mail();
         Member sender = findMember.get();
         model.addAttribute("sender", sender);
         return "Mail/send";
     }
     @PostMapping("/send")
+    @PreAuthorize("isAuthenticated()")
     public String send(@Valid Mail mail, @RequestParam("receiverNickname") String receiverNickname,
                        @RequestParam("title") String title, @RequestParam("content") String content) {
 
@@ -54,7 +54,7 @@ public class MailController {
         mail.setContent(content);
         mail.setSendDate(new Date());
         mailRepository.save(mail);
-        return "redirect:/mail/lists/" + findMember.get().getNickname();
+        return "redirect:/mail/lists/" + findMember.get().getNickname() + "?who=All";
     }
 
     @GetMapping("/lists/{nickname}")
@@ -68,14 +68,13 @@ public class MailController {
         }
 
         Optional<Member> findMember = memberRepository.findByNickname(nickname);
-       // model.addAttribute("nickname", findMember.get().getNickname());
         List<Mail> listmail;
         if (who.equalsIgnoreCase("Receiver")) {
-            listmail = mailRepository.findByReceiver(findMember.get());
+            listmail = mailRepository.findByReceiverOrderBySendDateDesc(findMember.get());
         } else if (who.equalsIgnoreCase("Sender")) {
-            listmail = mailRepository.findBySender(findMember.get());
+            listmail = mailRepository.findBySenderOrderBySendDateDesc(findMember.get());
         }else{
-            listmail = mailRepository.findByReceiverOrSender(findMember.get(),findMember.get());
+            listmail = mailRepository.findByReceiverOrSenderOrderBySendDateDesc(findMember.get(),findMember.get());
         }
         model.addAttribute("mail", listmail);
         model.addAttribute("nickname", Me.get().getNickname());
@@ -87,12 +86,14 @@ public class MailController {
     @PreAuthorize("isAuthenticated()")
     public String mailDetail(@PathVariable Long mailId, Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
+        Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         Optional<Mail> findMail = mailRepository.findById(mailId);
-        model.addAttribute("mail", findMail.get());
-
+        if(findMember.get().getNickname().equals(findMail.get().getReceiver().getNickname()) || findMember.get().getNickname().equals(findMail.get().getSender().getNickname()) ){
+            model.addAttribute("mail", findMail.get());
+        }else{
+            model.addAttribute("errorMessage","로그인 한 유저와 메일 유저가 달라 상세 메일을 볼 수 없습니다.");
+            return "errorPage";
+        }
         return "Mail/detail";
-
     }
-
 }
