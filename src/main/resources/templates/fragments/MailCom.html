@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="/css/mailcss.css">
 </head>
 <body>
-
-    <nav th:fragment="menu">
+<div class="container_else" th:fragment="menu">
+    <nav >
         <a href="/" onclick="location.href='/'; return false;">
             <img src="/images/lettuce.png" alt="양상추 스터디">
         </a>
@@ -17,8 +17,8 @@
             <a class="mail" th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Receiver')} ">받은 메일함</a>
             <a class="mail" th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='Sender' ) } ">보낸 메일함</a>
         </div>
-        <div class="right_button">
-
+    </nav>
+    <div class="right_button">
         <div class="nick_btn">
             <button  th:text="${nickname}" th:onclick="|location.href='@{/profile/myinfo/{nickname}(nickname=${nickname})}'|">님
             </button>
@@ -28,10 +28,7 @@
                 로그아웃
             </button>
         </div>
-        </div><
-        <hr>
-
-    </nav>
-    
+    </div>
+</div>
 </body>
 </html>

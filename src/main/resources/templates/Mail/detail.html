@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<nav th:replace="fragments/MailCom :: menu"></nav>
 <h1 th:text="${mail.title}"></h1>
 <p class="name">보낸 사람: <a th:text="${mail.getSender().nickname}"></a></p>
 <!--        th:href="@{/profile/myinfo/{nickname}(nickname=${post.member.nickname})}" -->
