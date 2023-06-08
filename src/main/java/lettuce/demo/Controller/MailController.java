@@ -40,6 +40,8 @@ public class MailController {
         model.addAttribute("nickname", findMember.get().getNickname());
         model.addAttribute("memberId", findMember.get().getId());
         Member sender = findMember.get();
+        long mailCount = mailRepository.countByReceiverAndIsread(findMember.get(),false);
+        model.addAttribute("mailCount", mailCount);
         model.addAttribute("sender", sender);
         return "Mail/send";
     }
@@ -98,8 +100,11 @@ public class MailController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<Member> findMember = memberRepository.findByEmail(authentication.getName());
         Optional<Mail> findMail = mailRepository.findById(mailId);
+        long mailCount = mailRepository.countByReceiverAndIsread(findMember.get(),false);
+        model.addAttribute("mailCount", mailCount);
         if(findMember.get().getNickname().equals(findMail.get().getReceiver().getNickname()) || findMember.get().getNickname().equals(findMail.get().getSender().getNickname()) ){
             model.addAttribute("mail", findMail.get());
+            model.addAttribute("nickname",findMember.get().getNickname());
             if (findMember.get().getNickname().equals(findMail.get().getReceiver().getNickname())){
                 findMail.get().setIsread(true);
                 mailRepository.save(findMail.get());
