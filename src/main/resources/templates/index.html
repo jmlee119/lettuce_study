@@ -41,6 +41,11 @@
 </th:block>
 <th:block sec:authorize = "isAuthenticated()">
     <nav th:replace="fragments/common :: menu"></nav>
+    <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All')} " target="_blank">
+        <button>
+            쪽지
+        </button>
+    </a>
     <button onclick="getLocationAndSaveLocation()">
         위치 인증
     </button>
@@ -209,6 +214,7 @@
                 });
         }
     }
+
 </script>
 </body>
 </html>

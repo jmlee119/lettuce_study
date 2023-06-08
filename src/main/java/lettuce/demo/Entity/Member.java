@@ -76,6 +76,29 @@ public class Member {
 
     @OneToMany(mappedBy = "reported", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Declaration> receivedDeclarations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Mail> senderMail = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Mail> receiverMail = new ArrayList<>();
+
+    public List<Mail> getSenderMail() {
+        return senderMail;
+    }
+
+    public void setSenderMail(List<Mail> senderMail) {
+        this.senderMail = senderMail;
+    }
+
+    public List<Mail> getReceiverMail() {
+        return receiverMail;
+    }
+
+    public void setReceiverMail(List<Mail> receiverMail) {
+        this.receiverMail = receiverMail;
+    }
+
     @JsonIgnore
     public List<Declaration> getReportedDeclarations() {
         return reportedDeclarations;
@@ -84,6 +107,8 @@ public class Member {
     public List<Declaration> getReceivedDeclarations() {
         return receivedDeclarations;
     }
+
+
     public void setReportedDeclarations(List<Declaration> reportedDeclarations) {
         this.reportedDeclarations = reportedDeclarations;
     }

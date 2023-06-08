@@ -34,7 +34,7 @@ public class AdminController {
             List<Declaration> declarations = declarationRepository.findAllByOrderByCreateDateDesc();
             model.addAttribute("nickname", findMember.get().getNickname());
             model.addAttribute("memberId", findMember.get().getId());
-            model.addAttribute("declaration",declarations);
+            model.addAttribute( "declaration",declarations);
             return "Admin/MainAdminPage";
         }
         else{
