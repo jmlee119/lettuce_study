@@ -57,6 +57,11 @@ body {
     margin: 10px;
     color: white;
 }
+.container_else .right_button .mail_btn{
+    background-color: #45a049;
+    border-radius: 17px;
+    margin-right: 10px;
+}
 .container_else .right_button .nick_btn {
     background-color: #45a049;
     border-radius: 17px;

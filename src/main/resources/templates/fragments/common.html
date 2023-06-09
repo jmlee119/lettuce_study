@@ -27,6 +27,7 @@
     .container_else .left_button {
       display: flex;
       align-items: center;
+
     }
     .container_else .left_button .firstbut:hover button {
       text-decoration: underline;
@@ -58,6 +59,11 @@
     .container_else .right_button button{
       margin: 10px;
       color: white;
+    }
+    .container_else .right_button .mail_btn{
+      background-color: #45a049;
+      border-radius: 17px;
+      margin-right: 10px;
     }
     .container_else .right_button .nick_btn {
      background-color: #45a049;
@@ -94,7 +100,16 @@
       </div>
 
       <div class="right_button">
-
+        <div class="mail_btn">
+<!--          <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All')} " target="_blank">-->
+<!--            <button th:onclick="@{/mail/lists/{nickname}(nickname=${nickname},who='All')}"  type="button">-->
+            <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All')}" target="_blank">
+                <button>
+                    쪽지
+                </button>
+            </a>
+<!--          </a>-->
+        </div>
         <div class="nick_btn">
           <button  th:text="${nickname}" th:onclick="|location.href='@{/profile/myinfo/{nickname}(nickname=${nickname})}'|">님
           </button>
