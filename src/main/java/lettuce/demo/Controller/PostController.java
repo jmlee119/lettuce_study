@@ -20,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -150,7 +151,8 @@ public class PostController {
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
             post.setMember(member);
-            post.setCreateDate(new Date());
+            Date currentDate = new Date();
+            post.setCreateDate(truncateTime(currentDate));
             post.setLocation(optionalMember.get().getLocation());
             postRepository.save(post);
             Long postId = post.getId();
@@ -159,6 +161,15 @@ public class PostController {
             return "error-page";
         }
 
+    }
+    private Date truncateTime(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
     }
 
     @GetMapping("/detail/{postId}")
