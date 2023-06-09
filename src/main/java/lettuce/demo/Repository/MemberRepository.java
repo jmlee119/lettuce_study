@@ -14,6 +14,5 @@ public interface MemberRepository extends CrudRepository<Member,Long> {
 
     public Optional<Member> findByNickname(String nickname);
 
-
-
+    List<Member> findByNicknameContainingIgnoreCase(String nickname);
 }

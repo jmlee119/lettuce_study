@@ -41,17 +41,11 @@
 </th:block>
 <th:block sec:authorize = "isAuthenticated()">
     <nav th:replace="fragments/common :: menu"></nav>
-    <a th:href="@{/mail/lists/{nickname}(nickname=${nickname},who='All')} " target="_blank">
-        <button>
-            쪽지
-        </button>
-    </a>
-    <button onclick="getLocationAndSaveLocation()">
-        위치 인증
-    </button>
+    <img id="locationImage" src="/images/location.png" onclick="getLocationAndSaveLocation()" alt="위치 인증버튼">
     <span>현재 위치 정보</span>
     <span id="centerAddr"></span>
     <div id="map" style="width:100%;height:550px;"></div>
+
 </th:block>
 </div> <!-- /container -->
 <script>
@@ -152,6 +146,8 @@
         } else {
             console.log("Geolocation is not supported by this browser.");
         }
+        var image = document.getElementById("locationImage");
+        image.style.display = "none";
     }
     function saveLocationToServer(position) {
         const latitude = position.coords.latitude;
