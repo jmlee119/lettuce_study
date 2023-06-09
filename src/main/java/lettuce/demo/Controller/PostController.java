@@ -86,6 +86,7 @@ public class PostController {
         } else {
             postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
         }
+        model.addAttribute("current_date",new Date());
         model.addAttribute("nickname", findMember.get().getNickname());
         model.addAttribute("memberId", findMember.get().getId());
         model.addAttribute("postPage", postPage);
