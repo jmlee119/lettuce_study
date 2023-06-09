@@ -30,4 +30,10 @@ public interface PostRepository extends CrudRepository <Post,Long> {
     Page<Post> findByTitleContainingAndLocationStartingWithOrderByCreateDateDesc(String nickname, String location, Pageable pageable);
 
     Page<Post> findByContentContainingAndLocationStartingWithOrderByCreateDateDesc(String nickname, String location, Pageable pageable);
+
+    Page<Post> findByMember_NicknameContainingOrderByCreateDateDesc(String nickname,Pageable pageable);
+
+    Page<Post> findByTitleContainingOrderByCreateDateDesc(String nickname,Pageable pageable);
+
+    Page<Post> findByContentContainingOrderByCreateDateDesc(String nickname,Pageable pageable);
 }

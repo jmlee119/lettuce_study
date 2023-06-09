@@ -78,9 +78,10 @@
 <body>
 <nav th:replace="fragments/common :: menu"></nav>
 <div class="create">
-  <span>현재 지역은 <span th:text="${member.get().location}"></span>입니다.</span>
-  <a th:href="@{/posts/extends}"><span th:text="${extends}"></span>"로 확장하기</a>
-  <a th:href="@{/posts/create/{memberId}(memberId=${member.get().id})}">글 작성하기</a>
+  <span th:if="${member.get().isAdmin()}">관리자님 환영합니다</span>
+  <span th:unless="${member.get().isAdmin()}">현재 지역은 <span th:text="${member.get().location}"></span>입니다.</span>
+  <a th:href="@{/posts/extends}" th:if="${not member.get().isAdmin()}"><span th:text="${extends}"></span>로 확장하기</a>
+  <a th:href="@{/posts/create/{memberId}(memberId=${member.get().id})}" th:if="${not member.get().isAdmin()}">글 작성하기</a>
   <form action="#" th:action="@{/posts/lists}" method="get" style="display: inline-block;">
     <select name="criteria">
       <option value="nickname">닉네임</option>

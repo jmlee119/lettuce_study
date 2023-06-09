@@ -56,14 +56,29 @@ public class PostController {
         Page<Post> postPage;
         if (search != null && !search.isEmpty()) {
             if (criteria.equals("nickname")) {
-                postPage = postRepository.findByMember_NicknameContainingAndLocationOrderByCreateDateDesc(search, memberLocation, pageable);
+                if (findMember.get().isAdmin()) {
+                    postPage = postRepository.findByMember_NicknameContainingOrderByCreateDateDesc(search, pageable);
+                } else {
+                    postPage = postRepository.findByMember_NicknameContainingAndLocationOrderByCreateDateDesc(search, memberLocation, pageable);
+                }
             } else if (criteria.equals("title")) {
-                postPage = postRepository.findByTitleContainingAndLocationOrderByCreateDateDesc(search, memberLocation, pageable);
+                if (findMember.get().isAdmin()) {
+                    postPage = postRepository.findByTitleContainingOrderByCreateDateDesc(search, pageable);
+                } else {
+                    postPage = postRepository.findByTitleContainingAndLocationOrderByCreateDateDesc(search, memberLocation, pageable);
+                }
             } else if (criteria.equals("content")) {
-                postPage = postRepository.findByContentContainingAndLocationOrderByCreateDateDesc(search, memberLocation, pageable);
+                if (findMember.get().isAdmin()) {
+                    postPage = postRepository.findByContentContainingOrderByCreateDateDesc(search, pageable);
+                } else {
+                    postPage = postRepository.findByContentContainingAndLocationOrderByCreateDateDesc(search, memberLocation, pageable);
+                }
             } else {
-                // Handle invalid criteria value
-                postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
+                if (findMember.get().isAdmin()) {
+                    postPage = postRepository.findAllByOrderByCreateDateDesc(pageable);
+                } else {
+                    postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
+                }
             }
         } else if (findMember.get().isAdmin()) {
             postPage = postRepository.findAllByOrderByCreateDateDesc(pageable);
@@ -162,7 +177,7 @@ public class PostController {
             boolean isFromExtend = referer != null && (referer.contains("/posts/extends") || (extend != null && extend));
 
 
-            if(!isFromExtend){
+            if(!findMember.get().isAdmin() && !isFromExtend){
                 if(!findMember.get().getLocation().equals(findPost.get().getLocation())
                         && !findMember.get().getId().equals(findPost.get().getMember().getId())){
                     model.addAttribute("errorMessage", "글을 쓴 위치와 현재 사용자의 위치가 달라서 글을 볼 수 없습니다.");
