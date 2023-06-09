@@ -36,8 +36,7 @@
     <td th:text="${post.getMember().nickname}"></td>
     <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
     <td>
-      <span th:if="${post.modifyDate != null}" th:text="${#dates.format(post.modifyDate, 'yyyy-MM-dd HH:mm')} + ' (수정됨) '"></span>
-      <span th:unless="${post.modifyDate != null}" th:text="${#dates.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></span>
+      <span th:text="${timeAgoList[postNumber.index]}"></span>
     </td>
   </tr>
   </tr>

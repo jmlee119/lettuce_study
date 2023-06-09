@@ -20,10 +20,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping("/posts")
@@ -86,7 +88,22 @@ public class PostController {
         } else {
             postPage = postRepository.findAllByLocationOrderByCreateDateDesc(memberLocation, pageable);
         }
-        model.addAttribute("current_date",new Date());
+        List<String> timeAgoList = new ArrayList<>();
+        for (Post post : postPage.getContent()) {
+            Date createDate = post.getCreateDate();
+            LocalDateTime postCreateDate = createDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            String timeAgo;
+            if (postCreateDate.toLocalDate().isEqual(LocalDate.now())) {
+                timeAgo = postCreateDate.format(DateTimeFormatter.ofPattern("HH:mm"));
+            } else if (postCreateDate.toLocalDate().getYear() == LocalDate.now().getYear()) {
+                timeAgo = postCreateDate.format(DateTimeFormatter.ofPattern("MM월 dd일"));
+            } else {
+                timeAgo = postCreateDate.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
+            }
+            timeAgoList.add(timeAgo);
+        }
+        model.addAttribute("timeAgoList", timeAgoList);
+
         model.addAttribute("nickname", findMember.get().getNickname());
         model.addAttribute("memberId", findMember.get().getId());
         model.addAttribute("postPage", postPage);
@@ -119,12 +136,26 @@ public class PostController {
             } else if (criteria.equals("content")) {
                 postPage = postRepository.findByContentContainingAndLocationStartingWithOrderByCreateDateDesc(search, city, pageable);
             } else {
-                // Handle invalid criteria value
                 postPage = postRepository.findAllByLocationStartingWithOrderByCreateDateDesc(city, pageable);
             }
         } else {
             postPage = postRepository.findAllByLocationStartingWithOrderByCreateDateDesc(city, pageable);
         }
+        List<String> timeAgoList = new ArrayList<>();
+        for (Post post : postPage.getContent()) {
+            Date createDate = post.getCreateDate();
+            LocalDateTime postCreateDate = createDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+            String timeAgo;
+            if (postCreateDate.toLocalDate().isEqual(LocalDate.now())) {
+                timeAgo = postCreateDate.format(DateTimeFormatter.ofPattern("HH:mm"));
+            } else if (postCreateDate.toLocalDate().getYear() == LocalDate.now().getYear()) {
+                timeAgo = postCreateDate.format(DateTimeFormatter.ofPattern("MM월 dd일"));
+            } else {
+                timeAgo = postCreateDate.format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일"));
+            }
+            timeAgoList.add(timeAgo);
+        }
+        model.addAttribute("timeAgoList", timeAgoList);
         model.addAttribute("nickname", findMember.get().getNickname());
         model.addAttribute("memberId", findMember.get().getId());
         model.addAttribute("postPage", postPage);
@@ -152,8 +183,7 @@ public class PostController {
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
             post.setMember(member);
-            Date currentDate = new Date();
-            post.setCreateDate(truncateTime(currentDate));
+            post.setCreateDate(new Date());
             post.setLocation(optionalMember.get().getLocation());
             postRepository.save(post);
             Long postId = post.getId();
@@ -163,16 +193,6 @@ public class PostController {
         }
 
     }
-    private Date truncateTime(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        return calendar.getTime();
-    }
-
     @GetMapping("/detail/{postId}")
     @PreAuthorize("isAuthenticated()")
     public String myPostDetail(@PathVariable Long postId, Model model,@RequestParam(value = "extends", required = false) Boolean extend, HttpServletRequest request) {

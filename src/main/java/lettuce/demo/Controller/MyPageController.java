@@ -21,6 +21,10 @@ import org.thymeleaf.util.StringUtils;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,6 +77,25 @@ public class MyPageController {
         if ((nickname.equals(findMember.get().getNickname()))){
             if (findMember.isPresent()) {
                 List<Post> myPosts = postRepository.findByMemberOrderByCreateDateDesc(findMember.get());
+                List<String> timeAgoList = new ArrayList<>();
+                LocalDateTime currentDate = LocalDateTime.now();
+
+                for (Post post : myPosts) {
+                    LocalDateTime postCreateDate = post.getCreateDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    String timeAgo;
+                    if (postCreateDate.toLocalDate().isEqual(currentDate.toLocalDate())) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분");
+                        timeAgo = postCreateDate.format(formatter);
+                    } else if (postCreateDate.toLocalDate().getYear() == currentDate.toLocalDate().getYear()) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM월 dd일");
+                        timeAgo = postCreateDate.format(formatter);
+                    } else {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+                        timeAgo = postCreateDate.format(formatter);
+                    }
+                    timeAgoList.add(timeAgo);
+                }
+                model.addAttribute("timeAgoList", timeAgoList);
                 model.addAttribute("myPosts", myPosts);
                 model.addAttribute("memberId",findMember.get().getId());
                 model.addAttribute("nickname",findMember.get().getNickname());
@@ -84,6 +107,26 @@ public class MyPageController {
             Optional<Member> anotherMember = memberRepository.findByNickname(nickname);
             if (anotherMember.isPresent()) {
                 List<Post> anotherPosts = postRepository.findByMemberOrderByCreateDateDesc(anotherMember.get());
+                List<Post> myPosts = postRepository.findByMemberOrderByCreateDateDesc(findMember.get());
+                List<String> timeAgoList = new ArrayList<>();
+                LocalDateTime currentDate = LocalDateTime.now();
+
+                for (Post post : anotherPosts) {
+                    LocalDateTime postCreateDate = post.getCreateDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                    String timeAgo;
+                    if (postCreateDate.toLocalDate().isEqual(currentDate.toLocalDate())) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분");
+                        timeAgo = postCreateDate.format(formatter);
+                    } else if (postCreateDate.toLocalDate().getYear() == currentDate.toLocalDate().getYear()) {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM월 dd일");
+                        timeAgo = postCreateDate.format(formatter);
+                    } else {
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일");
+                        timeAgo = postCreateDate.format(formatter);
+                    }
+                    timeAgoList.add(timeAgo);
+                }
+                model.addAttribute("timeAgoList", timeAgoList);
                 model.addAttribute("myPosts", anotherPosts);
                 model.addAttribute("nickname", findMember.get().getNickname());
                 return "myPage/mylist";
