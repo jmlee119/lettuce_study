@@ -10,6 +10,15 @@
             background-color: #1d6222;
             color: white;
         }
+        #locationContainer {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        #locationImage {
+            display: block;
+            margin: 0 auto;
+            cursor: pointer;
+        }
     </style>
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=ea6dedfd426ef3bfa6075139675dcaf7&libraries=services"></script>
     <link rel="stylesheet" type="text/css" href="/css/fullpage.css">
@@ -41,9 +50,11 @@
 </th:block>
 <th:block sec:authorize = "isAuthenticated()">
     <nav th:replace="fragments/common :: menu"></nav>
-    <img id="locationImage" src="/images/location.png" onclick="getLocationAndSaveLocation()" alt="위치 인증버튼">
-    <span>현재 위치 정보</span>
-    <span id="centerAddr"></span>
+    <div id="locationContainer">
+        <img id="locationImage" src="/images/location.png" onclick="getLocationAndSaveLocation()" alt="위치 인증버튼">
+        <h3 id="centerAddr"></h3>
+    </div>
+
     <div id="map" style="width:100%;height:550px;"></div>
 
 </th:block>
@@ -187,7 +198,7 @@
     function displayCenterInfo(result, status) {
         if (status === kakao.maps.services.Status.OK) {
             var infoDiv = document.getElementById('centerAddr');
-            infoDiv.innerHTML = result[0].address_name;
+            infoDiv.innerHTML = "현재위치: " + result[0].address_name;
             var splitAddress = result[0].address_name.split(' ');
             var simplifiedAddress = splitAddress.slice(0, 2).join(' ');
 
