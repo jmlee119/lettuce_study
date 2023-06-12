@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MailList</title>
+    <link rel="stylesheet" href="/css/mailcss.css">
+    <style>
+        table {
+            width: 85%;
+            padding: 5%;
+        }
+        td {
+            padding: 1.5%;
+            vertical-align: middle;
+        }
+        /*}*/
+        td:nth-child(1){
+            width: 10%;
+        }
+
+        td:nth-child(2) {
+            width: 30%;
+        }
+
+        td:nth-child(3) {
+            width: 40%;
+        }
+        td:nth-child(4){
+            width: 20%;
+        }
+        th{
+            padding:1.5%;
+            text-align: left;
+        }
+    </style>
+    <link rel="stylesheet" href="../../static/css/menucss.css">
+</head>
+<body>
+<div class="container">
+    <nav th:replace="fragments/MailCom :: menu"></nav>
+    <table  >
+        <thead>
+        <tr>
+            <th>메일번호</th>
+            <th>보낸사람</th>
+            <th>제목</th>
+            <th>날짜</th>
+        </tr>
+        </thead>
+        <tbody class="all">
+        <tr th:each="m,mailNumber : ${mail}">
+            <td th:text="${mailNumber.index + 1}"></td>
+            <td class="sender"><a th:href="@{/profile/myinfo/{nickname}(nickname=${m.getSender().nickname})}" th:text="${m.getSender().nickname}"></a></td>
+            <td class="title"><a th:href="@{/mail/detail/{mailId}(mailId=${m.id})}" th:text="${m.title}"></a></td>
+            <td class="createDate"><span th:text="${#dates.format(m.sendDate, 'yyyy-MM-dd HH:mm')}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

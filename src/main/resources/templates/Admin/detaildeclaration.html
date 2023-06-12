@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>detaildeclaration</title>
+    <style>
+        .date {
+            text-align: right;
+        }
+        h1{
+            text-align: center;
+        }
+        .content{
+            padding: 10%;
+        }
+        .name{
+            text-align: right;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/menucss.css">
+    <script>
+        function disableAccount() {
+            document.getElementById("disableAccountForm").submit();
+        }
+        function enableAccount() {
+            document.getElementById("enableAccountForm").submit();
+        }
+    </script>
+</head>
+<body>
+<nav th:replace="fragments/common :: menu"></nav>
+<div class="container">
+    <h1 th:text="${declaration.report_content}"></h1>
+    <p class="name">신고자: <a th:href="@{/profile/myinfo/{nickname}(nickname=${declaration.getReporter().getNickname()})}" th:text="${declaration.getReporter().nickname}"></a></p>
+    <p class="content" th:text="${declaration.content}"></p>
+    <p class="date">신고 당한 사람: <a th:href="@{/profile/myinfo/{nickname}(nickname=${declaration.getReported().getNickname()})}"><span th:text="${declaration.getReported().getNickname()}"></span></a></p>
+    <form id="disableAccountForm" th:action="@{/admin/disable-account/{nickname}(nickname=${declaration.getReported().getNickname()})}" method="POST" style="display: none;">
+        <input type="hidden" name="_method" value="POST"/>
+    </form>
+    <form id="enableAccountForm" th:action="@{/admin/enable-account/{nickname}(nickname=${declaration.getReported().getNickname()})}" method="POST" style="display: none;">
+        <input type="hidden" name="_method" value="POST"/>
+    </form>
+    <button onclick="disableAccount()">계정 비활성화</button>
+    <button onclick="enableAccount()">계정 활성화</button>
+    <p class="date">
+        신고일: <span th:text="${declaration.createDate}"></span>
+    </p>
+</div>
+</body>
+</html>

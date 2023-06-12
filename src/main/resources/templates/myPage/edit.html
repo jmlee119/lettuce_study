@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2cm;
+            width: fit-content; /* 요소의 내용에 맞추어 가로 길이 조정 */
+            background-color: #e6ffe6;
+            border-radius: 10px;
+            margin: 0 auto; /* 가운데 정렬 */
+        }
+
+        label {
+            color: #006600;
+            font-weight: bold;
+            margin-bottom: 0.2cm;
+        }
+
+        input[type="text"],
+        input[type="file"] {
+            padding: 0.3cm;
+            margin-bottom: 0.3cm;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            padding: 0.5cm;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .alert {
+            margin-top: 1cm;
+            padding: 0.5cm;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+        }
+        .div{
+            padding-top: 2%;
+            display: flex;
+            justify-content: center; /* 수평 가운데 정렬 */
+            align-items: center; /* 수직 가운데 정렬 */
+        }
+
+        .form-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5cm;
+        }
+
+        .form-label {
+            color: #006600;
+            font-weight: bold;
+            width: 7cm;
+            margin-right: 1cm;
+        }
+
+        .form-input {
+            width: 15cm;
+            padding: 0.3cm;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/menucss.css">
+</head>
+<body>
+<nav th:replace="fragments/common :: menu"></nav>
+<h1 style="text-align: center">MyPage Update</h1>
+<div class="div">
+    <form th:action="@{/profile/edit}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="Id" th:value="${member.get().getId()}" />
+
+        <div class="form-item">
+            <label class="form-label" for="nickname">Nickname:</label>
+            <input class="form-input" type="text" id="nickname" name="nickname" th:value="${member.get().getNickname()}" />
+        </div>
+
+        <div class="form-item">
+            <label class="form-label" for="name">Name:</label>
+            <input class="form-input" type="text" id="name" name="name" th:value="${member.get().getName()}" />
+        </div>
+
+        <div class="form-item">
+            <label class="form-label" for="phone">Phone:</label>
+            <input class="form-input" type="text" id="phone" name="phone" th:value="${member.get().getPhone()}" />
+        </div>
+
+        <div class="form-item">
+            <label class="form-label" for="github">Github:</label>
+            <input class="form-input" type="text" id="github" name="github" th:value="${member.get().getGithub()}" />
+        </div>
+
+        <div class="form-item">
+            <label class="form-label" for="instagram">Instagram:</label>
+            <input class="form-input" type="text" id="instagram" name="instagram" th:value="${member.get().getInstagram()}" />
+        </div>
+
+        <div class="form-item">
+            <label class="form-label" for="image">Image:</label>
+            <input class="form-input" type="file" id="image" name="image" />
+        </div>
+
+        <button type="submit">Update</button>
+
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <p th:text="${errorMessage}"></p>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

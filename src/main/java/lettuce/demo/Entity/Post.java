@@ -1,11 +1,14 @@
-package lettuce.demo.Post;
+package lettuce.demo.Entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import lettuce.demo.Member.Member;
+import lettuce.demo.Entity.Member;
+import lettuce.demo.Entity.Reply;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -25,7 +28,7 @@ public class Post {
     @Column(name = "create_date")
     private Date createDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
     @Column(name = "modify_date")
     private Date modifyDate;
 
@@ -33,19 +36,34 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reply> replies = new ArrayList<>();
 
-    @PrePersist
-    protected void onCreate() {
-        createDate = new Date();
-        modifyDate = new Date();
+    @Column(length = 100)
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public List<Reply> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Reply> replies) {
+        this.replies = replies;
+    }
+
+    public Member getMember() {
+        return member;
     }
 
     public void setMember(Member member){
         this.member = member;
-    }
-    @PreUpdate
-    protected void onUpdate() {
-        modifyDate = new Date();
     }
 
     public Long getId() {
@@ -82,6 +100,11 @@ public class Post {
 
     public Date getModifyDate() {
         return modifyDate;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        modifyDate = new Date();
     }
 
     public void setModifyDate(Date modifyDate) {

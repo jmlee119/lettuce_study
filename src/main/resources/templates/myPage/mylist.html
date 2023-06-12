@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>My Posts</title>
+  <style>
+    .all {
+      width: 100%;
+      padding: 1%;
+    }
+    td{
+      text-align: center;
+      padding-top: 1%;
+    }
+    th{
+      background: #c4ff9e;
+    }
+  </style>
+  <link rel="stylesheet" href="/css/menucss.css">
+</head>
+<body>
+<nav th:replace="fragments/common :: menu"></nav>
+<h1>My Post_List</h1>
+<table class="all">
+  <thead>
+  <tr>
+    <th>글 번호</th>
+    <th>닉네임</th>
+    <th>글 제목</th>
+    <th>생성날짜</th>
+  </tr>
+  </thead>
+  <tbody class="all">
+  <tr th:each="post, postNumber : ${myPosts}">
+    <td th:text="${postNumber.index + 1}"></td>
+    <td th:text="${post.getMember().nickname}"></td>
+    <td><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
+    <td>
+      <span th:text="${timeAgoList[postNumber.index]}"></span>
+    </td>
+  </tr>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

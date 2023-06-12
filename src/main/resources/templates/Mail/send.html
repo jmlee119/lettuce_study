@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>MailSend</title>
+  <link rel="stylesheet" href="/css/mailcss.css">
+  <style>
+    form {
+      width: 70%;
+      padding-left: 40px;
+      padding-right: 40px;
+      padding-bottom: 40px;
+      padding-top: 11%;
+      border-radius: 5px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+      text-align: left;
+      width: 100%;
+    }
+
+    label span {
+      margin-right: 10px;
+      width: 40%;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 10px;
+      border-radius: 1px;
+    }
+
+    button[type="submit"] {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    /* 추가된 CSS */
+    #nicknameResults {
+      margin-top: 10px;
+      position: relative;
+      width: 100%;
+      text-align: center; /* Center the content */
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      width: 100%;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      z-index: 1;
+    }
+
+    .dropdownItem {
+      cursor: pointer;
+      padding: 5px;
+      text-align: center; /* Center the text */
+    }
+
+    .show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+<div>
+  <nav th:replace="fragments/MailCom :: menu"></nav>
+  <form method="post" action="/mail/send">
+    <label for="receiverNickname">
+      <span>보낼 사람</span>
+      <input type="text" name="receiverNickname" id="receiverNickname" required>
+    </label>
+
+    <div id="nicknameResults">
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
+    <label for="title">
+      <span>Title</span>
+      <input type="text" name="title" id="title" required>
+    </label>
+
+    <label for="content">
+      <span>Content</span>
+      <textarea name="content" id="content" rows="10" required></textarea>
+    </label>
+
+    <button type="submit">Send</button>
+  </form>
+</div>
+
+<script>
+  const receiverNicknameInput = document.getElementById('receiverNickname');
+  const dropdown = document.getElementById('dropdown');
+
+  receiverNicknameInput.addEventListener('input', () => {
+    const input = receiverNicknameInput.value.trim();
+    if (input.length === 0) {
+      dropdown.classList.remove('show');
+      dropdown.innerHTML = '';
+      return;
+    }
+
+    fetch(`/api/members?nickname=${encodeURIComponent(input)}`)
+            .then(response => response.json())
+            .then(data => {
+              dropdown.innerHTML = '';
+
+              if (data.length === 0) {
+                const noResultsItem = document.createElement('div');
+                noResultsItem.textContent = '일치하는 닉네임이 없습니다.';
+                dropdown.appendChild(noResultsItem);
+              } else {
+                data.forEach(nickname => {
+                  const resultItem = document.createElement('div');
+                  resultItem.classList.add('dropdownItem');
+                  resultItem.textContent = nickname;
+
+                  resultItem.addEventListener('click', () => {
+                    receiverNicknameInput.value = nickname;
+                    dropdown.classList.remove('show');
+                    dropdown.innerHTML = '';
+                  });
+
+                  dropdown.appendChild(resultItem);
+                });
+
+                dropdown.classList.add('show');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  });
+
+  receiverNicknameInput.addEventListener('input', () => {
+    const inputWidth = receiverNicknameInput.offsetWidth;
+    dropdown.style.width = `${inputWidth}px`;
+  });
+
+  document.addEventListener('click', event => {
+    if (!receiverNicknameInput.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.classList.remove('show');
+      dropdown.innerHTML = '';
+    }
+  });
+</script>
+</body>
+</html>

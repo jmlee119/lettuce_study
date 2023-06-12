@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Update Post</title>
+  <style>
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    button[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+  <link rel="stylesheet" href="/css/menucss.css">
+</head>
+<body>
+<nav th:replace="fragments/common :: menu"></nav>
+<h1>Update Post</h1>
+<form th:action="@{/posts/update}" method="post">
+  <input type="hidden" name="postId" th:value="${post.get().getId()}" />
+  <label for="title">Title</label>
+  <input type="text" name="title" id="title" required  th:value="${post.get().getTitle()}"><br><br>
+  <label for="content">Content</label>
+  <textarea name="content" id="content" rows="10" required th:text="${post.get().getContent()}"></textarea><br><br>
+  <button type="submit">Update</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+body {
+    padding-left: 20%;
+    padding-top: 5%;
+}
+nav {
+    width: 15%; /* 원하는 너비 값으로 설정 */
+    background-color: #c8ffb5bf;
+    border-right: 2px solid;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+}
+nav img {
+    width: 100%;
+    height: auto;
+}
+
+.menu .mail {
+    display: block;
+    padding-top: 7%;
+    padding-bottom: 7%;
+    font-size: 20px;
+    color: #000000;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+}
+.menu .mail:hover {
+    background-color: white;
+    color: black;
+}
+.write_btn {
+    border: none;
+    background-color: rgb(5, 103, 33);
+    color: white;
+    font-weight: bold;
+    font-size: 25px;
+    width: 100%;
+    padding-top: 10%;
+    padding-bottom: 10%;
+}
+
+.right_button {
+    display: flex;
+    /*justify-content: space-between;*/
+    align-items: center;
+    padding-left: 80%;
+}
+.right_button button{
+    margin: 10px;
+    color: white;
+}
+.right_button .nick_btn {
+    background-color: #45a049;
+    border-radius: 17px;
+    margin-right: 10px;
+
+}
+.right_button .log_btn {
+    background-color: #45a049;
+    border-radius: 17px;
+
+}

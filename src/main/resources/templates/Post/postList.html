@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" name="viewport" content="width=device-width, height=device-height, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0">
+  <title>PostList</title>
+  <style>
+    .all {
+      width: 100%;
+      padding: 1%;
+      font-weight: bold;
+    }
+
+    td{
+      padding: 0.5%;
+      text-align: center;
+      background-color: rgba(69, 160, 73, 0.2);
+      text-align: center;
+      vertical-align: middle;
+
+    }
+    th{
+      background:  #45a049;
+      color :white;
+      padding:1.5%;
+    }
+    .create {
+      text-align: right;
+      margin-top: 1%;
+      margin-right:15px ;
+    }
+    .nickname:hover {
+      background-color: rgba(69, 160, 73, 0.5);
+    }
+    .posttitle:hover{
+      background-color: rgba(69, 160, 73, 0.7);
+    }
+    .create a{
+      border: solid 2px;
+      border-color: #45a049;
+      padding: 0.4%;
+
+    }
+    .create form {
+      margin-left: auto;
+      margin-right: 10px;
+    }
+
+    .create input[type="text"],
+    .create button {
+      vertical-align: middle;
+    }
+    a:hover {
+      color:white;
+      background-color: #45a049;
+    }
+    .pagination{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+    .pagination a{
+      background-color: #45a049;
+      flex-grow: 1;
+      margin: 10px;
+      padding: 10px;
+      color:white;
+      font-weight: bold;
+      font-size: 13px;
+      border-radius: 30px;
+    }
+    .pagination a:hover {
+      background-color: rgba(69, 160, 73, 0.5);
+    }
+  </style>
+  <link rel="stylesheet" href="/css/menucss.css">
+</head>
+<body>
+<nav th:replace="fragments/common :: menu"></nav>
+<div class="create">
+  <span th:if="${member.get().isAdmin()}">관리자님 환영합니다</span>
+  <span th:unless="${member.get().isAdmin()}">현재 지역은 <span th:text="${member.get().location}"></span>입니다.</span>
+  <a th:href="@{/posts/extends}" th:if="${not member.get().isAdmin()}"><span th:text="${extends}"></span>로 확장하기</a>
+  <a th:href="@{/posts/create/{memberId}(memberId=${member.get().id})}" th:if="${not member.get().isAdmin()}">글 작성하기</a>
+  <form action="#" th:action="@{/posts/lists}" method="get" style="display: inline-block;">
+    <select name="criteria">
+      <option value="nickname">닉네임</option>
+      <option value="title">제목</option>
+      <option value="content">내용</option>
+    </select>
+    <input type="text" name="search" placeholder="Search..." />
+    <button type="submit">Search</button>
+  </form>
+</div>
+<table class="all">
+  <thead>
+  <tr>
+    <th>Num</th>
+    <th>NickName</th>
+    <th>PostTitle</th>
+    <th>CreatDate</th>
+  </tr>
+  </thead>
+  <tbody class="all">
+  <tr th:each="post, postNumber : ${postPage}">
+    <td th:text="${postPage.number * postPage.size + postNumber.index + 1}"></td>
+    <td class ="nickname"><a th:href="@{/profile/myinfo/{nickname}(nickname=${post.member.nickname})}" th:text="${post.member != null ? post.member.nickname : 'unknown'}"></a></td>
+    <td class="posttitle"><a th:href="@{/posts/detail/{postId}(postId=${post.id})}" th:text="${post.title}"></a></td>
+    <td>
+      <span th:text="${timeAgoList[postNumber.index]}"></span>
+    </td>
+  </tr>
+  
+  <tr th:if="${postPage.totalElements == 0}">
+    <td colspan="4">No posts found.</td>
+  </tr>
+  </tbody>
+</table>
+<div th:if="${postPage.totalPages > 1}" class="pagination-box">
+  <div class="pagination">
+    <div th:class="${postPage.number == 0} ? 'disabled' : ''">
+      <a th:href="@{/posts/lists(page=${postPage.number - 1}, size=${postPage.size})}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </div>
+    <div th:each="pageNumber : ${#numbers.sequence(0, postPage.totalPages - 1)}"
+         th:class="${pageNumber == postPage.number} ? 'active' : ''">
+      <a th:href="@{/posts/lists(page=${pageNumber}, size=${postPage.size})}" th:text="${pageNumber + 1}"></a>
+    </div>
+    <div th:class="${postPage.number == postPage.totalPages - 1} ? 'disabled' : ''">
+      <a th:href="@{/posts/lists(page=${postPage.number + 1}, size=${postPage.size})}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
