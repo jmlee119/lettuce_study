@@ -21,7 +21,7 @@
 
 ### 파일구조
 
-`
+```plaintext
 lettuce_study  
     ├── README.md  
     ├── build.gradle  
@@ -139,4 +139,4 @@ lettuce_study
                 └── lettuce
                     └── demo
                         └── DemoApplicationTests.java
-`
+``` 
