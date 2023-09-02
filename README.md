@@ -22,11 +22,11 @@
 ### 파일구조
 
 `
-lettuce_study
-    ├── README.md
-    ├── build.gradle
-    ├── gradle
-    │   └── wrapper
+lettuce_study  
+    ├── README.md  
+    ├── build.gradle  
+    ├── gradle  
+    │   └── wrapper  
     │       ├── gradle-wrapper.jar
     │       └── gradle-wrapper.properties
     ├── gradlew
